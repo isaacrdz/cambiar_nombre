@@ -1,0 +1,77 @@
+import React, { useReducer } from "react";
+import LeadContext from "./leadContext";
+import LeadReducer from "./leadReducer";
+import api from "../../api/api";
+import {
+  GET_LEADS,
+  GET_LEAD,
+  CLEAR_STATE,
+  SET_LOADING,
+  SET_ERROR,
+} from "../types";
+
+const LeadState = (props) => {
+  const initialState = {
+    leads: [],
+    lead: {},
+    loading: false,
+    error: null,
+  };
+
+  const [state, dispatch] = useReducer(LeadReducer, initialState);
+
+  const getLeads = async (pageCurrent, userId) => {
+    setLoading();
+    try {
+      const leads = await api.get(
+        `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=&agent=${userId}&searchType=or&validation=1`
+      );
+
+      dispatch({
+        type: GET_LEADS,
+        payload: leads.data.data,
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR });
+    }
+  };
+
+  //Get Single Item by ID
+  const getLead = async (leadId) => {
+    setLoading();
+    try {
+      const res = await api.get(`/leads/${leadId}`);
+      dispatch({
+        type: GET_LEAD,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+  };
+
+  //Clear State
+  const clearState = () => dispatch({ type: CLEAR_STATE });
+
+  //Set Loading
+  const setLoading = () => dispatch({ type: SET_LOADING });
+
+  return (
+    <LeadContext.Provider
+      value={{
+        leads: state.leads,
+        lead: state.lead,
+        loading: state.loading,
+        error: state.error,
+        clearState,
+        setLoading,
+        getLeads,
+        getLead,
+      }}
+    >
+      {props.children}
+    </LeadContext.Provider>
+  );
+};
+
+export default LeadState;
