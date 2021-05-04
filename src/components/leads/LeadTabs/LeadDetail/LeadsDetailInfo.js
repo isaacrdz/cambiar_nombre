@@ -7,9 +7,9 @@ import NumberFormat from "react-number-format";
 
 import moment from "moment";
 
-import useLead from "../../hooks/useLead";
+import useLead from "../../../../hooks/useLead";
 
-const LeadsDetail = ({ itemId }) => {
+const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearState } = useLead();
 
   useEffect(() => {
@@ -17,6 +17,32 @@ const LeadsDetail = ({ itemId }) => {
   }, []);
 
   const createdAt = moment(lead.createdAt).format("MMMM D, YYYY");
+
+  const leadInformation = () => (
+    <Layout style={styles.container}>
+      <Layout style={styles.ContainerDetail}>
+        <Text category="p1" appearance="hint">
+          Name
+        </Text>
+        <Text style={[styles.mr, styles.textCapitalize]}>{lead.name}</Text>
+      </Layout>
+      <Divider />
+      <Layout style={styles.ContainerDetail}>
+        <Text category="p1" appearance="hint">
+          Email
+        </Text>
+
+        <Text style={styles.mr}>{lead && lead.email}</Text>
+      </Layout>
+      <Divider />
+      <Layout style={styles.ContainerDetail}>
+        <Text category="p1" appearance="hint">
+          Phone Number
+        </Text>
+        <Text style={styles.mr}>{lead.phone}</Text>
+      </Layout>
+    </Layout>
+  );
 
   return loading ? (
     <ActivityIndicator size="large" />
@@ -27,29 +53,7 @@ const LeadsDetail = ({ itemId }) => {
       // onScrollEndDrag={() =>  getLead(itemId);}
     >
       {/* Lead Top */}
-      <Layout style={styles.container}>
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Name
-          </Text>
-          <Text style={[styles.mr, styles.textCapitalize]}>{lead.name}</Text>
-        </Layout>
-        <Divider />
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Email
-          </Text>
-
-          <Text style={styles.mr}>{lead && lead.email}</Text>
-        </Layout>
-        <Divider />
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Phone Number
-          </Text>
-          <Text style={styles.mr}>{lead.phone}</Text>
-        </Layout>
-      </Layout>
+      {leadInformation()}
 
       {/* Lead Car Info */}
       <Layout style={styles.container}>
@@ -151,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LeadsDetail;
+export default LeadDetailInfo;

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Tab, TabView, Text } from "@ui-kitten/components";
-import LeadsDetail from "./LeadsDetail";
+import LeadsDetailInfo from "./LeadDetail/LeadsDetailInfo";
 
 const LeadTabs = ({ route }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -12,7 +12,7 @@ const LeadTabs = ({ route }) => {
       onSelect={(index) => setSelectedIndex(index)}
     >
       <Tab title="INFO" style={{ paddingVertical: 10 }}>
-        <LeadsDetail itemId={itemId} />
+        <LeadsDetailInfo itemId={itemId} />
       </Tab>
       <Tab title="TASK" style={{ paddingVertical: 10 }}>
         <Layout style={styles.tabContainer}>

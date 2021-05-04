@@ -2,8 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Lead from "../screens/Lead/Lead";
-import LeadsDetail from "../components/leads/LeadsDetail";
-import LeadTabs from "../components/leads/LeadTabs";
+import LeadsDetail from "../components/leads/LeadTabs/LeadDetail/LeadsDetailInfo";
+import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
 
 const LeadStack = createStackNavigator();
 
