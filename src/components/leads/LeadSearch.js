@@ -1,28 +1,37 @@
 import React from "react";
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet } from "react-native";
 import {
-  Button,
   Icon,
   Input,
   Layout,
-  MenuItem,
-  OverflowMenu,
-  Select,
-  SelectItem,
-  Tooltip,
 } from "@ui-kitten/components";
 
-const LeadSearch = () => {
-  const [value, setValue] = React.useState("");
+import useLead from "../../hooks/useLead";
+
+const LeadSearch = ({ query, setQuery, user, setpageCurrent, pageCurrent, currentSearch }) => {
+
   const renderInputIcon = (props) => <Icon {...props} name="search" />;
+
+  const { getLeads, loading, clearState } = useLead();
+
+
+  const handleSubmit = (e) => {
+    clearState();
+    if(pageCurrent === 1){
+      getLeads(pageCurrent, user._id, currentSearch, query);
+    }else{
+      setpageCurrent(1);
+    }
+  }
 
   return (
     <Layout style={styles.inputContainer} level="1">
       <Input
+        onSubmitEditing={handleSubmit}
         style={styles.input}
         placeholder="Busqueda de Leads"
-        value={value}
-        onChangeText={setValue}
+        value={query}
+        onChangeText={setQuery}
         accessoryRight={renderInputIcon}
       />
     </Layout>
