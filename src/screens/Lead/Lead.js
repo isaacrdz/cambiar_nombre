@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import LeadsList from "../../components/leads/LeadsList";
 
@@ -7,11 +7,33 @@ import LeadSearch from "../../components/leads/LeadSearch";
 
 const Lead = ({ navigation }) => {
   const { user } = useAuth();
+  const [query, setQuery] = useState('');
+  const [pageCurrent, setpageCurrent] = useState(1);
+  const [currentSearch, setCurrentSearch] = useState({
+    title: "All", 
+    value: "all", 
+    type: "all"
+  });
 
   return (
     <>
-      <LeadSearch />
-      <LeadsList user={user} />
+      <LeadSearch 
+        user={user} 
+        setQuery={setQuery} 
+        query={query} 
+        pageCurrent={pageCurrent} 
+        setpageCurrent={setpageCurrent}
+        currentSearch={currentSearch}
+      />
+
+      <LeadsList 
+        user={user} 
+        query={query} 
+        pageCurrent={pageCurrent} 
+        setpageCurrent={setpageCurrent}
+        currentSearch={currentSearch}
+        setCurrentSearch={setCurrentSearch}
+      />
     </>
   );
 };

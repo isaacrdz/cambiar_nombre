@@ -63,7 +63,6 @@ const AuthState = (async = (props) => {
       },
     };
     setLoading();
-
     try {
       const res = await api.post("/auth/login", values, config);
       await AsyncStorage.setItem("token", res.data.token);

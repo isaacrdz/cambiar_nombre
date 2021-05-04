@@ -1,17 +1,24 @@
 import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { Layout, Text, Input, Button, Divider } from "@ui-kitten/components";
+import { StyleSheet } from "react-native";
+import { Layout, Text, Button } from "@ui-kitten/components";
+// import I18n from 'react-native-i18n'
 
 const data = new Array(20).fill({
   title: "Item",
   description: "Description for Item",
 });
 
-const numColumns = 1;
+
+
 import useAuth from "../hooks/useAuth";
 
 const Home = ({ navigation }) => {
   const { user, logout } = useAuth();
+
+  React.useEffect(()=>{
+    // I18n.initAsync();
+  },[])
+
   return (
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {user && <Text style={{ marginBottom: 40 }}>Hello, {user.name} </Text>}

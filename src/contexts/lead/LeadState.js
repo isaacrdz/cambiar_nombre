@@ -20,12 +20,32 @@ const LeadState = (props) => {
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
 
-  const getLeads = async (pageCurrent, userId) => {
+  const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
+
+    console.log(query)
     try {
-      const leads = await api.get(
-        `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=&agent=${userId}&searchType=or&validation=1`
-      );
+      let leads;
+      switch(type){
+        case 'status':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+          );
+        break;
+        case 'substatus':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+          );
+        break;
+        case 'all':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+          );
+        break;
+        default:
+          console.log('no valid search')
+        break;
+      }
 
       dispatch({
         type: GET_LEADS,

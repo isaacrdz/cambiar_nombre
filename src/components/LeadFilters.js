@@ -1,37 +1,85 @@
 import React from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { StyleSheet } from "react-native";
+import useLead from "../hooks/useLead";
 
 import {
-  Icon,
   List,
   ListItem,
   Layout,
-  Divider,
   Text,
 } from "@ui-kitten/components";
 
-const filters = ["New", "Sold", "Visit", "Appointment", "Lead", "Assigned"];
+const filters = [
+  {
+    title: "All", 
+    value: "all", 
+    type: "all"
+  },
+  {
+    title: "New", 
+    value: "605bd5c4bed49524ae40f882", 
+    type: "substatus"
+  },
+  {
+    title: "Sold", 
+    value: "5d7a514b5dac12c7449ce043", 
+    type: "status"
+  },
+  {
+    title: "Visit", 
+    value: "6064f8065b21e51052eed547", 
+    type: "status"
+  },
+  {
+    title: "Appointment", 
+    value: "604f80222b372e0cb11966dc", 
+    type: "status"
+  },
+  {
+    title: "Lead", 
+    value: "605bd4e80a4330245535db3c", 
+    type: "status"
+  }
+]
 
-const LeadFilters = () => {
+
+const LeadFilters = ({ setPage, setCurrent, current }) => {
+
+  const { clearState } = useLead();
+
+
   return (
     <Layout style={{ marginTop: 20 }} level="4">
       <List
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         horizontal
-        keyExtractor={(index) => index.toString()}
+        keyExtractor={(item) => item.value}
         data={filters}
         renderItem={({ item }) => (
-          <Layout style={styles.controlContainerFilters}>
-            <Text style={styles.ItemText} style={{ color: "#5764b8" }}>
-              {item}
-            </Text>
-          </Layout>
+          <ListItem
+            title={ evaProps => 
+              <Layout style={item === current ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
+                <Text style={styles.ItemText} style={{ color: item === current ? 'white' : "#5764b8" }}>
+                  {item.title}
+                </Text>
+              </Layout>
+            }
+            onPress={() => {
+              if(item !== current){
+                clearState();
+                setPage(1);
+                setCurrent(item)
+              }
+              
+            }}
+          />
         )}
       />
     </Layout>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -84,13 +132,23 @@ const styles = StyleSheet.create({
     borderColor: "#5764b8",
     width: 100,
     alignItems: "center",
+    
   },
   controlContainerFilters: {
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "#5764b8",
-    marginRight: 10,
-    marginLeft: 10,
+    // marginRight: 10,
+    // marginLeft: 10,
+    padding: 5,
+    minWidth: 100,
+    alignItems: "center",
+  },
+  controlContainerFiltersActive: {
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#5764b8",
+    backgroundColor: '#5764b8',
     padding: 5,
     minWidth: 100,
     alignItems: "center",

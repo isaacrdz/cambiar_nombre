@@ -6,13 +6,18 @@ import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 
-const LeadsList = ({ user }) => {
-  const [pageCurrent, setpageCurrent] = useState(1);
-  const { getLeads, leads, loading } = useLead();
+const LeadsList = ({ user, query, pageCurrent, currentSearch, setCurrentSearch, setpageCurrent, search }) => {
+  const { getLeads, leads, loading, clearState } = useLead();
+  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(true)
+
 
   useEffect(() => {
-    getLeads(pageCurrent, user._id);
-  }, [pageCurrent]);
+    getLeads(pageCurrent, user._id, currentSearch, query);
+  }, [currentSearch, pageCurrent, search]);
+
+  useEffect(() => {
+    return () => clearState();
+  }, []);
 
   const renderFooter = () => {
     return loading ? (
@@ -23,22 +28,27 @@ const LeadsList = ({ user }) => {
   };
 
   const handleLoadMore = () => {
-    setpageCurrent(pageCurrent + 1);
+    if(!onEndReachedCalledDuringMomentum){
+      setpageCurrent(pageCurrent + 1);
+      setOnEndReachedCalledDuringMomentum(true)
+    }
   };
 
   return (
     <Layout>
-      <LeadFilters />
+      <LeadFilters page={pageCurrent} setPage={setpageCurrent} setCurrent={setCurrentSearch} id={user._id} current={currentSearch}/>
       <Layout>
         <List
           style={styles.container}
           data={leads}
-          renderItem={({ item }) => <LeadCard item={item} />}
+          renderItem={({ item }) => <LeadCard item={item} key={item._id}/>}
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={Divider}
           ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
+
         />
       </Layout>
     </Layout>
@@ -48,6 +58,7 @@ const LeadsList = ({ user }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
+    marginBottom: '20%',
     backgroundColor: "#f5fcff",
   },
 
