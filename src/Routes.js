@@ -11,6 +11,8 @@ import AuthStackScreen from "./navigation/AuthStackScreen";
 import useAuth from "./hooks/useAuth";
 import ProfileStackScreen from "./navigation/ProfileStackScreen";
 
+import Ionicons from "@expo/vector-icons/Ionicons";
+
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -24,7 +26,30 @@ export default () => {
   return (
     <NavigationContainer>
       {isAuthenticated ? (
-        <Tabs.Navigator>
+        <Tabs.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === "Home") {
+                iconName = focused ? "home-sharp" : "home-outline";
+              } else if (route.name === "Leads") {
+                iconName = focused ? "layers-sharp" : "layers-outline";
+              } else if (route.name === "Profile") {
+                iconName = focused
+                  ? "person-circle-sharp"
+                  : "person-circle-outline";
+              }
+
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: "#5764b8",
+            inactiveTintColor: "gray",
+          }}
+        >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
           <Tabs.Screen name="Profile" component={ProfileStackScreen} />

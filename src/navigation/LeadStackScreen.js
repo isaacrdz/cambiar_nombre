@@ -11,14 +11,14 @@ const EditIcon = (props) => <Icon {...props} name="edit" />;
 
 const LeadStack = createStackNavigator();
 
-const LeadStackScreen = () => (
+const LeadStackScreen = ({ navigation }) => (
   <LeadStack.Navigator>
     <LeadStack.Screen
       name="Leads"
       component={Lead}
       options={{
         headerRight: () => (
-          <TouchableOpacity onPress={() => console.log("Open drawer")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
             <Icon
               style={{
                 width: 20,
