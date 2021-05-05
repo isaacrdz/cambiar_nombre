@@ -5,11 +5,22 @@ import { List, Layout, Divider } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
+import Header from "../header/Header";
 
-const LeadsList = ({ user, query, pageCurrent, currentSearch, setCurrentSearch, setpageCurrent, search }) => {
+const LeadsList = ({
+  user,
+  query,
+  pageCurrent,
+  currentSearch,
+  setCurrentSearch,
+  setpageCurrent,
+  search,
+}) => {
   const { getLeads, leads, loading, clearState } = useLead();
-  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(true)
-
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
 
   useEffect(() => {
     getLeads(pageCurrent, user._id, currentSearch, query);
@@ -28,27 +39,34 @@ const LeadsList = ({ user, query, pageCurrent, currentSearch, setCurrentSearch, 
   };
 
   const handleLoadMore = () => {
-    if(!onEndReachedCalledDuringMomentum){
+    if (!onEndReachedCalledDuringMomentum) {
       setpageCurrent(pageCurrent + 1);
-      setOnEndReachedCalledDuringMomentum(true)
+      setOnEndReachedCalledDuringMomentum(true);
     }
   };
 
   return (
     <Layout>
-      <LeadFilters page={pageCurrent} setPage={setpageCurrent} setCurrent={setCurrentSearch} id={user._id} current={currentSearch}/>
+      <LeadFilters
+        page={pageCurrent}
+        setPage={setpageCurrent}
+        setCurrent={setCurrentSearch}
+        id={user._id}
+        current={currentSearch}
+      />
       <Layout>
         <List
           style={styles.container}
           data={leads}
-          renderItem={({ item }) => <LeadCard item={item} key={item._id}/>}
+          renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={Divider}
           ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
-          onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
-
+          onMomentumScrollBegin={() =>
+            setOnEndReachedCalledDuringMomentum(false)
+          }
         />
       </Layout>
     </Layout>
@@ -58,7 +76,7 @@ const LeadsList = ({ user, query, pageCurrent, currentSearch, setCurrentSearch, 
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
-    marginBottom: '20%',
+    marginBottom: "20%",
     backgroundColor: "#f5fcff",
   },
 

@@ -9,6 +9,7 @@ import LeadStackScreen from "./navigation/LeadStackScreen";
 import AuthStackScreen from "./navigation/AuthStackScreen";
 
 import useAuth from "./hooks/useAuth";
+import ProfileStackScreen from "./navigation/ProfileStackScreen";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ export default () => {
         <Tabs.Navigator>
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
+          <Tabs.Screen name="Profile" component={ProfileStackScreen} />
         </Tabs.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>

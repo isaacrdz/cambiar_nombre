@@ -3,27 +3,18 @@ import { StyleSheet } from "react-native";
 import { Layout, Text, Button } from "@ui-kitten/components";
 // import I18n from 'react-native-i18n'
 
-const data = new Array(20).fill({
-  title: "Item",
-  description: "Description for Item",
-});
-
-
-
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const Home = ({ navigation }) => {
   const { user, logout } = useAuth();
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     // I18n.initAsync();
-  },[])
+  }, []);
 
   return (
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {user && <Text style={{ marginBottom: 40 }}>Hello, {user.name} </Text>}
-
-      <Button onPress={() => logout()}>LOGOUT</Button>
+      <Text style={{ marginBottom: 40 }}>Home </Text>
     </Layout>
   );
 };
