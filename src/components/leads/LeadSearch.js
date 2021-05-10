@@ -1,28 +1,29 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import {
-  Icon,
-  Input,
-  Layout,
-} from "@ui-kitten/components";
+import { Icon, Input, Layout } from "@ui-kitten/components";
 
 import useLead from "../../hooks/useLead";
 
-const LeadSearch = ({ query, setQuery, user, setpageCurrent, pageCurrent, currentSearch }) => {
-
+const LeadSearch = ({
+  query,
+  setQuery,
+  user,
+  setpageCurrent,
+  pageCurrent,
+  currentSearch,
+}) => {
   const renderInputIcon = (props) => <Icon {...props} name="search" />;
 
   const { getLeads, loading, clearState } = useLead();
 
-
   const handleSubmit = (e) => {
     clearState();
-    if(pageCurrent === 1){
+    if (pageCurrent === 1) {
       getLeads(pageCurrent, user._id, currentSearch, query);
-    }else{
+    } else {
       setpageCurrent(1);
     }
-  }
+  };
 
   return (
     <Layout style={styles.inputContainer} level="1">
