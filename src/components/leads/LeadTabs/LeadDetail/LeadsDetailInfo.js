@@ -132,12 +132,20 @@ const LeadDetailInfo = ({ itemId }) => {
             Temperature
           </Text>
           <Text style={[styles.mr, styles.textCapitalize]}>
-            {" "}
-            <Ionicons
-              name="thermometer-outline"
-              size={18}
-              color={lead.rating === "hot" ? "#f43e55" : "#33acee"}
-            />{" "}
+            {lead.rating !== "none" && (
+              <Ionicons
+                name="thermometer-outline"
+                size={25}
+                color={
+                  lead.rating === "hot"
+                    ? "#f43e55"
+                    : lead.rating === "cold"
+                    ? "#33acee"
+                    : "orange"
+                }
+              />
+            )}
+
             {lead.rating}
           </Text>
         </Layout>
