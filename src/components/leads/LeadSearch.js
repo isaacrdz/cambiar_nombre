@@ -34,6 +34,8 @@ const LeadSearch = ({
         value={query}
         onChangeText={setQuery}
         accessoryRight={renderInputIcon}
+        autoCorrect={false}
+        autoCapitalize="none"
       />
     </Layout>
   );

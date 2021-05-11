@@ -12,7 +12,7 @@ const LeadCard = ({ item }) => {
 
   return (
     <ListItem
-      onPress={() => navigation.navigate("LeadTabs", { itemId: item._id })}
+      onPress={() => navigation.navigate("LeadTabs", { item: item })}
       title={(evaProps) => (
         <Layout {...evaProps}>
           <Text appearance="hint" style={styles.ItemText}>

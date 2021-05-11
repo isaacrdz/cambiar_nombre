@@ -5,8 +5,6 @@ import { Icon } from "@ui-kitten/components";
 import { TouchableOpacity } from "react-native";
 import Settings from "../screens/Home/Settings";
 
-const EditIcon = (props) => <Icon {...props} name="edit" />;
-
 const HomeStack = createStackNavigator();
 
 const HomeStackScreen = ({ navigation }) => (

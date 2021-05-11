@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Linking, ActivityIndicator } from "react-native";
 import {
   Layout,
   Tab,
@@ -9,9 +9,11 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
+import Ionicons from "@expo/vector-icons/Ionicons";
+
 const PhoneIcon = (props) => <Icon {...props} name="phone" />;
 const EmailIcon = (props) => <Icon {...props} name="mail" />;
-const LeadDetailInfoTop = ({ item }) => {
+const LeadDetailInfoTop = ({ item, loading }) => {
   return (
     <>
       <Layout style={{ justifyContent: "center", alignItems: "center" }}>
@@ -22,22 +24,36 @@ const LeadDetailInfoTop = ({ item }) => {
             marginTop: 25,
             marginBottom: 5,
             textTransform: "capitalize",
+            textAlign: "center",
           }}
         >
-          {item.name}
+          {loading ? <ActivityIndicator size="large" /> : item.name}
         </Text>
       </Layout>
       <Layout style={styles.ContainerTop}>
         <Button
           style={styles.button}
           appearance="ghost"
-          accessoryLeft={PhoneIcon}
-        />
+          onPress={() =>
+            Linking.openURL(`http://api.whatsapp.com/send?phone=${item.phone}`)
+          }
+        >
+          <Ionicons name="logo-whatsapp" size={30} color="#4bd366" />
+        </Button>
         <Button
           style={styles.button}
           appearance="ghost"
-          accessoryLeft={EmailIcon}
-        />
+          onPress={() => Linking.openURL(`tel:${item.phone}`)}
+        >
+          <Ionicons name="phone-portrait-outline" size={30} color="#1299de" />
+        </Button>
+        <Button
+          style={styles.button}
+          appearance="ghost"
+          onPress={() => Linking.openURL(`mailto: ${item.email}`)}
+        >
+          <Ionicons name="mail-outline" size={30} color="#535de2" />
+        </Button>
       </Layout>
     </>
   );

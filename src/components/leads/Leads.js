@@ -47,7 +47,7 @@ const Leads = ({ user }) => {
 
   const StarIcon = (props) => <Icon {...props} name="user" />;
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     const createdAt = moment(item.createdAt).format("MMMM D, YYYY");
     return (
       <ListItem

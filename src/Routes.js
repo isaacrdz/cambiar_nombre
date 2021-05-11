@@ -7,16 +7,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeStackScreen from "./navigation/HomeStackScreen";
 import LeadStackScreen from "./navigation/LeadStackScreen";
 import AuthStackScreen from "./navigation/AuthStackScreen";
+import ProfileStackScreen from "./navigation/ProfileStackScreen";
 
 import useAuth from "./hooks/useAuth";
-import ProfileStackScreen from "./navigation/ProfileStackScreen";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default () => {
+const Routes = () => {
   const { isAuthenticated, loadUser } = useAuth();
 
   React.useEffect(() => {
@@ -62,3 +62,5 @@ export default () => {
     </NavigationContainer>
   );
 };
+
+export default Routes;

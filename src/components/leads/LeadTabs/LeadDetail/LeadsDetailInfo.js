@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 
 import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 
-import { Layout, Divider, Text } from "@ui-kitten/components";
+import { Layout, Divider, Text, Button, Icon } from "@ui-kitten/components";
 import NumberFormat from "react-number-format";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import moment from "moment";
 
 import useLead from "../../../../hooks/useLead";
+
+const PhoneIcon = (props) => <Icon {...props} name="phone" />;
+const EmailIcon = (props) => <Icon {...props} name="mail" />;
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearState } = useLead();
@@ -20,13 +24,6 @@ const LeadDetailInfo = ({ itemId }) => {
 
   const leadInformation = () => (
     <Layout style={styles.container}>
-      <Layout style={styles.ContainerDetail}>
-        <Text category="p1" appearance="hint">
-          Name
-        </Text>
-        <Text style={[styles.mr, styles.textCapitalize]}>{lead.name}</Text>
-      </Layout>
-      <Divider />
       <Layout style={styles.ContainerDetail}>
         <Text category="p1" appearance="hint">
           Email
@@ -48,7 +45,6 @@ const LeadDetailInfo = ({ itemId }) => {
     <ActivityIndicator size="large" />
   ) : (
     <ScrollView
-      style={{ marginBottom: 150 }}
       showsVerticalScrollIndicator={false}
       // onScrollEndDrag={() =>  getLead(itemId);}
     >
@@ -56,31 +52,18 @@ const LeadDetailInfo = ({ itemId }) => {
       {leadInformation()}
 
       {/* Lead Car Info */}
-      <Layout style={styles.container}>
+      <Layout style={[styles.container]}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Make
+            Vehicle
           </Text>
-          <Text style={[styles.mr, styles.textCapitalize]}>
-            {lead.vehicle && lead.vehicle.make.name}
+          <Text style={[styles.mr, styles.textUppercase]}>
+            {lead.vehicle && lead.vehicle.make.name}{" "}
+            {lead.vehicle && lead.vehicle.model}{" "}
+            {lead.vehicle && lead.vehicle.year}
           </Text>
         </Layout>
         <Divider />
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Model
-          </Text>
-          <Text style={[styles.mr, styles.textCapitalize]}>
-            {lead.vehicle && lead.vehicle.model}
-          </Text>
-        </Layout>
-        <Divider />
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Year
-          </Text>
-          <Text style={styles.mr}>{lead.vehicle && lead.vehicle.year}</Text>
-        </Layout>
       </Layout>
 
       {/* Bottom Info */}
@@ -101,15 +84,9 @@ const LeadDetailInfo = ({ itemId }) => {
           <Text style={styles.mr}>{createdAt}</Text>
         </Layout>
         <Divider />
-        <Layout style={styles.ContainerDetail}>
-          <Text category="p1" appearance="hint">
-            Year
-          </Text>
-          <Text style={styles.mr}>{lead.vehicle && lead.vehicle.year}</Text>
-        </Layout>
       </Layout>
 
-      <Layout>
+      <Layout style={{ marginBottom: 300 }}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
             Down Payment
@@ -121,13 +98,48 @@ const LeadDetailInfo = ({ itemId }) => {
           <Text category="p1" appearance="hint">
             Timeframe
           </Text>
-          <Text style={styles.mr}>{lead.timeFrame}</Text>
+          <Text style={styles.mr}>
+            {lead && lead.timeFrame && lead.timeFrame
+              ? moment(moment(lead.timeFrame).format("YYYY-MM-DD")).isSame(
+                  moment(0).format("YYYY-MM-DD")
+                )
+                ? "Just asking for information"
+                : moment(lead.timeFrame).diff(
+                    moment(lead.createdAt),
+                    "months"
+                  ) < 1
+                ? "1 Month or Less"
+                : moment(lead.timeFrame).diff(
+                    moment(lead.createdAt),
+                    "months"
+                  ) >= 1 &&
+                  moment(lead.timeFrame).diff(
+                    moment(lead.createdAt),
+                    "months"
+                  ) < 2
+                ? "2 Months"
+                : moment(lead.timeFrame).diff(
+                    moment(lead.createdAt),
+                    "months"
+                  ) >= 2
+                ? "3 Months or More"
+                : "? ? ?"
+              : "None"}
+          </Text>
         </Layout>
-        <Layout style={styles.ContainerDetail}>
+        <Layout style={[styles.ContainerDetail]}>
           <Text category="p1" appearance="hint">
             Temperature
           </Text>
-          <Text style={styles.mr}>{lead.rating}</Text>
+          <Text style={[styles.mr, styles.textCapitalize]}>
+            {" "}
+            <Ionicons
+              name="thermometer-outline"
+              size={18}
+              color={lead.rating === "hot" ? "#f43e55" : "#33acee"}
+            />{" "}
+            {lead.rating}
+          </Text>
         </Layout>
       </Layout>
     </ScrollView>
@@ -146,12 +158,27 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
 
+  ContainerTop: {
+    justifyContent: "center",
+    flexDirection: "row",
+
+    paddingBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+
   mr: {
     marginRight: 20,
   },
 
+  bottomMargin: {
+    marginBottom: 70,
+  },
   textCapitalize: {
     textTransform: "capitalize",
+  },
+  textUppercase: {
+    textTransform: "uppercase",
   },
 });
 

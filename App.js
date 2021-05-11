@@ -8,7 +8,6 @@ import { FeatherIconsPack } from "./feather-icons";
 import { ThemeContext } from "./theme-context";
 
 // Contexts
-
 import AuthState from "./src/contexts/auth/AuthState";
 import LeadState from "./src/contexts/lead/LeadState";
 
