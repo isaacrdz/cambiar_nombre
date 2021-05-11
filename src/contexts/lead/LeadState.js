@@ -8,6 +8,7 @@ import {
   CLEAR_STATE,
   SET_LOADING,
   SET_ERROR,
+  CLEAR_CURRENT_LEAD
 } from "../types";
 
 const LeadState = (props) => {
@@ -20,10 +21,12 @@ const LeadState = (props) => {
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
 
+  const clearCurrentLead = () => dispatch({ type: CLEAR_CURRENT_LEAD });
+
+
   const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
 
-    console.log(query)
     try {
       let leads;
       switch(type){
@@ -87,6 +90,7 @@ const LeadState = (props) => {
         setLoading,
         getLeads,
         getLead,
+        clearCurrentLead
       }}
     >
       {props.children}

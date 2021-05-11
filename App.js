@@ -10,6 +10,7 @@ import { ThemeContext } from "./theme-context";
 // Contexts
 import AuthState from "./src/contexts/auth/AuthState";
 import LeadState from "./src/contexts/lead/LeadState";
+import ActivityState from "./src/contexts/activity/ActivityState";
 
 const App = () => {
   const [theme, setTheme] = React.useState("light");
@@ -25,7 +26,9 @@ const App = () => {
       <ApplicationProvider {...eva} theme={eva[theme]}>
         <AuthState>
           <LeadState>
+            <ActivityState>
             <Routes />
+            </ActivityState>
           </LeadState>
         </AuthState>
       </ApplicationProvider>

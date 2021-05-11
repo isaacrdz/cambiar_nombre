@@ -14,10 +14,12 @@ const PhoneIcon = (props) => <Icon {...props} name="phone" />;
 const EmailIcon = (props) => <Icon {...props} name="mail" />;
 
 const LeadDetailInfo = ({ itemId }) => {
-  const { getLead, lead, loading, clearState } = useLead();
+  const { getLead, lead, loading, clearCurrentLead } = useLead();
 
   useEffect(() => {
     getLead(itemId);
+
+    return () => clearCurrentLead()
   }, []);
 
   const createdAt = moment(lead.createdAt).format("MMMM D, YYYY");
