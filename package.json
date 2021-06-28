@@ -22,6 +22,7 @@
     "change-case": "^4.1.2",
     "ex-react-native-i18n": "0.0.6",
     "expo": "~40.0.0",
+    "expo-av": "^9.1.2",
     "expo-status-bar": "~1.0.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
@@ -40,6 +41,8 @@
     "react-native-svg": "12.1.0",
     "react-native-swiper": "^1.6.0",
     "react-native-tab-view": "^2.15.2",
+    "react-native-toast-message": "^1.4.9",
+    "react-native-track-player": "^1.2.7",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-number-format": "^4.5.5"

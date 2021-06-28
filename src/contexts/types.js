@@ -3,6 +3,13 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
+export const GET_COMMENTS_BY_LEAD = "GET_COMMENTS_BY_LEAD";
+export const CREATE_COMMENT = "CREATE_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";
+export const GET_COMMENTS_BY_USER = "GET_COMMENTS_BY_USER";
+export const GET_COMMENTS_BY_STORE = "GET_COMMENTS_BY_STORE";
+export const GET_COMMENT = "GET_COMMENT";
+
 // Utils
 export const CLEAR_STATE = "CLEAR_STATE";
 export const SET_LOADING = "SET_LOADING";
@@ -12,6 +19,7 @@ export const SET_ERROR = "SET_ERROR";
 export const GET_LEADS = "GET_LEADS";
 export const GET_LEAD = "GET_LEAD";
 export const CLEAR_CURRENT_LEAD = "CLEAR_CURRENT_LEAD";
+export const UPDATE_LEAD = "UPDATE_LEAD";
 
 // Activity
 // Activities

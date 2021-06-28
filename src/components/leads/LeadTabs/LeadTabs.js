@@ -13,6 +13,8 @@ import LeadsDetailInfo from "./LeadDetail/LeadsDetailInfo";
 import LeadDetailInfoTop from "./LeadDetail/LeadDetailInfoTop";
 import LeadDetailTask from "./LeadDetail/LeadDetailTask";
 import useLead from "../../../hooks/useLead";
+import LeadDetailHistory from "./LeadDetail/history/LeadDetailHistory";
+import Records from "./LeadDetail/record/Records";
 
 const LeadTabs = ({ route }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -39,15 +41,11 @@ const LeadTabs = ({ route }) => {
           <LeadDetailTask tasks={lead.comments} />
         </Tab>
         <Tab title="HISTORY" style={{ paddingVertical: 10 }}>
-          <Layout style={styles.tabContainer}>
-            <Text category="h5">TRANSACTIONS</Text>
-          </Layout>
+          <LeadDetailHistory activities={lead.activities} />
         </Tab>
-        <Tab title="RECORD" style={{ paddingVertical: 10 }}>
-          <Layout style={styles.tabContainer}>
-            <Text category="h5">RECORD</Text>
-          </Layout>
-        </Tab>
+        {/* <Tab title="RECORD" style={{ paddingVertical: 10 }}>
+          <Records />
+        </Tab> */}
       </TabView>
     </>
   );
