@@ -23,6 +23,7 @@
     "ex-react-native-i18n": "0.0.6",
     "expo": "~40.0.0",
     "expo-status-bar": "~1.0.3",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "react": "16.13.1",

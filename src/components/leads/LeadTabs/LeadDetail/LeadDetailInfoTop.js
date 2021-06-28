@@ -44,7 +44,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({action: 'wsp', description: `${CapitalizeNames(user.name)} has sent a whatsapp from mobile App`, lead: item._id})
             createActivity({action: 'wsp', description: `${CapitalizeNames(user.name)} has sent a whatsapp from mobile App`, lead: item._id});
               Linking.openURL(`http://api.whatsapp.com/send?phone=${item.phone}`);
             }
@@ -56,7 +55,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({action: 'call', description: `${CapitalizeNames(user.name)} has made a phone call to ${CapitalizeNames(item.name)} from mobile App`, lead: item._id})
             createActivity({action: 'call', description: `${CapitalizeNames(user.name)} has made a phone call to ${CapitalizeNames(item.name)} from mobile App`, lead: item._id});
               Linking.openURL(`tel:${item.phone}`)
 
@@ -69,7 +67,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({action: 'mailing', description: `${CapitalizeNames(user.name)} has sent an email from mobile App`, lead: item._id})
             createActivity({action: 'mailing', description: `${CapitalizeNames(user.name)} has sent an email from mobile App`, lead: item._id});
               Linking.openURL(`mailto: ${item.email}`)
 

@@ -27,7 +27,10 @@ const LeadsList = ({
   }, [currentSearch, pageCurrent, search]);
 
   useEffect(() => {
-    return () => clearState();
+    return () => {
+      clearState()
+      setpageCurrent(1)
+    }
   }, []);
 
   const renderFooter = () => {
@@ -61,11 +64,12 @@ const LeadsList = ({
           renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={Divider}
-          ListFooterComponent={renderFooter}
+          // ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          onMomentumScrollBegin={() =>
+          onEndReachedThreshold={5}
+          onMomentumScrollBegin={() =>{
             setOnEndReachedCalledDuringMomentum(false)
+          }
           }
         />
       </Layout>
@@ -76,7 +80,7 @@ const LeadsList = ({
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
-    marginBottom: "20%",
+    marginBottom: "50%",
     backgroundColor: "#f5fcff",
   },
 
