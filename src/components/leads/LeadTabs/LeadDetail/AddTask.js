@@ -130,7 +130,8 @@ const AddTask = ({ navigation }) => {
 
         await createComment(BodyComment, lead._id)
         await updateLead(bodyLead, lead._id);
-        getLead(lead._id)
+        await getLead(lead._id)
+        navigation.navigate("LeadTabs")
       }
 
     }
