@@ -132,9 +132,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#f5fcff",
   },
-
   itemContainer: {},
-
   itemRow: {
     borderBottomColor: "#ccc",
     marginBottom: 10,
@@ -145,7 +143,6 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
   },
-
   itemText: {
     fontSize: 16,
     padding: 5,
@@ -154,22 +151,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: "center",
   },
-
   ItemText: {
     textTransform: "capitalize",
   },
-
   ItemTextName: {
     textTransform: "capitalize",
     marginTop: 5,
     marginBottom: 5,
   },
-
   itemLayout: {
     paddingLeft: 20,
     paddingVertical: 10,
   },
-
   controlContainer: {
     borderRadius: 4,
     margin: 4,

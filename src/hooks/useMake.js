@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import MakeContext from 'contexts/make/makeContext';
+import MakeContext from '../contexts/make/makeContext';
 
 const useMake = () => useContext(MakeContext);
 
