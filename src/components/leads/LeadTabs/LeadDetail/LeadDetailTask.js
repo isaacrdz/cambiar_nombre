@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, InteractionManager } from "react-native";
 import {
   Button,
   Card,
@@ -9,107 +9,111 @@ import {
   Text,
   Divider,
   Icon,
+  ListItem,
+  List,
 } from "@ui-kitten/components";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Header = ({ user, createdAt, action }) => {
-  return (
-    <Layout
-      style={{
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-      }}
-    >
+const LeadDetailTask = ({ tasks }) => {
+  const renderItem = ({ item, index }) => {
+    const createdAt = moment(item.createdAt).format("DD MMMM YYYY - hh:mm a");
+    const nextTask = moment(item.reschedule).format("DD MMMM YYYY - hh:mm a");
+    return (
       <Layout
         style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          marginBottom: 10,
+          borderWidth: 1,
+          borderColor: "#d8d8d8",
+          margin: 5,
+          borderRadius: 10,
         }}
       >
-        {action &&
-          action.map((act, i) => (
-            <Ionicons
-              name={
-                act === "whatsapp"
-                  ? "logo-whatsapp"
-                  : act === "recall"
-                  ? "call-outline"
-                  : "document-outline"
-              }
-              size={25}
-              color={
-                act === "whatsapp"
-                  ? "#4bd366"
-                  : act === "recall"
-                  ? "#1299de"
-                  : "#f43e55"
-              }
-              key={i}
-              style={{ marginLeft: 10 }}
-            />
-          ))}
-      </Layout>
-      <Text
-        style={{
-          marginBottom: 5,
-          fontSize: 15,
-          fontWeight: "bold",
-          textTransform: "capitalize",
-        }}
-      >
-        {user.name}
-      </Text>
-      <Text appearance="hint">
-        <Icon
-          style={{ width: 15, height: 15, color: "#a5a5a5" }}
-          name="clock"
-        />{" "}
-        {moment(createdAt).format(`DD MMMM YYYY - hh:mm a`)}
-      </Text>
-    </Layout>
-  );
-};
+        <Layout
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 10,
+          }}
+        >
+          <Layout>
+            <Text
+              category="c1"
+              appearance="hint"
+              style={{ textTransform: "capitalize", marginBottom: 2 }}
+            >
+              {item.user.name}
+            </Text>
 
-const iconClock = () => (
-  <Icon
-    style={{
-      width: 15,
-      height: 15,
+            <Text category="c1" appearance="hint">
+              <Ionicons name="time-outline" size={13} />
+              {createdAt}
+            </Text>
+          </Layout>
 
-      marginRight: 5,
-      marginLeft: 5,
-      position: "relative",
-      top: 2,
-    }}
-    name="clock"
-  />
-);
-
-const Footer = ({ reschedule }) => (
-  <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-    <Text>
-      Siguiente Tarea: {iconClock()}
-      {moment(reschedule).format(`DD MMMM YYYY - hh:mm a`)}
-    </Text>
-  </View>
-);
-
-const LeadDetailTask = ({ tasks }) => {
-  return (
-    <ScrollView>
-      {tasks &&
-        tasks.map((task) => (
-          <Card
-            style={styles.card}
-            header={() => Header(task)}
-            footer={() => Footer(task)}
-            key={task._id}
+          <Layout>
+            <Layout
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {item &&
+                item.action.map((act, i) => (
+                  <Ionicons
+                    name={
+                      act === "whatsapp"
+                        ? "logo-whatsapp"
+                        : act === "recall"
+                        ? "call-outline"
+                        : "document-outline"
+                    }
+                    size={20}
+                    color={
+                      act === "whatsapp"
+                        ? "#4bd366"
+                        : act === "recall"
+                        ? "#1299de"
+                        : "#f43e55"
+                    }
+                    key={i}
+                    style={{ marginLeft: 10 }}
+                  />
+                ))}
+            </Layout>
+          </Layout>
+        </Layout>
+        <Divider style={{ marginBottom: 10 }} />
+        <Layout style={{ marginBottom: 5 }}>
+          <Text
+            category="c1"
+            appearance="hint"
+            style={{ textTransform: "lowercase" }}
           >
-            <Text>{task.comment}</Text>
-          </Card>
-        ))}
-    </ScrollView>
+            {item.comment}
+          </Text>
+        </Layout>
+
+        <Layout>
+          <Text category="c1" appearance="hint">
+            Siguiente tarea: <Ionicons name="time-outline" size={13} />{" "}
+            {nextTask}
+          </Text>
+        </Layout>
+      </Layout>
+    );
+  };
+
+  return (
+    <List
+      style={styles.container}
+      data={tasks && tasks}
+      renderItem={renderItem}
+    />
   );
 };
 

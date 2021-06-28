@@ -10,19 +10,16 @@ import moment from "moment";
 
 import useLead from "../../../../hooks/useLead";
 
-const PhoneIcon = (props) => <Icon {...props} name="phone" />;
-const EmailIcon = (props) => <Icon {...props} name="mail" />;
-
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
 
   useEffect(() => {
     getLead(itemId);
 
-    return () => clearCurrentLead()
+    return () => clearCurrentLead();
   }, []);
 
-  const createdAt = moment(lead.createdAt).format("MMMM D, YYYY");
+  const createdAt = moment(lead.createdAt).format("MMMM D, YYYY ");
 
   const leadInformation = () => (
     <Layout style={styles.container}>
