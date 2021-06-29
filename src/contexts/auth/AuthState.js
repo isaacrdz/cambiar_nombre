@@ -35,6 +35,53 @@ const AuthState = (async = (props) => {
 
   // const clearState = () => dispatch({ type: CLEAR_STATE });
 
+  //Update profile
+  const updateProfile = async (values, type) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    setLoading();
+
+    let res;
+    try {
+      if (type === 'photo') {
+        const uploadConfig = await api.post(
+          '/uploads/image',
+          { type: values.type, fileName: values.name },
+          config
+        );
+
+
+        await api.put(uploadConfig.data.url, values, {
+          headers: {
+            headers: { 'Content-Type': values ? values.type : null }
+          }
+        });
+
+        const dataKey = uploadConfig.data.key;
+
+        res = await api.put(`/auth/updatedetails`, { image: dataKey }, config);
+      } else {
+        res = await api.put('/auth/updatedetails', values, config);
+      }
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data
+      });
+
+    } catch (err) {
+      dispatch({
+        type: SET_ERROR,
+        payload: err.response.data
+      });
+    }
+  };
+
+
   //Set Current User
   const loadUser = async () => {
     const config = {
@@ -97,6 +144,7 @@ const AuthState = (async = (props) => {
         login,
         loadUser,
         logout,
+        updateProfile
       }}
     >
       {props.children}

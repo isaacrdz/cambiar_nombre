@@ -95,7 +95,7 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {user.store.make.name} {user.store.name}
+          {user && user.store && user.store.make.name} {user && user.store && user.store.name}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
