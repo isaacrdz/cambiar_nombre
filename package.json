@@ -23,6 +23,8 @@
     "ex-react-native-i18n": "0.0.6",
     "expo": "~40.0.0",
     "expo-av": "^9.1.2",
+    "expo-constants": "~9.3.3",
+    "expo-notifications": "~0.8.2",
     "expo-status-bar": "~1.0.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
