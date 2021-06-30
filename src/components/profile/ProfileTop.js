@@ -34,7 +34,6 @@ const ProfileTop = ({ navigation }) => {
         style={{
           flexDirection: "row",
           padding: 40,
-
           alignItems: "center",
         }}
       >
