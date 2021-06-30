@@ -1,8 +1,13 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Dealer Pro X",
+    "slug": "Dealer-Pro-X",
     "version": "1.0.0",
+
+    "notification": {
+      "icon": "./assets/logo.png"
+      
+    },
     
     "orientation": "portrait",
     "icon": "./assets/logo.png",
