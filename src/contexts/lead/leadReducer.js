@@ -18,6 +18,7 @@ export default (state, action) => {
       error: null
     }
     case GET_LEADS:
+      console.log('ya llegaron los leads')
       return {
         ...state,
         leads: [...state.leads, ...action.payload],

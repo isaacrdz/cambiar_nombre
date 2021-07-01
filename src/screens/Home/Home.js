@@ -38,7 +38,7 @@ const Home = () => {
       </Layout>
       {/* <Divider /> */}
       <Layout style={styles.subContainerText}>
-        <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${CapitalizeNames(user.name)}`}</Text>
+        <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
         <Text category="p1" appearance="hint" >{`You have a total of ${total} leads accumulated`}</Text>
       </Layout>
       <Layout style={styles.subContainerCards}>

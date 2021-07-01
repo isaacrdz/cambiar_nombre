@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 import { List, Layout, Divider } from "@ui-kitten/components";
+import { useFocusEffect } from '@react-navigation/native';
 
 import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
@@ -17,21 +18,22 @@ const LeadsList = ({
   search,
 }) => {
   const { getLeads, leads, loading, clearState } = useLead();
-  const [
-    onEndReachedCalledDuringMomentum,
-    setOnEndReachedCalledDuringMomentum,
-  ] = useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    console.log('esta buscando')
+
     getLeads(pageCurrent, user._id, currentSearch, query);
   }, [currentSearch, pageCurrent, search]);
 
-  useEffect(() => {
-    return () => {
-      clearState()
-      setpageCurrent(1)
-    }
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        console.log('saliendo del componente')
+        clearState()
+        setpageCurrent(1)
+      }
+    }, [])
+  );
 
   const renderFooter = () => {
     return loading ? (
@@ -42,9 +44,9 @@ const LeadsList = ({
   };
 
   const handleLoadMore = () => {
-    if (!onEndReachedCalledDuringMomentum) {
+    console.log('buscando: ', loading)
+    if(!loading){
       setpageCurrent(pageCurrent + 1);
-      setOnEndReachedCalledDuringMomentum(true);
     }
   };
 
@@ -63,14 +65,15 @@ const LeadsList = ({
           data={leads}
           renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
           keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={Divider}
+          ItemSeparatorComponent={Divider}    
+          initialNumToRender={10}
           // ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={5}
-          onMomentumScrollBegin={() =>{
-            setOnEndReachedCalledDuringMomentum(false)
-          }
-          }
+          onEndReachedThreshold={0.5}
+          // onMomentumScrollBegin={() =>{
+          //   setOnEndReachedCalledDuringMomentum(false)
+          // }
+          // }
         />
       </Layout>
     </Layout>
