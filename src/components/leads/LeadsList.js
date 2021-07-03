@@ -28,16 +28,16 @@ const LeadsList = ({
   );
 
   React.useEffect(() => {
-    console.log('esta buscando', pageCurrent)
-    if(pageCurrent !== 1){
+    if(pageCurrent !== 1 || currentSearch || search){
       getLeads(pageCurrent, user._id, currentSearch, query);
     }
   }, [currentSearch, pageCurrent, search]);
 
+  
+
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        console.log('saliendo del componente')
         clearState()
         setpageCurrent(1)
       }

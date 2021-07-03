@@ -45,8 +45,10 @@ const LeadState = (props) => {
   const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
 
+    
     try {
       let leads;
+      console.log(pageCurrent, userId, {type, value}, query)
       switch(type){
         case 'status':
           leads = await api.get(
