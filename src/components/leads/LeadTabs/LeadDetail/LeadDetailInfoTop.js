@@ -111,6 +111,29 @@ const LeadDetailInfoTop = ({ item, loading }) => {
         >
           <Ionicons name="mail-outline" size={30} color="#535de2" />
         </Button>
+        <Button
+          style={styles.button}
+          appearance="ghost"
+          onPress={() => {
+            console.log({
+              action: "mailing",
+              description: `${CapitalizeNames(
+                user.name
+              )} has sent an email from mobile App`,
+              lead: item._id,
+            });
+            // createActivity({
+            //   action: "mailing",
+            //   description: `${CapitalizeNames(
+            //     user.name
+            //   )} has sent an email from mobile App`,
+            //   lead: item._id,
+            // });
+            Linking.openURL(`mailto: ${item.email}`);
+          }}
+        >
+          <Ionicons name="calendar-sharp" size={30} color="#535de2" />
+        </Button>
       </Layout>
     </>
   );

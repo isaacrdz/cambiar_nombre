@@ -17,42 +17,42 @@ const LeadMainStackScreen = ({ navigation }) => {
       <LeadMainStack.Screen
         name="Leads"
         component={Lead}
-        options={{
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
-              <Icon
-                style={{
-                  width: 25,
-                  height: 25,
-                  marginRight: 20,
-                  color: "#5764b8",
-                }}
-                fill="#5e72e4"
-                name="settings"
-              />
-            </TouchableOpacity>
-          ),
-        }}
+        // options={{
+        //   headerRight: () => (
+        //     <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+        //       <Icon
+        //         style={{
+        //           width: 25,
+        //           height: 25,
+        //           marginRight: 20,
+        //           color: "#5764b8",
+        //         }}
+        //         fill="#5e72e4"
+        //         name="settings"
+        //       />
+        //     </TouchableOpacity>
+        //   ),
+        // }}
       />
       <LeadMainStack.Screen
         name="LeadDetail"
         component={LeadsDetail}
-        options={{
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-              <Icon
-                style={{
-                  width: 25,
-                  height: 25,
-                  marginRight: 20,
-                  color: "#5764b8",
-                }}
-                fill="#5e72e4"
-                name="settings"
-              />
-            </TouchableOpacity>
-          ),
-        }}
+        // options={{
+        //   headerRight: () => (
+        //     <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+        //       <Icon
+        //         style={{
+        //           width: 25,
+        //           height: 25,
+        //           marginRight: 20,
+        //           color: "#5764b8",
+        //         }}
+        //         fill="#5e72e4"
+        //         name="settings"
+        //       />
+        //     </TouchableOpacity>
+        //   ),
+        // }}
       />
 
       <LeadMainStack.Screen

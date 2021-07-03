@@ -12,13 +12,12 @@ import AuthStackScreen from "./navigation/AuthStackScreen";
 import ProfileStackScreen from "./navigation/ProfileStackScreen";
 import useAuth from "./hooks/useAuth";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AppointmentStackScreen from "./navigation/AppointmentStackScreen";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
-
-const Routes = ({token}) => {
+const Routes = ({ token }) => {
   const { isAuthenticated, loadUser, user, updateProfile } = useAuth();
   // const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -26,9 +25,12 @@ const Routes = ({token}) => {
   const responseListener = useRef();
 
   React.useEffect(() => {
-    if(user && user._id){
-      registerForPushNotificationsAsync().then((token) =>
-        {updateProfile({pushNotificationToken: token}); console.log('token', token)}
+    if (user && user._id) {
+      registerForPushNotificationsAsync().then(
+        (token) => {
+          updateProfile({ pushNotificationToken: token });
+          // console.log("token", token);
+        }
         // setExpoPushToken(token)}
       );
 
@@ -40,8 +42,7 @@ const Routes = ({token}) => {
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current =
-        Notifications.addNotificationResponseReceivedListener((response) => {
-        });
+        Notifications.addNotificationResponseReceivedListener((response) => {});
 
       return () => {
         Notifications.removeNotificationSubscription(
@@ -68,6 +69,8 @@ const Routes = ({token}) => {
                 iconName = focused ? "home-sharp" : "home-outline";
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";
+              } else if (route.name === "Appointments") {
+                iconName = focused ? "calendar-sharp" : "calendar-outline";
               } else if (route.name === "Profile") {
                 iconName = focused
                   ? "person-circle-sharp"
@@ -85,6 +88,7 @@ const Routes = ({token}) => {
         >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
+          <Tabs.Screen name="Appointments" component={AppointmentStackScreen} />
           <Tabs.Screen name="Profile" component={ProfileStackScreen} />
         </Tabs.Navigator>
       ) : (
