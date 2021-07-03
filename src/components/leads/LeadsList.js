@@ -19,10 +19,19 @@ const LeadsList = ({
 }) => {
   const { getLeads, leads, loading, clearState } = useLead();
 
-  React.useEffect(() => {
-    console.log('esta buscando')
+  useFocusEffect(
+    React.useCallback(() => {
+      if(pageCurrent === 1){
+        getLeads(pageCurrent, user._id, currentSearch, query);
+      }
+    }, [])
+  );
 
-    getLeads(pageCurrent, user._id, currentSearch, query);
+  React.useEffect(() => {
+    console.log('esta buscando', pageCurrent)
+    if(pageCurrent !== 1){
+      getLeads(pageCurrent, user._id, currentSearch, query);
+    }
   }, [currentSearch, pageCurrent, search]);
 
   useFocusEffect(

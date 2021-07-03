@@ -23,6 +23,12 @@ export default (state, action) => {
         ...state,
         loading: true,
       };
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        error: null,
+        loading: false
+      }
     case USER_LOADED:
       return {
         ...state,
@@ -41,7 +47,13 @@ export default (state, action) => {
         loading: false,
         error: null,
       };
-
+    case SET_ERROR:
+      console.log(action.payload, 'pay')
+      return {
+        ...state,
+        error: action.payload
+      }
+    case LOGIN_FAIL:
     case LOGOUT:
       return {
         ...state,
@@ -49,7 +61,8 @@ export default (state, action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error: null,
+        error: action.payload
+
       };
 
     default:

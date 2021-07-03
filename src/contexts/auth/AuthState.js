@@ -34,6 +34,7 @@ const AuthState = (async = (props) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   // const clearState = () => dispatch({ type: CLEAR_STATE });
+  const clearError = () => dispatch({ type: SET_ERROR })
 
   //Update profile
   const updateProfile = async (values, type) => {
@@ -76,7 +77,7 @@ const AuthState = (async = (props) => {
     } catch (err) {
       dispatch({
         type: SET_ERROR,
-        payload: err.response.data
+        payload: err.response.data.error
       });
     }
   };
@@ -98,7 +99,7 @@ const AuthState = (async = (props) => {
         payload: res.data.data,
       });
     } catch (err) {
-      dispatch({ type: LOGIN_FAIL, payload: err.response.data });
+      dispatch({ type: LOGIN_FAIL, payload: err.response.data.error });
     }
   };
 
@@ -120,9 +121,11 @@ const AuthState = (async = (props) => {
 
       loadUser();
     } catch (err) {
+
+      console.log(err.response.data.error)
       dispatch({
-        type: LOGIN_FAIL,
-        payload: err.response.data,
+        type: SET_ERROR,
+        payload: err.response.data.error
       });
     }
   };
@@ -141,6 +144,7 @@ const AuthState = (async = (props) => {
         isAuthenticated: state.isAuthenticated,
         user: state.user,
         error: state.error,
+        clearError,
         login,
         loadUser,
         logout,

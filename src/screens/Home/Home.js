@@ -28,6 +28,7 @@ const Home = () => {
   }
 
   React.useEffect(() => {
+    if(user && user._id)
     getTotalsDashboard(`${date}&agent=${user._id}`)
   },[date])
 
