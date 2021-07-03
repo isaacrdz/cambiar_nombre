@@ -122,7 +122,6 @@ const AuthState = (async = (props) => {
       loadUser();
     } catch (err) {
 
-      console.log(err.response.data.error)
       dispatch({
         type: SET_ERROR,
         payload: err.response.data.error

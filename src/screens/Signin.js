@@ -13,7 +13,6 @@ const Signin = () => {
 
   useEffect(()=>{
     if(error){
-      console.log('error', error)
       Toast.show({
         text1: error,
         type: "error",

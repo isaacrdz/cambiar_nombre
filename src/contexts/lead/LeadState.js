@@ -19,6 +19,7 @@ const LeadState = (props) => {
     lead: {},
     loading: false,
     error: null,
+    leadsSize: -1,
   };
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
@@ -45,10 +46,9 @@ const LeadState = (props) => {
   const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
 
-    
+    console.log(type)
     try {
       let leads;
-      console.log(pageCurrent, userId, {type, value}, query)
       switch(type){
         case 'status':
           leads = await api.get(
@@ -103,6 +103,7 @@ const LeadState = (props) => {
     <LeadContext.Provider
       value={{
         leads: state.leads,
+        leadsSize: state.leadsSize,
         lead: state.lead,
         loading: state.loading,
         error: state.error,

@@ -48,7 +48,6 @@ export default (state, action) => {
         error: null,
       };
     case SET_ERROR:
-      console.log(action.payload, 'pay')
       return {
         ...state,
         error: action.payload

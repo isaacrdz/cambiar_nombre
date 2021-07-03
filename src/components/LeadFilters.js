@@ -61,7 +61,6 @@ const LeadFilters = ({ setPage, setCurrent, current }) => {
               <Layout style={item.value === current.value ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
                 <Text style={styles.ItemText} style={{ color: item.value === current.value ? 'white' : "#5764b8" }}>
                   {item.title}
-                  {console.log('logoooooooo', item, current)}
                 </Text>
               </Layout>
             }

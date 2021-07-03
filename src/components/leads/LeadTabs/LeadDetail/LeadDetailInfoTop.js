@@ -65,15 +65,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({
-              action: "call",
-              description: `${CapitalizeNames(
-                user.name
-              )} has made a phone call to ${CapitalizeNames(
-                item.name
-              )} from mobile App`,
-              lead: item._id,
-            });
+           
             createActivity({
               action: "call",
               description: `${CapitalizeNames(
@@ -92,13 +84,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({
-              action: "mailing",
-              description: `${CapitalizeNames(
-                user.name
-              )} has sent an email from mobile App`,
-              lead: item._id,
-            });
+          
             createActivity({
               action: "mailing",
               description: `${CapitalizeNames(
@@ -115,13 +101,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            console.log({
-              action: "mailing",
-              description: `${CapitalizeNames(
-                user.name
-              )} has sent an email from mobile App`,
-              lead: item._id,
-            });
+           
             // createActivity({
             //   action: "mailing",
             //   description: `${CapitalizeNames(
