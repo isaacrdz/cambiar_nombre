@@ -47,7 +47,6 @@ const LeadFilters = ({ setPage, setCurrent, current }) => {
 
   const { clearState } = useLead();
 
-
   return (
     <Layout style={{ marginTop: 20 }} level="4">
       <List
@@ -59,8 +58,8 @@ const LeadFilters = ({ setPage, setCurrent, current }) => {
         renderItem={({ item }) => (
           <ListItem
             title={ evaProps => 
-              <Layout style={item === current ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
-                <Text style={styles.ItemText} style={{ color: item === current ? 'white' : "#5764b8" }}>
+              <Layout style={item.value === current.value ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
+                <Text style={styles.ItemText} style={{ color: item.value === current.value ? 'white' : "#5764b8" }}>
                   {item.title}
                 </Text>
               </Layout>

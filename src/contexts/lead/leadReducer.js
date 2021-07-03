@@ -18,9 +18,9 @@ export default (state, action) => {
       error: null
     }
     case GET_LEADS:
-      console.log('ya llegaron los leads')
       return {
         ...state,
+        leadsSize: action.payload.length,
         leads: [...state.leads, ...action.payload],
         loading: false,
         error: null,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 import { List, Layout, Divider } from "@ui-kitten/components";
 import { useFocusEffect } from '@react-navigation/native';
+import { Spinner } from '@ui-kitten/components';
 
 import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
@@ -17,27 +18,39 @@ const LeadsList = ({
   setpageCurrent,
   search,
 }) => {
-  const { getLeads, leads, loading, clearState } = useLead();
+  const { getLeads, leads, loading, clearState, leadsSize } = useLead();
+
+  const [size, setSize] = useState(0)
+
+  React.useEffect(()=>{
+    setSize(leadsSize)
+  },[leadsSize])
 
   useFocusEffect(
     React.useCallback(() => {
       if(pageCurrent === 1){
-        getLeads(pageCurrent, user._id, currentSearch, query);
+        if(leadsSize !== 0){
+          clearState()
+          getLeads(pageCurrent, user._id, currentSearch, query);
+        }
       }
     }, [])
   );
 
   React.useEffect(() => {
-    console.log('esta buscando', pageCurrent)
-    if(pageCurrent !== 1){
-      getLeads(pageCurrent, user._id, currentSearch, query);
+    if(pageCurrent !== 1 || currentSearch || search){
+      if(leadsSize !== 0){
+        getLeads(pageCurrent, user._id, currentSearch, query);
+      }
     }
   }, [currentSearch, pageCurrent, search]);
+
+  
 
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        console.log('saliendo del componente')
+        console.log('aca debe de borrar')
         clearState()
         setpageCurrent(1)
       }
@@ -47,13 +60,12 @@ const LeadsList = ({
   const renderFooter = () => {
     return loading ? (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" />
+          <Spinner size='giant'/>
       </View>
     ) : null;
   };
 
   const handleLoadMore = () => {
-    console.log('buscando: ', loading)
     if(!loading){
       setpageCurrent(pageCurrent + 1);
     }
@@ -76,7 +88,7 @@ const LeadsList = ({
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={Divider}    
           initialNumToRender={10}
-          // ListFooterComponent={renderFooter}
+          ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           // onMomentumScrollBegin={() =>{
@@ -114,7 +126,8 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loader: {
-    marginTop: 10,
+    marginTop: 20,
+    marginBottom: 20,
     alignItems: "center",
   },
 

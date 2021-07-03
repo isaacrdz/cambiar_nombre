@@ -41,7 +41,6 @@ const CommentState = props => {
 
   //Create Comment
   const createComment = async (comment, leadId) => {
-    console.log('id', leadId)
     const config = {
       headers: {
         "Content-Type": "application/json",
