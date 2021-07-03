@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Layout, Text, Input, Button } from "@ui-kitten/components";
+import Toast from 'react-native-toast-message';
 
 import useAuth from "../hooks/useAuth";
 
@@ -8,8 +9,21 @@ const Signin = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { login } = useAuth();
+  const { login, error, clearError } = useAuth();
 
+  useEffect(()=>{
+    if(error){
+      console.log('error', error)
+      Toast.show({
+        text1: error,
+        type: "error",
+        position: "bottom"
+      });
+
+      setTimeout(() => clearError(), 2000);
+
+    }
+  },[error])
   const onHandleSubmit = () => {
     const data = {
       email,
