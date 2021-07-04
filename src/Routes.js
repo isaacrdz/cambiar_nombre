@@ -70,7 +70,7 @@ const Routes = ({ token }) => {
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";
               } else if (route.name === "Appointments") {
-                iconName = focused ? "calendar-sharp" : "calendar-outline";
+                iconName = focused ? "time-sharp" : "time-outline";
               } else if (route.name === "Profile") {
                 iconName = focused
                   ? "person-circle-sharp"

@@ -65,7 +65,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-           
             createActivity({
               action: "call",
               description: `${CapitalizeNames(
@@ -84,7 +83,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-          
             createActivity({
               action: "mailing",
               description: `${CapitalizeNames(
@@ -101,7 +99,6 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-           
             // createActivity({
             //   action: "mailing",
             //   description: `${CapitalizeNames(
