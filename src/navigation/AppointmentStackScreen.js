@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native";
-import { Icon } from "@ui-kitten/components";
+
 import Appointment from "../screens/Appointment/Appointment";
 
 const AppointmentMainStack = createStackNavigator();
@@ -10,7 +9,10 @@ const AppointmentStack = createStackNavigator();
 const AppointmentMainStackScreen = ({ navigation }) => {
   return (
     <AppointmentMainStack.Navigator>
-      <AppointmentMainStack.Screen name="Appointents" component={Appointment} />
+      <AppointmentMainStack.Screen
+        name="Appointments"
+        component={Appointment}
+      />
     </AppointmentMainStack.Navigator>
   );
 };

@@ -1,8 +1,8 @@
 import React from "react";
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
 import AppointmentItem from "../../components/appointment/AppointmentItem";
 import moment from "moment";
+import EmpyDate from "../../components/appointment/EmptyDate";
 
 const Appointment = () => {
   const [items, setItems] = React.useState({});
@@ -17,7 +17,7 @@ const Appointment = () => {
       const { data } = await response.json();
 
       const mappedData = data.map((appointment) => {
-        const date = appointment.createdAt;
+        const date = appointment.startDate;
 
         return {
           ...appointment,
@@ -39,11 +39,7 @@ const Appointment = () => {
   }, []);
 
   const renderEmptyDate = () => {
-    return (
-      <View>
-        <Text>This is empty date!</Text>
-      </View>
-    );
+    return <EmpyDate />;
   };
 
   const renderItem = (item) => {
@@ -58,7 +54,7 @@ const Appointment = () => {
     const { data } = await response.json();
 
     const mappedData = data.map((appointment) => {
-      const date = appointment.createdAt;
+      const date = appointment.startDate;
 
       return {
         ...appointment,
@@ -68,9 +64,7 @@ const Appointment = () => {
 
     const reduced = mappedData.reduce((acc, currentItem) => {
       const { date, ...app } = currentItem;
-
       acc[date] = [app];
-
       return acc;
     }, {});
 
@@ -88,8 +82,11 @@ const Appointment = () => {
       renderItem={renderItem}
       renderEmptyData={renderEmptyDate}
       onRefresh={() => handleRefresh()}
-      // Set this true while waiting for new data from a refresh
       refreshing={refreshing}
+      // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+      minDate={"2012-05-10"}
+      // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+      maxDate={"2025-05-30"}
     />
   );
 };
