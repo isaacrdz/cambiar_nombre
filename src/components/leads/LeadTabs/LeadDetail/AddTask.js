@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import {
   Layout,
@@ -61,6 +62,21 @@ const AddTask = ({ navigation }) => {
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
   const [text, setText] = useState("");
+
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+    console.log(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
 
   const now = new Date();
   const yesterday = new Date(
@@ -203,9 +219,9 @@ const AddTask = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <HeaderTitle title="Add Task" />
-      <ScrollView> 
+      <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Layout style={{ marginBottom: 30 }} level='1'>
+          <Layout style={{ marginBottom: 30 }} level="1">
             <Text
               style={styles.text}
               category="s1"
@@ -218,7 +234,7 @@ const AddTask = ({ navigation }) => {
                 flexDirection: "row",
                 flexWrap: "wrap",
               }}
-              level='1'
+              level="1"
             >
               <Input
                 multiline={true}
@@ -232,7 +248,7 @@ const AddTask = ({ navigation }) => {
               />
             </Layout>
           </Layout>
-          <Layout style={{ marginBottom: 30 }} level='1'>
+          <Layout style={{ marginBottom: 30 }} level="1">
             <Text
               style={styles.text}
               category="s1"
@@ -246,7 +262,7 @@ const AddTask = ({ navigation }) => {
                 flexWrap: "wrap",
                 justifyContent: "space-around",
               }}
-              level='1'
+              level="1"
             >
               {actions.map((item) => (
                 <CheckBox
@@ -311,13 +327,13 @@ const AddTask = ({ navigation }) => {
                 minHeight: 256,
               }}
             >
-
-              <Calendar
-                min={yesterday}
-                date={date}
-                onSelect={(nextDate) => setDate(nextDate)}
+              <DateTimePicker
+                value={date}
+                mode={Platform.OS === "ios" ? "datetime" : "date"}
+                display="default"
+                onChange={onChange}
+                display="spinner"
               />
-             
             </Layout>
           </Layout>
           <Layout>
@@ -326,7 +342,7 @@ const AddTask = ({ navigation }) => {
             </Button>
           </Layout>
         </Layout>
-        </ScrollView> 
+      </ScrollView>
     </SafeAreaView>
   );
 };

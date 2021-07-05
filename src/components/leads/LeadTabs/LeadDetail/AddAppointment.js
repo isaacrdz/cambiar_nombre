@@ -32,13 +32,7 @@ const AddAppointment = () => {
       <ScrollView>
         <HeaderTitle title="Add Appointment" />
         <View>
-          <DateTimePicker
-            value={date}
-            mode={Platform.OS === "ios" ? "datetime" : "date"}
-            display="default"
-            onChange={onChange}
-            display="spinner"
-          />
+          <Text>Aqui no he hecho nada aun </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
