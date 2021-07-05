@@ -46,30 +46,6 @@ const Appointment = () => {
     return <AppointmentItem item={item} />;
   };
 
-  // const getData = async () => {
-  //   const response = await fetch(
-  //     "https://dealerproxapi.com/api/v1/users/6070db318e2dc574fe2ba277/appointments"
-  //   );
-
-  //   const { data } = await response.json();
-
-  //   const mappedData = data.map((appointment) => {
-  //     const date = appointment.startDate;
-
-  //     return {
-  //       ...appointment,
-  //       date: moment(date).format("YYYY-MM-DD"),
-  //     };
-  //   });
-
-  //   const reduced = mappedData.reduce((acc, currentItem) => {
-  //     const { date, ...app } = currentItem;
-  //     acc[date] = [app];
-  //     return acc;
-  //   }, {});
-
-  //   setItems(reduced);
-  // };
   const handleRefresh = () => {
     setRefreshing(true);
     getData();
