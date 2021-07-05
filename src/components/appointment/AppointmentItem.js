@@ -1,7 +1,6 @@
 import React from "react";
-// import moment from "moment";
 import moment from "moment/min/moment-with-locales";
-
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -23,12 +22,13 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AppointmentItem = ({ item }) => {
+  const navigation = useNavigation();
   moment.locale("es-mx");
   const startDate = moment(item.startDate).format("DD MMMM YYYY");
   const time = moment(item.startDate).format("hh:mm a");
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("AppointmentDetail")}>
       <Layout
         style={{
           paddingHorizontal: 20,

@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Appointment from "../screens/Appointment/Appointment";
+import AppointmentDetail from "../screens/Appointment/AppointmentDetail";
 
 const AppointmentMainStack = createStackNavigator();
 const AppointmentStack = createStackNavigator();
@@ -22,6 +23,11 @@ const AppointmentStackScreen = () => (
     <AppointmentStack.Screen
       name="AppointmentMain"
       component={AppointmentMainStackScreen}
+    />
+
+    <AppointmentStack.Screen
+      name="AppointmentDetail"
+      component={AppointmentDetail}
     />
   </AppointmentStack.Navigator>
 );
