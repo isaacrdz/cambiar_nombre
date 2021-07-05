@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import {
   Layout,
@@ -18,30 +19,31 @@ import {
   Input,
 } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import useSubstatus from '../../../../hooks/useSubstatus'
-import useLead from '../../../../hooks/useLead'
-import useAuth from '../../../../hooks/useAuth'
-import useComment from '../../../../hooks/useComment'
-import _ from 'lodash'
+import useSubstatus from "../../../../hooks/useSubstatus";
+import useLead from "../../../../hooks/useLead";
+import useAuth from "../../../../hooks/useAuth";
+import useComment from "../../../../hooks/useComment";
+import _ from "lodash";
 import moment from "moment";
+import HeaderTitle from "../../../header/HeaderTitle";
 
 const contactedStatus = [
-  "605cbaafd5fc4809e161c526", // 'rejected', 
-  "605bd712bed49524ae40f887", // 'visited', 
-  "605bce8ba04514212f1fac67", // 'confirmed', 
-  "605bd6b0bed49524ae40f885", // 'confirm', 
-  "605bd6c4bed49524ae40f886", // 'visit_tracking', 
-  "605bd717bed49524ae40f888", // 'reschedule', 
-  "605bd729bed49524ae40f889", // 'client_na', 
-  "605ce990c053b6162cf1c2ac", // 'documentation', 
-  "605bd5e1bed49524ae40f883", // 'followup', 
-  "605d10cf448ecc1d69de49aa", // 'sold', 
-  "606e22fcc00bcb15b5e70822", // 'application', 
-  "606e2319c00bcb15b5e70823", // 'approved_application', 
-  "606e233bc00bcb15b5e70824", // 'conditioned_application', 
-  "606e2367c00bcb15b5e70825", // 'rejected_application', 
+  "605cbaafd5fc4809e161c526", // 'rejected',
+  "605bd712bed49524ae40f887", // 'visited',
+  "605bce8ba04514212f1fac67", // 'confirmed',
+  "605bd6b0bed49524ae40f885", // 'confirm',
+  "605bd6c4bed49524ae40f886", // 'visit_tracking',
+  "605bd717bed49524ae40f888", // 'reschedule',
+  "605bd729bed49524ae40f889", // 'client_na',
+  "605ce990c053b6162cf1c2ac", // 'documentation',
+  "605bd5e1bed49524ae40f883", // 'followup',
+  "605d10cf448ecc1d69de49aa", // 'sold',
+  "606e22fcc00bcb15b5e70822", // 'application',
+  "606e2319c00bcb15b5e70823", // 'approved_application',
+  "606e233bc00bcb15b5e70824", // 'conditioned_application',
+  "606e2367c00bcb15b5e70825", // 'rejected_application',
   "606e2394c00bcb15b5e70826", // 'separated'
-]
+];
 
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
@@ -50,52 +52,62 @@ const AddTask = ({ navigation }) => {
   const { substatuses, getSubstatuses } = useSubstatus();
   const { createComment, updateComment } = useComment();
   const { user } = useAuth();
-  const { lead, updateLead, getLead } = useLead()
-  const  [substatusArray, setSubstatusArray] = useState([])
-  const  [substatusArrayIds, setSubstatusArrayIds] = useState([])
-  const  [selectedActions, setSelectedActions] = useState([])
+  const { lead, updateLead, getLead } = useLead();
+  const [substatusArray, setSubstatusArray] = useState([]);
+  const [substatusArrayIds, setSubstatusArrayIds] = useState([]);
+  const [selectedActions, setSelectedActions] = useState([]);
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
-  const [text, setText] = useState('')
+  const [text, setText] = useState("");
 
   const now = new Date();
-  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  const yesterday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - 1
+  );
 
-
-  const handleSubmit = async() => {
-            
-    if(text === ''){
+  const handleSubmit = async () => {
+    if (text === "") {
       return Toast.show({
         text1: "Please leave a comment",
         type: "error",
-        position: "bottom"
+        position: "bottom",
       });
-    }else if(selectedActions.length === 0){
+    } else if (selectedActions.length === 0) {
       return Toast.show({
         text1: "Select at least one action",
         type: "error",
-        position: "bottom"
+        position: "bottom",
       });
-    }else if(selectedActions.length > 3){
+    } else if (selectedActions.length > 3) {
       return Toast.show({
         text1: "Select max 3 actions",
         type: "error",
-        position: "bottom"
+        position: "bottom",
       });
-    }else{
+    } else {
       let bodyLead = {
-        substatus: currentId
+        substatus: currentId,
+      };
+
+      let userId = "";
+      let author = "";
+
+      if (
+        user &&
+        user.role &&
+        (user.role === "rockstar" ||
+          user.role === "admin" ||
+          user.role === "super admin") &&
+        lead.agent &&
+        lead.agent._id
+      ) {
+        userId = lead.agent._id;
+        author = user._id;
       }
 
-      let userId = '';
-      let author = '';
-
-      if(user && user.role && (user.role === 'rockstar' || user.role === 'admin' || user.role === 'super admin') && lead.agent && lead.agent._id){
-          userId = lead.agent._id;
-          author = user._id;
-      }
-
-      if(user && user.role && user.role === 'user'){
+      if (user && user.role && user.role === "user") {
         userId = user._id;
       }
 
@@ -103,95 +115,94 @@ const AddTask = ({ navigation }) => {
         comment: text,
         user: userId,
         action: selectedActions,
-        reschedule: moment(date).format()
-      }
+        reschedule: moment(date).format(),
+      };
 
-      if(author !== ''){
+      if (author !== "") {
         BodyComment.assignedBy = author;
       }
 
-      if(userId === ''){
+      if (userId === "") {
         //error poner agente
-      }else{
+      } else {
         BodyComment.store = lead.store._id;
 
-        if(contactedStatus.includes(currentId)){
+        if (contactedStatus.includes(currentId)) {
           bodyLead.isContacted = true;
         }
 
-        if(!lead.firstTask){
+        if (!lead.firstTask) {
           bodyLead.firstTask = new Date();
         }
 
-        if(lead.comments && lead.comments[0]){
+        if (lead.comments && lead.comments[0]) {
           //Actualizar ultimo comment
-          await updateComment({ pending: false}, lead.comments[0]._id);
+          await updateComment({ pending: false }, lead.comments[0]._id);
         }
 
-        await createComment(BodyComment, lead._id)
+        await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
-        await getLead(lead._id)
-        navigation.navigate("LeadTabs")
+        await getLead(lead._id);
+        navigation.navigate("LeadTabs");
       }
-
     }
-  }
+  };
 
   const handleSetAction = (item) => {
-    if(selectedActions.includes(item)){
-      let indexA = _.findIndex(selectedActions, function(o) { return o === item; });
-      let aux = _.filter(selectedActions, (el, index) => { return index !== indexA; });
-      setSelectedActions(aux)
-
-    }else{
-      setSelectedActions([...selectedActions, item])
+    if (selectedActions.includes(item)) {
+      let indexA = _.findIndex(selectedActions, function (o) {
+        return o === item;
+      });
+      let aux = _.filter(selectedActions, (el, index) => {
+        return index !== indexA;
+      });
+      setSelectedActions(aux);
+    } else {
+      setSelectedActions([...selectedActions, item]);
     }
-  }
-  
+  };
+
   const actions = [
-    { value: 'whatsapp', icon: <Ionicons name="logo-whatsapp" size={20} />},
-    { value: 'recall', icon: <Ionicons name="call-outline" size={20} />},
-    { value: 'documentation', icon: <Ionicons name="document-outline" size={20} />}
-  ]
+    { value: "whatsapp", icon: <Ionicons name="logo-whatsapp" size={20} /> },
+    { value: "recall", icon: <Ionicons name="call-outline" size={20} /> },
+    {
+      value: "documentation",
+      icon: <Ionicons name="document-outline" size={20} />,
+    },
+  ];
 
-  useEffect(()=>{
-    getSubstatuses()
+  useEffect(() => {
+    getSubstatuses();
     //eslint-disable-next-line
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    if(substatuses){
+  useEffect(() => {
+    if (substatuses) {
       let aux = [];
       let auxIds = [];
-      substatuses.map((item) =>{ 
-        if(item.status === lead.status._id && item.name !== 'new' && item.name !== 'rejected' && item.name !== 'visit_rejected'){
-          aux.push(item.name)
-          auxIds.push(item._id)
+      substatuses.map((item) => {
+        if (
+          item.status === lead.status._id &&
+          item.name !== "new" &&
+          item.name !== "rejected" &&
+          item.name !== "visit_rejected"
+        ) {
+          aux.push(item.name);
+          auxIds.push(item._id);
         }
         return false;
-      })
-      setSubstatusArray(aux)
-      setSubstatusArrayIds(auxIds)
+      });
+      setSubstatusArray(aux);
+      setSubstatusArrayIds(auxIds);
     }
     //eslint-disable-next-line
-  },[substatuses, lead])
+  }, [substatuses, lead]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <HeaderTitle title="Add Task" />
       <ScrollView>
-        <Layout
-          style={{
-            flex: 1,
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-          }}
-        >
-          <Text style={styles.text} category="h3">
-            Add Task
-          </Text>
-
-          <Divider style={{ marginBottom: 25 }} />
-
+        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Layout style={{ marginBottom: 30 }}>
             <Text
               style={styles.text}
@@ -212,7 +223,9 @@ const AddTask = ({ navigation }) => {
                 textStyle={{ minHeight: 64 }}
                 style={{ minWidth: 400 }}
                 value={text}
-                onChangeText={(string)=>{setText(string)}}
+                onChangeText={(string) => {
+                  setText(string);
+                }}
               />
             </Layout>
           </Layout>
@@ -231,14 +244,17 @@ const AddTask = ({ navigation }) => {
                 justifyContent: "space-around",
               }}
             >
-              {
-                actions.map(item => (
-                  <CheckBox key={item.value} status="primary" onChange={()=>handleSetAction(item.value)} checked={selectedActions.includes(item.value)}>
-                    {" "}
-                    { item.icon }
-                  </CheckBox>
-                ))
-              }
+              {actions.map((item) => (
+                <CheckBox
+                  key={item.value}
+                  status="primary"
+                  onChange={() => handleSetAction(item.value)}
+                  checked={selectedActions.includes(item.value)}
+                >
+                  {" "}
+                  {item.icon}
+                </CheckBox>
+              ))}
             </Layout>
           </Layout>
 
@@ -259,7 +275,7 @@ const AddTask = ({ navigation }) => {
               <Select
                 size="large"
                 style={{ marginBottom: 10 }}
-                value={ lead && lead.status && lead.status.name }
+                value={lead && lead.status && lead.status.name}
               >
                 <SelectItem title={lead && lead.status && lead.status.name} />
               </Select>
@@ -267,13 +283,13 @@ const AddTask = ({ navigation }) => {
                 size="large"
                 selectedIndex={selectedSubstatus}
                 onSelect={(index) => {
-                  setSelectedSubstatus(index)
+                  setSelectedSubstatus(index);
                 }}
                 value={displayValue}
               >
-                {
-                  substatusArray.map(substatus => <SelectItem key={substatus} title={substatus} />)
-                }
+                {substatusArray.map((substatus) => (
+                  <SelectItem key={substatus} title={substatus} />
+                ))}
               </Select>
             </Layout>
           </Layout>
@@ -296,15 +312,12 @@ const AddTask = ({ navigation }) => {
                 date={date}
                 onSelect={(nextDate) => setDate(nextDate)}
               />
-
             </Layout>
           </Layout>
           <Layout>
-          <Button
-          style={styles.button}
-          onPress={handleSubmit}>
-          Create Task
-          </Button>
+            <Button style={styles.button} onPress={handleSubmit}>
+              Create Task
+            </Button>
           </Layout>
         </Layout>
       </ScrollView>
@@ -321,8 +334,8 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   button: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 
 export default AddTask;

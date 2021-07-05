@@ -93,6 +93,7 @@ const LeadDetailInfo = ({ itemId }) => {
 
           <Text style={styles.mr}>{lead.downPayment}</Text>
         </Layout>
+        <Divider />
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
             Timeframe
@@ -126,6 +127,7 @@ const LeadDetailInfo = ({ itemId }) => {
               : "None"}
           </Text>
         </Layout>
+        <Divider />
         <Layout style={[styles.ContainerDetail]}>
           <Text category="p1" appearance="hint">
             Temperature

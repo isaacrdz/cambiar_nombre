@@ -14,10 +14,13 @@ import useAuth from "../../../../hooks/useAuth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
 
+import { useNavigation } from "@react-navigation/native";
+
 const PhoneIcon = (props) => <Icon {...props} name="phone" />;
 const EmailIcon = (props) => <Icon {...props} name="mail" />;
 
 const LeadDetailInfoTop = ({ item, loading }) => {
+  const navigation = useNavigation();
   const { createActivity } = useActivity();
   const { user } = useAuth();
 
@@ -98,16 +101,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
         <Button
           style={styles.button}
           appearance="ghost"
-          onPress={() => {
-            // createActivity({
-            //   action: "mailing",
-            //   description: `${CapitalizeNames(
-            //     user.name
-            //   )} has sent an email from mobile App`,
-            //   lead: item._id,
-            // });
-            Linking.openURL(`mailto: ${item.email}`);
-          }}
+          onPress={() => navigation.navigate("AddAppointment")}
         >
           <Ionicons name="calendar-sharp" size={30} color="#535de2" />
         </Button>
