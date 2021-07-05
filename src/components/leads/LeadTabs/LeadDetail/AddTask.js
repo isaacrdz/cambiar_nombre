@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Toast from "react-native-toast-message";
+import { Agenda } from "react-native-calendars";
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+
 import {
   Layout,
   Divider,
@@ -201,9 +203,9 @@ const AddTask = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <HeaderTitle title="Add Task" />
-      <ScrollView>
+      <ScrollView> 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Layout style={{ marginBottom: 30 }}>
+          <Layout style={{ marginBottom: 30 }} level='1'>
             <Text
               style={styles.text}
               category="s1"
@@ -216,6 +218,7 @@ const AddTask = ({ navigation }) => {
                 flexDirection: "row",
                 flexWrap: "wrap",
               }}
+              level='1'
             >
               <Input
                 multiline={true}
@@ -229,7 +232,7 @@ const AddTask = ({ navigation }) => {
               />
             </Layout>
           </Layout>
-          <Layout style={{ marginBottom: 30 }}>
+          <Layout style={{ marginBottom: 30 }} level='1'>
             <Text
               style={styles.text}
               category="s1"
@@ -243,6 +246,7 @@ const AddTask = ({ navigation }) => {
                 flexWrap: "wrap",
                 justifyContent: "space-around",
               }}
+              level='1'
             >
               {actions.map((item) => (
                 <CheckBox
@@ -304,14 +308,16 @@ const AddTask = ({ navigation }) => {
             <Layout
               level="1"
               style={{
-                minHeight: 128,
+                minHeight: 256,
               }}
             >
+
               <Calendar
                 min={yesterday}
                 date={date}
                 onSelect={(nextDate) => setDate(nextDate)}
               />
+             
             </Layout>
           </Layout>
           <Layout>
@@ -320,7 +326,7 @@ const AddTask = ({ navigation }) => {
             </Button>
           </Layout>
         </Layout>
-      </ScrollView>
+        </ScrollView> 
     </SafeAreaView>
   );
 };
