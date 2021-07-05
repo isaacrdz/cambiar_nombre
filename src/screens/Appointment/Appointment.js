@@ -3,20 +3,20 @@ import { Agenda } from "react-native-calendars";
 import AppointmentItem from "../../components/appointment/AppointmentItem";
 import moment from "moment";
 import EmpyDate from "../../components/appointment/EmptyDate";
+import useAppointment from "../../hooks/useAppointment";
+import useAuth from "../../hooks/useAuth";
+import { useFocusEffect } from '@react-navigation/native';
 
 const Appointment = () => {
   const [items, setItems] = React.useState({});
   const [refreshing, setRefreshing] = React.useState(false);
+  const { getAppointmentsByUser, appointments, loading } = useAppointment();
+  const { user } = useAuth();
 
   React.useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        "https://dealerproxapi.com/api/v1/users/6070db318e2dc574fe2ba277/appointments"
-      );
 
-      const { data } = await response.json();
-
-      const mappedData = data.map((appointment) => {
+    if(appointments){
+      const mappedData = appointments.map((appointment) => {
         const date = appointment.startDate;
 
         return {
@@ -34,9 +34,16 @@ const Appointment = () => {
       }, {});
 
       setItems(reduced);
-    };
-    getData();
-  }, []);
+
+    }
+  },[appointments]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if(user && user._id)
+      getAppointmentsByUser(user._id)
+    }, [user])
+  );
 
   const renderEmptyDate = () => {
     return <EmpyDate />;
