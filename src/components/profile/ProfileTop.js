@@ -22,7 +22,7 @@ const ProfileTop = ({ navigation }) => {
 
   let imageProfile;
 
-  if (user.image) {
+  if (user && user.image) {
     imageProfile = `https://automotive-api.s3.us-east-2.amazonaws.com/${user.image}`;
   } else {
     imageProfile = "https://liberate.gg/wp-content/uploads/blankAvatar.jpg";
