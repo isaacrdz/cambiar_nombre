@@ -3,42 +3,24 @@
     "name": "Dealer Pro X",
     "slug": "dpx",
     "version": "1.0.0",
-
     "notification": {
       "icon": "./assets/logo.png"
-      
     },
-    
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "bundleIdentifier": "com.ellyonsoft.caroneapp",
-      "supportsTablet": true,
-      "config": {
-        "googleMapsApiKey": "AIzaSyDA2NSV7WnKxSMaSyrBwi02E5g6NiutyHg"
-      }
+    }, "ios": {
+      "bundleIdentifier": "com.ellyonsoft.dpx",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.ellyonsoft.dpx",
+      "versionCode": 1
     }
-    
+  
+  
   }
 }
