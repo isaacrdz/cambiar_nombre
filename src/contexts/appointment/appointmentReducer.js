@@ -50,6 +50,7 @@ export default (state, action) => {
         error: null
       };
     case CREATE_APPOINTMENT:
+      console.log(action.payload)
       return {
         ...state,
         appointments: [action.payload, ...state.appointments],

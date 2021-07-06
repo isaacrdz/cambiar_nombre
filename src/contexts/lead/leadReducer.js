@@ -5,6 +5,7 @@ import {
   CLEAR_CURRENT_LEAD,
   CLEAR_STATE,
   SET_LOADING,
+  UPDATE_LEAD
 } from "../types";
 import _ from "lodash";
 
@@ -24,6 +25,13 @@ export default (state, action) => {
         leads: [...state.leads, ...action.payload],
         loading: false,
         error: null,
+      };
+    case UPDATE_LEAD:
+      return {
+        ...state,
+        lead: action.payload,
+        loading: false,
+        error: null
       };
 
     case GET_LEAD:
