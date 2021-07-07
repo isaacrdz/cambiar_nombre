@@ -182,7 +182,7 @@ const AddAppointment = ({ navigation }) => {
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            4. Pick up Time
+            5. Pick up Time
           </Text>
           <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value="Selecciona" value={displayValueTime}>
             {times.map((action, i) => (

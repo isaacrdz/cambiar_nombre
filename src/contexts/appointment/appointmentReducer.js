@@ -65,8 +65,20 @@ export default (state, action) => {
         error: null
       };
     case UPDATE_APPOINTMENT:
+      let finalState = []
+      console.log('action', action.payload._id)
+      console.log('status', action.payload.status)
+      state.appointments.map((item, index) => {
+        if(item._id.toString() !== action.payload._id.toString()){
+          finalState.push(item)
+          // state.appointments[index] = action.payload;
+        }else if(action.payload.status === true){
+          finalState.push(action.payload)
+        }
+      })
       return {
         ...state,
+        appointments: finalState,
         appointment: action.payload,
         loading: false, 
         error: null

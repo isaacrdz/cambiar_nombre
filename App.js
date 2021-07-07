@@ -16,6 +16,7 @@ import StatusState from "./src/contexts/status/StatusState";
 import CommentState from "./src/contexts/comment/CommentState";
 import ChartState from "./src/contexts/charts/ChartState";
 import AppointmentState from "./src/contexts/appointment/AppointmentState";
+import VisitState from "./src/contexts/visit/VisitState";
 
 import Toast from "react-native-toast-message";
 
@@ -40,8 +41,10 @@ const App = () => {
                     <CommentState>
                       <ChartState>
                         <AppointmentState>
-                          <Routes />
-                          <Toast ref={(ref) => Toast.setRef(ref)} />
+                          <VisitState>
+                            <Routes />
+                            <Toast ref={(ref) => Toast.setRef(ref)} />
+                          </VisitState>
                         </AppointmentState>
                       </ChartState>
                     </CommentState>
