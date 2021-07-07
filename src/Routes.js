@@ -57,6 +57,8 @@ const Routes = ({ token }) => {
     loadUser();
   }, []);
 
+  Notifications.setBadgeCountAsync(0);
+
   return (
     <NavigationContainer>
       {isAuthenticated ? (

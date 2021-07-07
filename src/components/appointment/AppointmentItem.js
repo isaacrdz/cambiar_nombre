@@ -28,7 +28,9 @@ const AppointmentItem = ({ item }) => {
   const time = moment(item.startDate).format("hh:mm a");
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("AppointmentDetail")}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("AppointmentDetail", { item: item })}
+    >
       <Layout
         style={{
           paddingHorizontal: 20,

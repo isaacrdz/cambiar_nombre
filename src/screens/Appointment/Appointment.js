@@ -5,7 +5,7 @@ import moment from "moment";
 import EmpyDate from "../../components/appointment/EmptyDate";
 import useAppointment from "../../hooks/useAppointment";
 import useAuth from "../../hooks/useAuth";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 const Appointment = () => {
   const [items, setItems] = React.useState({});
@@ -14,8 +14,7 @@ const Appointment = () => {
   const { user } = useAuth();
 
   React.useEffect(() => {
-
-    if(appointments){
+    if (appointments) {
       const mappedData = appointments.map((appointment) => {
         const date = appointment.startDate;
 
@@ -34,14 +33,12 @@ const Appointment = () => {
       }, {});
 
       setItems(reduced);
-
     }
-  },[appointments]);
+  }, [appointments]);
 
   useFocusEffect(
     React.useCallback(() => {
-      if(user && user._id)
-      getAppointmentsByUser(user._id)
+      if (user && user._id) getAppointmentsByUser(user._id);
     }, [user])
   );
 
@@ -71,7 +68,6 @@ const Appointment = () => {
       // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
       maxDate={"2025-05-30"}
       showClosingKnob={true}
-      hideExtraDays={true}
     />
   );
 };
