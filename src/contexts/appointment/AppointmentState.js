@@ -109,7 +109,6 @@ const AppointmentState = props => {
       }, config);
       dispatch({ type: CREATE_APPOINTMENT, payload: res.data.data });
     } catch (err) {
-      console.log(err.response.data)
       dispatch({ type: SET_ERROR, payload: err.response.data})
 
     }

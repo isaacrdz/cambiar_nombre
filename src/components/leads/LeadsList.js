@@ -50,7 +50,6 @@ const LeadsList = ({
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        console.log('aca debe de borrar')
         clearState()
         setpageCurrent(1)
       }

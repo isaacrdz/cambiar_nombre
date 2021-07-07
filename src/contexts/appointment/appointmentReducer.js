@@ -50,7 +50,6 @@ export default (state, action) => {
         error: null
       };
     case CREATE_APPOINTMENT:
-      console.log(action.payload)
       return {
         ...state,
         appointments: [action.payload, ...state.appointments],
@@ -65,8 +64,18 @@ export default (state, action) => {
         error: null
       };
     case UPDATE_APPOINTMENT:
+      let finalState = []
+      state.appointments.map((item, index) => {
+        if(item._id.toString() !== action.payload._id.toString()){
+          finalState.push(item)
+          // state.appointments[index] = action.payload;
+        }else if(action.payload.status === true){
+          finalState.push(action.payload)
+        }
+      })
       return {
         ...state,
+        appointments: finalState,
         appointment: action.payload,
         loading: false, 
         error: null
