@@ -109,7 +109,6 @@ const AppointmentState = props => {
       }, config);
       dispatch({ type: CREATE_APPOINTMENT, payload: res.data.data });
     } catch (err) {
-      console.log(err.response.data)
       dispatch({ type: SET_ERROR, payload: err.response.data})
 
     }
@@ -129,7 +128,6 @@ const AppointmentState = props => {
       const res = await api.put(`/appointments/${appointmentId}`, {...appointment} ,config);
       dispatch({ type: UPDATE_APPOINTMENT, payload: res.data.data })
     } catch (err) {
-      console.log(err.response.data)
       dispatch({ type: SET_ERROR, payload: err.response.data})
     }
   };

@@ -79,7 +79,6 @@ const AddAppointment = ({ navigation }) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
-    console.log(currentDate);
   };
 
   const showMode = (currentMode) => {

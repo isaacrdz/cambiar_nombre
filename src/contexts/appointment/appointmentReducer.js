@@ -50,7 +50,6 @@ export default (state, action) => {
         error: null
       };
     case CREATE_APPOINTMENT:
-      console.log(action.payload)
       return {
         ...state,
         appointments: [action.payload, ...state.appointments],
@@ -66,8 +65,6 @@ export default (state, action) => {
       };
     case UPDATE_APPOINTMENT:
       let finalState = []
-      console.log('action', action.payload._id)
-      console.log('status', action.payload.status)
       state.appointments.map((item, index) => {
         if(item._id.toString() !== action.payload._id.toString()){
           finalState.push(item)
