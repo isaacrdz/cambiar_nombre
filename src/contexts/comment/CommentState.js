@@ -51,9 +51,11 @@ const CommentState = props => {
     try {
      
       const res = await api.post(`/leads/${leadId}/comments`, { ...comment }, config);
+      console.log(res)
       
       dispatch({ type: CREATE_COMMENT, payload: res.data.data });
     } catch (err) {
+      console.log(err.response.data.error)
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
 
     }

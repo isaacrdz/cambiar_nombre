@@ -62,7 +62,7 @@ const AppointmentItem = ({ item }) => {
             appearance="hint"
             style={{ textTransform: "capitalize", marginBottom: 2 }}
           >
-            {item.lead.substatus.name} - {item.title}
+            {item && item.lead && item.lead.substatus && item.lead.substatus.name} - {item.title}
           </Text>
         </Layout>
 

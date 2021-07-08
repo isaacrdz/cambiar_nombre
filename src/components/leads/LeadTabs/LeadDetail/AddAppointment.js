@@ -3,6 +3,8 @@ import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
 import Toast from "react-native-toast-message";
 import HeaderTitle from "../../../header/HeaderTitle";
 import useAppointment from '../../../../hooks/useAppointment';
+import useComment from '../../../../hooks/useComment';
+import useAuth from '../../../../hooks/useAuth';
 import moment from 'moment'
 import {
   Layout,
@@ -21,7 +23,9 @@ import useLead from "../../../../hooks/useLead";
 
 const AddAppointment = ({ navigation }) => {
   const { createAppointment } = useAppointment();
+  const { createComment, updateComment } = useComment();
   const { lead, updateLead } = useLead(); 
+  const { user } = useAuth(); 
   const [date, setDate] = useState(new Date());
   const [selectedAction, setSelectedAction] = useState(new IndexPath(0));
   const actions = ["information", "documentation", "driving test"];
@@ -46,6 +50,22 @@ const AddAppointment = ({ navigation }) => {
       });
     }
     let endDate = moment(date).add((time.row + 1), 'hours');
+
+    ////
+    let BodyComment = {
+      comment: values.description,
+      user: user._id,
+      action: ["appointment"],
+      store: lead.store._id
+    }
+
+    await createComment(BodyComment, lead._id)
+
+    if(lead && lead.comments && lead.comments.length > 0){
+      await updateComment({pending: false}, lead.comments[0]._id)
+    }
+    /////
+
     await createAppointment({
       ...values, 
       startDate: date, 

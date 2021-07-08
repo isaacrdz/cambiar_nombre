@@ -8,7 +8,18 @@ import useChart from '../../hooks/useChart';
 import useAuth from '../../hooks/useAuth';
 import { CapitalizeNames } from "../../utils/Capitalize";
 
-const Home = () => {
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+
+i18n.translations = {
+  en: { welcome: 'Hello', name: 'Charlie' },
+  es: { welcome: 'Hola' },
+};
+
+i18n.locale = "en";
+i18n.fallbacks = true;
+
+const Home = ({}) => {
 
   const { user } = useAuth();
   const { getTotalsDashboard, total, totalLeads, totalAppointments, totalVisits, totalSolds } = useChart();
@@ -41,6 +52,11 @@ const Home = () => {
       <Layout style={styles.subContainerText}>
         <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
         <Text category="p1" appearance="hint" >{`You have a total of ${total} leads accumulated`}</Text>
+{/*        
+        <Text>
+        {i18n.t('welcome')} {i18n.t('name')}
+        </Text> */}
+
       </Layout>
       <Layout style={styles.subContainerCards}>
 
