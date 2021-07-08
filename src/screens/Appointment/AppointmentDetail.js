@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet, Platform } from "react-native";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import Toast from "react-native-toast-message";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -27,6 +27,7 @@ const AppointmentDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { appointment, getAppointment, updateAppointment } = useAppointment();
   const { createVisit } = useVisit();
+  const [open, setOpen] = useState(false)
   const { user } = useAuth();
   const { updateLead } = useLead()
   const { substatuses, getSubstatuses } = useSubstatus();
@@ -227,11 +228,14 @@ const AppointmentDetail = ({ route, navigation }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setCurrentAppointment({...currentAppointment, startDate: currentDate});
+    if(Platform.OS === 'android'){
+      setOpen(false)
+    }
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <HeaderTitle title="Appointment Detail" />
+      {/* <HeaderTitle title="Appointment Detail" /> */}
 
       <ScrollView>
         <Layout style={{ marginBottom: 20 }}>
@@ -333,12 +337,29 @@ const AppointmentDetail = ({ route, navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 Start Date
               </Text>
-              <DateTimePicker
-                value={currentAppointment.startDate}
-                mode={Platform.OS === "ios" ? "datetime" : "date"}
-                onChange={onChange}
-                display="spinner"
-              />
+              {
+                Platform.OS === 'ios' &&
+                <DateTimePicker
+                  value={currentAppointment.startDate}
+                  mode="ios"
+                  onChange={onChange}
+                  display="spinner"
+                />
+              }
+              {
+                Platform.OS === 'android' &&
+                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Select</Button>
+              }
+              {
+                Platform.OS === 'android' && open &&
+                <DateTimePicker
+                  value={currentAppointment.startDate}
+                  mode="date"
+                  onChange={onChange}
+                  display="spinner"
+                />
+              }
+              
             </Layout>
           </Layout>
           <Layout>
@@ -447,44 +468,5 @@ const AppointmentDetail = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    margin: 2,
-  },
-  container: {
-    marginBottom: 20,
-  },
-  ContainerDetail: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 20,
-  },
-
-  ContainerTop: {
-    justifyContent: "center",
-    flexDirection: "row",
-
-    paddingBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-
-  mr: {
-    marginRight: 20,
-  },
-
-  bottomMargin: {
-    marginBottom: 70,
-  },
-  textCapitalize: {
-    textTransform: "capitalize",
-  },
-  textUppercase: {
-    textTransform: "uppercase",
-  },
-});
 
 export default AppointmentDetail;

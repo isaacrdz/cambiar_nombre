@@ -46,6 +46,7 @@ const LeadState = (props) => {
   const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
 
+    console.log('this case:', type)
     try {
       let leads;
       switch(type){

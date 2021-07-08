@@ -31,6 +31,7 @@ const LeadsList = ({
       if(pageCurrent === 1){
         if(leadsSize !== 0){
           clearState()
+          console.log('aca')
           getLeads(pageCurrent, user._id, currentSearch, query);
         }
       }
@@ -40,6 +41,8 @@ const LeadsList = ({
   React.useEffect(() => {
     if(pageCurrent !== 1 || currentSearch || search){
       if(leadsSize !== 0){
+        console.log('aca2')
+
         getLeads(pageCurrent, user._id, currentSearch, query);
       }
     }
