@@ -216,13 +216,9 @@ const AddAppointment = ({ navigation }) => {
           </Select>
         </Layout>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-<<<<<<< HEAD
           <Button style={styles.button} onPress={handleSubmit}>
             Crear Cita
           </Button>
-=======
-          <Button style={styles.button} onPress={handleSubmit}>Crear Cita</Button>
->>>>>>> a79e2476cb2323f6df01d31b57fce940554c0e36
         </Layout>
       </ScrollView>
     </SafeAreaView>
