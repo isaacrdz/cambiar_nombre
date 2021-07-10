@@ -13,6 +13,7 @@ import {
 import moment from "moment";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { translateHistory } from "../../../../../utils/tranlsateSubstatus";
 
 const LeadDetailHistory = ({ activities }) => {
   const renderItem = ({ item, index }) => {
@@ -40,7 +41,7 @@ const LeadDetailHistory = ({ activities }) => {
           }}
         >
           <Text category="c1" appearance="hint">
-            {item.description}
+            {translateHistory(item.description)}
           </Text>
         </Layout>
         <Divider style={{ marginBottom: 5 }} />

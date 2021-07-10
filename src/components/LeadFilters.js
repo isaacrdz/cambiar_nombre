@@ -11,27 +11,27 @@ import {
 
 const filters = [
   {
-    title: "All", 
+    title: "Todos", 
     value: "all", 
     type: "all"
   },
   {
-    title: "New", 
+    title: "Nuevo", 
     value: "605bd5c4bed49524ae40f882", 
     type: "substatus"
   },
   {
-    title: "Sold", 
+    title: "Vendido", 
     value: "5d7a514b5dac12c7449ce043", 
     type: "status"
   },
   {
-    title: "Visit", 
+    title: "Visita", 
     value: "6064f8065b21e51052eed547", 
     type: "status"
   },
   {
-    title: "Appointment", 
+    title: "Cita", 
     value: "604f80222b372e0cb11966dc", 
     type: "status"
   },

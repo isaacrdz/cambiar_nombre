@@ -23,7 +23,7 @@ const HeaderTitle = ({ title }) => {
         </Text>
 
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="close-circle-outline" size="40" />
+          <Ionicons name="close-circle-outline" size={40} />
         </TouchableOpacity>
       </Layout>
 

@@ -22,23 +22,25 @@ import {
 } from "@ui-kitten/components";
 import moment from "moment/min/moment-with-locales";
 import { useFocusEffect } from "@react-navigation/native";
+import { translateSubstatus } from "../../utils/tranlsateSubstatus";
 
 const AppointmentDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { appointment, getAppointment, updateAppointment } = useAppointment();
   const { createVisit } = useVisit();
+
   const [open, setOpen] = useState(false)
   const { user } = useAuth();
   const { updateLead } = useLead()
   const { substatuses, getSubstatuses } = useSubstatus();
   const { updateComment, createComment } = useComment();
-  const [currentAppointment, setCurrentAppointment] = useState({
-    startDate: new Date()
-  });
   const times = ["1 Hora", "2 Horas"];
   const [time, setTime] = useState({row: 0});
   const [textVisit, setTextVisit] = useState('');
   const displayValueTime = times[time.row];
+  const [currentAppointment, setCurrentAppointment] = useState({
+    startDate: new Date()
+  });
   
 
   const [substatusAppointment, setSubstatusAppointment] = useState([]);
@@ -55,7 +57,7 @@ const AppointmentDetail = ({ route, navigation }) => {
 
     if(textVisit === ''){
       return Toast.show({
-        text1: "Leave a comment",
+        text1: "Deja un comentario",
         type: "error",
         position: "bottom",
       });
@@ -100,13 +102,27 @@ const AppointmentDetail = ({ route, navigation }) => {
   }else{
 
     Toast.show({
-      text1: "First add an agent",
+      text1: "Agrega un agente primero",
       type: "error",
       position: "bottom",
     });
    
   }
 
+  }
+
+  const renderAndroidPicker = (state) => {
+
+    if(state === true){
+      return (
+        <DateTimePicker
+        value={currentAppointment.startDate}
+        mode="date"
+        display="spinner"
+        onChange={onChangeAndroid}
+        />
+      )
+    }
   }
 
   const handleSaveSubstatusAppointment = async() => {
@@ -123,7 +139,7 @@ const AppointmentDetail = ({ route, navigation }) => {
     await updateAppointment(bodyAppointment, item._id)
 
     Toast.show({
-      text1: "Appointment updated",
+      text1: "Cita Actualizada",
       type: "success",
       position: "bottom",
     });
@@ -137,7 +153,7 @@ const AppointmentDetail = ({ route, navigation }) => {
   const handleSaveAppointment = async() => {
     if(currentAppointment.description === '' || currentAppointment.title === ''){
       return Toast.show({
-        text1: "Fill all the fields",
+        text1: "Por favor llena todos los campos",
         type: "error",
         position: "bottom",
       });
@@ -152,7 +168,7 @@ const AppointmentDetail = ({ route, navigation }) => {
     }, item._id);
 
     Toast.show({
-      text1: "Appointment updated",
+      text1: "Cita Actualizada",
       type: "success",
       position: "bottom",
     });
@@ -224,18 +240,23 @@ const AppointmentDetail = ({ route, navigation }) => {
   }, [appointment])
 
   moment.locale("es-mx");
-
+ 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setCurrentAppointment({...currentAppointment, startDate: currentDate});
-    if(Platform.OS === 'android'){
-      setOpen(false)
+  };
+
+  const onChangeAndroid = (event, selectedDate) => {
+    if (selectedDate !== undefined) {
+      setCurrentAppointment({...currentAppointment, startDate: selectedDate});
+      console.log(selectedDate)
     }
+    setOpen(false);
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      {/* <HeaderTitle title="Appointment Detail" /> */}
+      <HeaderTitle title="Appointment Detail" /> 
 
       <ScrollView>
         <Layout style={{ marginBottom: 20 }}>
@@ -283,7 +304,7 @@ const AppointmentDetail = ({ route, navigation }) => {
             }}
             level="1"
           >
-            <Text category="s1">Phone</Text>
+            <Text category="s1">Teléfono</Text>
 
             <Text category="s1">
               {currentAppointment.lead && currentAppointment.lead.phone}
@@ -295,7 +316,7 @@ const AppointmentDetail = ({ route, navigation }) => {
           category="s1"
           style={{ textAlign: "center", marginBottom: 20 }}
         >
-          Appointment Information
+          Información de Cita
         </Text>
         <Layout>
           <Layout
@@ -306,7 +327,7 @@ const AppointmentDetail = ({ route, navigation }) => {
             level="1"
           >
             <Text category="s1" style={{ marginBottom: 10 }}>
-              Title
+              Título
             </Text>
 
             <Input style={{ minWidth: 300 }} onChangeText={(string) => setCurrentAppointment({...currentAppointment, title: string})} value={currentAppointment.title} />
@@ -321,7 +342,7 @@ const AppointmentDetail = ({ route, navigation }) => {
             level="1"
           >
             <Text category="s1" style={{ marginBottom: 10 }}>
-              Information
+              Información
             </Text>
 
             <Input style={{ minWidth: 300 }} onChangeText={(string) => setCurrentAppointment({...currentAppointment, description: string})} value={currentAppointment.description} />
@@ -335,7 +356,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               level="1"
             >
               <Text category="s1" style={{ marginBottom: 10 }}>
-                Start Date
+                Fecha de Inicio
               </Text>
               {
                 Platform.OS === 'ios' &&
@@ -348,16 +369,11 @@ const AppointmentDetail = ({ route, navigation }) => {
               }
               {
                 Platform.OS === 'android' &&
-                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Select</Button>
+                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
               }
               {
-                Platform.OS === 'android' && open &&
-                <DateTimePicker
-                  value={currentAppointment.startDate}
-                  mode="date"
-                  onChange={onChange}
-                  display="spinner"
-                />
+                Platform.OS === 'android' &&
+                renderAndroidPicker(open)
               }
               
             </Layout>
@@ -371,7 +387,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               level="1"
             >
               <Text category="s1" style={{ marginBottom: 10 }}>
-                Duration
+                Duración
               </Text>
               <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value="Selecciona" value={displayValueTime}>
                 {times.map((action, i) => (
@@ -379,7 +395,7 @@ const AppointmentDetail = ({ route, navigation }) => {
                 ))}
               </Select>
               {/* <Input style={{ minWidth: 300 }} value={"1 Hora"} /> */}
-              <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={handleSaveAppointment}>Save</Button>
+              <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={handleSaveAppointment}>Guardar</Button>
             </Layout>
           </Layout>
 
@@ -396,7 +412,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               category="s1"
               style={{ textAlign: "center", marginBottom: 20 }}
             >
-              Choose Appointment Status
+              Elige el Estatus de la Cita
             </Text>
 
             <Select
@@ -404,18 +420,18 @@ const AppointmentDetail = ({ route, navigation }) => {
               style={{ marginBottom: 10 }}
               onSelect={(index) => setSubstatusAppointmentIndex(index)} 
               selectedIndex={substatusAppointmentIndex}  
-              value={displaySubstatusAppointment && displaySubstatusAppointment.name}
+              value={displaySubstatusAppointment && translateSubstatus(displaySubstatusAppointment.name)}
             >
               {
                 substatusAppointment.map(item => 
-                  <SelectItem title={item.name} key={item.name}/>
+                  <SelectItem title={translateSubstatus(item.name)} key={item.name}/>
                 )
               }
              
             </Select>
 
             <Button style={{ marginBottom: 20, marginTop: 20 }}onPress={handleSaveSubstatusAppointment}>
-              Update Status
+              Actualizar Estatus
             </Button>
           </Layout>
           {
@@ -433,7 +449,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               category="s1"
               style={{ textAlign: "center", marginBottom: 20 }}
             >
-              Choose Visit Status
+              Elige el Estatus de la Visita
             </Text>
 
             <Input
@@ -451,13 +467,13 @@ const AppointmentDetail = ({ route, navigation }) => {
             >
                {
                 substatusVisit.map(item => 
-                  <SelectItem title={item.name} key={item.name}/>
+                  <SelectItem title={translateSubstatus(item.name)} key={item.name}/>
                 )
               }
             </Select>
           </Layout>
           <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-            <Button onPress={handleSaveVisit}>Create Visit</Button>
+            <Button onPress={handleSaveVisit}>Crear Visita</Button>
           </Layout>
           </>
           }

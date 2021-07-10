@@ -25,7 +25,7 @@ const EmpyDate = ({ item }) => {
             fontWeight: "600",
           }}
         >
-          You don't have any appointment today
+          No tienes ninguna cita hoy :(
         </Text>
       </Layout>
     </Layout>
