@@ -20,6 +20,18 @@ import VisitState from "./src/contexts/visit/VisitState";
 
 import Toast from "react-native-toast-message";
 
+// import i18n from 'i18n-js';
+// import en from './src/lan/en';
+// import es from './src/lan/es';
+// import * as Localization from 'expo-localization';
+
+// i18n.translations = {
+//   en,
+//   es
+// };
+
+// i18n.locale = Localization.locale;
+
 const App = () => {
   const [theme, setTheme] = React.useState("light");
 

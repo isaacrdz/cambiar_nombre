@@ -20,6 +20,7 @@ import {
 } from "@ui-kitten/components";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { translateSubstatus } from '../../utils/tranlsateSubstatus';
 
 const AppointmentItem = ({ item }) => {
   const navigation = useNavigation();
@@ -62,7 +63,7 @@ const AppointmentItem = ({ item }) => {
             appearance="hint"
             style={{ textTransform: "capitalize", marginBottom: 2 }}
           >
-            {item && item.lead && item.lead.substatus && item.lead.substatus.name} - {item.title}
+            {item && item.lead && item.lead.substatus && translateSubstatus(item.lead.substatus.name)} - {item.title}
           </Text>
         </Layout>
 

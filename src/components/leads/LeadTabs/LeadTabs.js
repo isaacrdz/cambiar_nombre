@@ -37,10 +37,10 @@ const LeadTabs = ({ route }) => {
         <Tab title="INFO" style={{ paddingVertical: 10 }}>
           <LeadsDetailInfo itemId={lead._id} />
         </Tab>
-        <Tab title="TASK" style={{ paddingVertical: 10 }}>
+        <Tab title="TAREAS" style={{ paddingVertical: 10 }}>
           <LeadDetailTask tasks={lead.comments} />
         </Tab>
-        <Tab title="HISTORY" style={{ paddingVertical: 10 }}>
+        <Tab title="HISTORIAL" style={{ paddingVertical: 10 }}>
           <LeadDetailHistory activities={lead.activities} />
         </Tab>
         {/* <Tab title="RECORD" style={{ paddingVertical: 10 }}>

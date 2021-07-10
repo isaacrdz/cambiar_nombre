@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
 import moment from 'moment'
-const data = ["Today", "Yesterday", "This Month", "Last Month"];
+const data = ["Hoy", "Ayer", "Este Mes", "Mes Anterior"];
 
 const SelectDate = ({ setDate }) => {
 
