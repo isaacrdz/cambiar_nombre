@@ -108,7 +108,7 @@ const AddAppointment = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <HeaderTitle title="Add Appointment" />
+      <HeaderTitle title="Agregar Cita" />
       <ScrollView>
         <Layout
           style={{
@@ -119,7 +119,7 @@ const AddAppointment = ({ navigation }) => {
           level="1"
         >
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            1. Leave a comment
+            1. Deja un comentario
           </Text>
           <Layout
             style={{
@@ -148,7 +148,7 @@ const AddAppointment = ({ navigation }) => {
           level="1"
         >
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            2. Leave a Description
+            2. Deja una descripción
           </Text>
           <Layout
             style={{
@@ -172,7 +172,7 @@ const AddAppointment = ({ navigation }) => {
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            3. Choose an Action
+            3. Elige una acción
           </Text>
           <Select size="large" 
             style={{ marginBottom: 10 }} 
@@ -188,7 +188,7 @@ const AddAppointment = ({ navigation }) => {
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            4. Pick up Date
+            4. Elige una Fecha
           </Text>
           <DateTimePicker
             value={date}
@@ -201,7 +201,7 @@ const AddAppointment = ({ navigation }) => {
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            5. Pick up Time
+            4. Elige una Hora
           </Text>
           <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value="Selecciona" value={displayValueTime}>
             {times.map((action, i) => (
@@ -210,7 +210,7 @@ const AddAppointment = ({ navigation }) => {
           </Select>
         </Layout>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Button style={styles.button} onPress={handleSubmit}>Create Appointment</Button>
+          <Button style={styles.button} onPress={handleSubmit}>Crear Cita</Button>
         </Layout>
       </ScrollView>
     </SafeAreaView>

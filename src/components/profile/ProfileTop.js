@@ -71,17 +71,17 @@ const ProfileTop = ({ navigation }) => {
       }}
     >
       <Text style={{ marginBottom: 25, fontSize: 19, fontWeight: "bold" }}>
-        Contact Details
+        Detalles del Contacto
       </Text>
       <Layout style={{ marginBottom: 10 }}>
-        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Email</Text>
+        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Correo</Text>
         <Text appearance="hint" style={{ marginBottom: 10 }}>
           {user.email}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
       <Layout style={{ marginBottom: 10 }}>
-        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Phone Number</Text>
+        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Teléfono</Text>
         <Text appearance="hint" style={{ marginBottom: 10 }}>
           {user.phone}
         </Text>
@@ -89,7 +89,7 @@ const ProfileTop = ({ navigation }) => {
 
       <Divider style={{ marginBottom: 25 }} />
       <Layout style={{ marginBottom: 10 }}>
-        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Store</Text>
+        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Agencia</Text>
         <Text
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
@@ -100,7 +100,7 @@ const ProfileTop = ({ navigation }) => {
       <Divider style={{ marginBottom: 25 }} />
 
       <Layout style={{ marginBottom: 10 }}>
-        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Tier</Text>
+        <Text style={{ fontWeight: "600", marginBottom: 5 }}>Rol</Text>
         <Text
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
@@ -125,7 +125,7 @@ const ProfileTop = ({ navigation }) => {
         style={{ marginBottom: 20 }}
         onPress={() => logout()}
       >
-        LOGOUT
+        Salir
       </Button>
     </Layout>
   );

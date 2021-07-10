@@ -91,7 +91,7 @@ const Leads = ({ user }) => {
     setisLoading(true);
   };
 
-  const filters = ["New", "Sold", "Visit", "Appointment", "Lead", "Assigned"];
+  const filters = ["Nuevo", "Vendido", "Visita", "Cita", "Lead", "Asignado"];
 
   return (
     <Layout>

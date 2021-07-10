@@ -64,7 +64,7 @@ const Signin = () => {
           size="large"
           onPress={() => onHandleSubmit()}
         >
-          LOGIN
+          Ingresar
         </Button>
       </Layout>
     </Layout>

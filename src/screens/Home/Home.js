@@ -8,17 +8,6 @@ import useChart from '../../hooks/useChart';
 import useAuth from '../../hooks/useAuth';
 import { CapitalizeNames } from "../../utils/Capitalize";
 
-import * as Localization from 'expo-localization';
-import i18n from 'i18n-js';
-
-i18n.translations = {
-  en: { welcome: 'Hello', name: 'Charlie' },
-  es: { welcome: 'Hola' },
-};
-
-i18n.locale = "en";
-i18n.fallbacks = true;
-
 const Home = ({}) => {
 
   const { user } = useAuth();
@@ -31,11 +20,11 @@ const Home = ({}) => {
   let greeting;
 
   if (curHr < 12) {
-    greeting = 'Good Morning';
+    greeting = 'Buenos Dias';
   } else if (curHr < 18) {
-    greeting = 'Good Afternoon';
+    greeting = 'Buenas Tardes';
   } else {
-    greeting = 'Good Evening';
+    greeting = 'Buenas Noches';
   }
 
   React.useEffect(() => {
@@ -51,12 +40,7 @@ const Home = ({}) => {
       {/* <Divider /> */}
       <Layout style={styles.subContainerText}>
         <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
-        <Text category="p1" appearance="hint" >{`You have a total of ${total} leads accumulated`}</Text>
-{/*        
-        <Text>
-        {i18n.t('welcome')} {i18n.t('name')}
-        </Text> */}
-
+        <Text category="p1" appearance="hint" >{`Tienes un total de ${total} leads acumulados`}</Text>
       </Layout>
       <Layout style={styles.subContainerCards}>
 
@@ -73,7 +57,7 @@ const Home = ({}) => {
         </Layout>
 
         <Layout style={styles.card}>
-          <Text category="p1" appearance="hint" >Appointments</Text>
+          <Text category="p1" appearance="hint" >Citas</Text>
           <Layout style={styles.data}>
             <Ionicons
               name="calendar-outline"
@@ -88,7 +72,7 @@ const Home = ({}) => {
       <Layout style={styles.subContainerCards}>
 
         <Layout style={styles.card}>
-          <Text category="p1" appearance="hint" >Visits</Text>
+          <Text category="p1" appearance="hint" >Visitas</Text>
           <Layout style={styles.data}>
             <Ionicons
               name="home-outline"
@@ -100,7 +84,7 @@ const Home = ({}) => {
         </Layout>
 
         <Layout style={styles.card}>
-          <Text category="p1" appearance="hint" >Solds</Text>
+          <Text category="p1" appearance="hint" >Ventas</Text>
           <Layout style={styles.data}>
             <Ionicons
               name="cash-outline"

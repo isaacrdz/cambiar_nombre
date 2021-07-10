@@ -17,7 +17,7 @@ const Lead = ({ navigation }) => {
     React.useCallback(() => {
       setQuery('')
      setCurrentSearch({
-      title: "All",
+      title: "Todos",
       value: "all",
       type: "all",
     })

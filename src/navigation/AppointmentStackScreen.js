@@ -11,7 +11,7 @@ const AppointmentMainStackScreen = ({ navigation }) => {
   return (
     <AppointmentMainStack.Navigator>
       <AppointmentMainStack.Screen
-        name="Appointments"
+        name="Citas"
         component={Appointment}
       />
     </AppointmentMainStack.Navigator>

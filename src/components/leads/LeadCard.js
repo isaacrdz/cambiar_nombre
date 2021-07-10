@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import moment from "moment";
 import { Icon, ListItem, Layout, Text } from "@ui-kitten/components";
+import { translateSubstatus } from '../../utils/tranlsateSubstatus';
 import { useNavigation } from "@react-navigation/native";
 
 const LeadIcon = (props) => <Icon {...props} name="user" />;
@@ -32,7 +33,7 @@ const LeadCard = ({ item }) => {
           style={styles.controlContainer}
         >
           <Text style={styles.ItemText} style={{ color: "#5764b8" }}>
-            {item.substatus.name}
+            {translateSubstatus(item.substatus.name)}
           </Text>
         </Layout>
       )}

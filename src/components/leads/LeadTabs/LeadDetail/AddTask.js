@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
+import { translateStatus, translateSubstatus } from "../../../../utils/tranlsateSubstatus";
 import {
   Layout,
   Divider,
@@ -87,19 +87,19 @@ const AddTask = ({ navigation }) => {
   const handleSubmit = async () => {
     if (text === "") {
       return Toast.show({
-        text1: "Please leave a comment",
+        text1: "Por favor deja un comentario",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length === 0) {
       return Toast.show({
-        text1: "Select at least one action",
+        text1: "Selecciona al menos una accion",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length > 3) {
       return Toast.show({
-        text1: "Select max 3 actions",
+        text1: "Selecciona máximo 3 acciones",
         type: "error",
         position: "bottom",
       });
@@ -204,7 +204,7 @@ const AddTask = ({ navigation }) => {
           item.name !== "rejected" &&
           item.name !== "visit_rejected"
         ) {
-          aux.push(item.name);
+          aux.push(translateSubstatus(item.name));
           auxIds.push(item._id);
         }
         return false;
@@ -217,7 +217,7 @@ const AddTask = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <HeaderTitle title="Add Task" />
+      <HeaderTitle title="Agregar Tarea" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Layout style={{ marginBottom: 30 }} level="1">
@@ -226,7 +226,7 @@ const AddTask = ({ navigation }) => {
               category="s1"
               style={{ marginBottom: 20 }}
             >
-              1. Leave a comment
+              1. Deja un comentario
             </Text>
             <Layout
               style={{
@@ -253,7 +253,7 @@ const AddTask = ({ navigation }) => {
               category="s1"
               style={{ marginBottom: 20 }}
             >
-              2. Choose an action
+              2. Elige una acción
             </Text>
             <Layout
               style={{
@@ -283,7 +283,7 @@ const AddTask = ({ navigation }) => {
               category="s1"
               style={{ marginBottom: 20 }}
             >
-              3. Choose status
+              3. Elige un Estatus
             </Text>
             <Layout
               level="1"
@@ -294,9 +294,9 @@ const AddTask = ({ navigation }) => {
               <Select
                 size="large"
                 style={{ marginBottom: 10 }}
-                value={lead && lead.status && lead.status.name}
+                value={lead && lead.status && translateStatus(lead.status.name)}
               >
-                <SelectItem title={lead && lead.status && lead.status.name} />
+                <SelectItem title={lead && lead.status && translateStatus(lead.status.name)} />
               </Select>
               <Select
                 size="large"
@@ -318,7 +318,7 @@ const AddTask = ({ navigation }) => {
               category="s1"
               style={{ marginBottom: 20 }}
             >
-              4. Pick up Date
+              4. Elige una Fecha
             </Text>
             <Layout
               level="1"
@@ -337,7 +337,7 @@ const AddTask = ({ navigation }) => {
           </Layout>
           <Layout>
             <Button style={styles.button} onPress={handleSubmit}>
-              Create Task
+              Crear Tarea
             </Button>
           </Layout>
         </Layout>

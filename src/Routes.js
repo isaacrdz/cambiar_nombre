@@ -71,9 +71,9 @@ const Routes = ({ token }) => {
                 iconName = focused ? "home-sharp" : "home-outline";
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";
-              } else if (route.name === "Appointments") {
+              } else if (route.name === "Citas") {
                 iconName = focused ? "time-sharp" : "time-outline";
-              } else if (route.name === "Profile") {
+              } else if (route.name === "Perfil") {
                 iconName = focused
                   ? "person-circle-sharp"
                   : "person-circle-outline";
@@ -90,8 +90,8 @@ const Routes = ({ token }) => {
         >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
-          <Tabs.Screen name="Appointments" component={AppointmentStackScreen} />
-          <Tabs.Screen name="Profile" component={ProfileStackScreen} />
+          <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
+          <Tabs.Screen name="Perfil" component={ProfileStackScreen} />
         </Tabs.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>

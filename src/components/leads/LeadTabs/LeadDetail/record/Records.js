@@ -5,7 +5,7 @@ import { Layout, Tab, TabView, Text, Icon } from "@ui-kitten/components";
 const Records = () => {
   return (
     <Layout>
-      <Text>Records</Text>
+      <Text>Grabaciones</Text>
     </Layout>
   );
 };

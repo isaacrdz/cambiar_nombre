@@ -9,6 +9,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import moment from "moment";
 
 import useLead from "../../../../hooks/useLead";
+import { translateTemperature } from "../../../../utils/tranlsateSubstatus";
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
@@ -25,7 +26,7 @@ const LeadDetailInfo = ({ itemId }) => {
     <Layout style={styles.container}>
       <Layout style={styles.ContainerDetail}>
         <Text category="p1" appearance="hint">
-          Email
+          Correo
         </Text>
 
         <Text style={styles.mr}>{lead && lead.email}</Text>
@@ -33,7 +34,7 @@ const LeadDetailInfo = ({ itemId }) => {
       <Divider />
       <Layout style={styles.ContainerDetail}>
         <Text category="p1" appearance="hint">
-          Phone Number
+          Teléfono
         </Text>
         <Text style={styles.mr}>{lead.phone}</Text>
       </Layout>
@@ -54,7 +55,7 @@ const LeadDetailInfo = ({ itemId }) => {
       <Layout style={[styles.container]}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Vehicle
+            Vehículo
           </Text>
           <Text style={[styles.mr, styles.textUppercase]}>
             {lead.vehicle && lead.vehicle.make.name}{" "}
@@ -69,7 +70,7 @@ const LeadDetailInfo = ({ itemId }) => {
       <Layout style={styles.container}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Source
+            Fuente
           </Text>
           <Text style={[styles.mr, styles.textCapitalize]}>
             {lead.source && lead.source.name}
@@ -78,7 +79,7 @@ const LeadDetailInfo = ({ itemId }) => {
         <Divider />
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Date
+            Fecha
           </Text>
           <Text style={styles.mr}>{createdAt}</Text>
         </Layout>
@@ -88,27 +89,27 @@ const LeadDetailInfo = ({ itemId }) => {
       <Layout style={{ marginBottom: 300 }}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Down Payment
+            Enganche
           </Text>
 
-          <Text style={styles.mr}>{lead.downPayment}</Text>
+          <Text style={styles.mr}>${lead.downPayment}</Text>
         </Layout>
         <Divider />
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
-            Timeframe
+            Tiempo de Compra
           </Text>
           <Text style={styles.mr}>
             {lead && lead.timeFrame && lead.timeFrame
               ? moment(moment(lead.timeFrame).format("YYYY-MM-DD")).isSame(
                   moment(0).format("YYYY-MM-DD")
                 )
-                ? "Just asking for information"
+                ? "Solo información"
                 : moment(lead.timeFrame).diff(
                     moment(lead.createdAt),
                     "months"
                   ) < 1
-                ? "1 Month or Less"
+                ? "1 Mes o Menos"
                 : moment(lead.timeFrame).diff(
                     moment(lead.createdAt),
                     "months"
@@ -117,12 +118,12 @@ const LeadDetailInfo = ({ itemId }) => {
                     moment(lead.createdAt),
                     "months"
                   ) < 2
-                ? "2 Months"
+                ? "2 Meses"
                 : moment(lead.timeFrame).diff(
                     moment(lead.createdAt),
                     "months"
                   ) >= 2
-                ? "3 Months or More"
+                ? "3 Meses o Más"
                 : "? ? ?"
               : "None"}
           </Text>
@@ -130,7 +131,7 @@ const LeadDetailInfo = ({ itemId }) => {
         <Divider />
         <Layout style={[styles.ContainerDetail]}>
           <Text category="p1" appearance="hint">
-            Temperature
+            Temperatura
           </Text>
           <Text style={[styles.mr, styles.textCapitalize]}>
             {lead.rating !== "none" && (
@@ -147,7 +148,7 @@ const LeadDetailInfo = ({ itemId }) => {
               />
             )}
 
-            {lead.rating}
+            {translateTemperature(lead.rating)}
           </Text>
         </Layout>
       </Layout>
