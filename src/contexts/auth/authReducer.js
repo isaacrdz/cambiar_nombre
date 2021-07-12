@@ -18,6 +18,14 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+        error: null
+      };
     case SET_LOADING:
       return {
         ...state,
@@ -53,6 +61,7 @@ export default (state, action) => {
         error: action.payload
       }
     case LOGIN_FAIL:
+    case REGISTER_FAIL:
     case LOGOUT:
       return {
         ...state,

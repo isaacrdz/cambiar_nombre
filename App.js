@@ -17,6 +17,7 @@ import CommentState from "./src/contexts/comment/CommentState";
 import ChartState from "./src/contexts/charts/ChartState";
 import AppointmentState from "./src/contexts/appointment/AppointmentState";
 import VisitState from "./src/contexts/visit/VisitState";
+import StoreState from "./src/contexts/store/StoreState";
 
 import Toast from "react-native-toast-message";
 
@@ -47,22 +48,24 @@ const App = () => {
         <ApplicationProvider {...eva} theme={eva[theme]}>
           <AuthState>
             <LeadState>
-              <ActivityState>
-                <StatusState>
-                  <SubstatusState>
-                    <CommentState>
-                      <ChartState>
-                        <AppointmentState>
-                          <VisitState>
-                            <Routes />
-                            <Toast ref={(ref) => Toast.setRef(ref)} />
-                          </VisitState>
-                        </AppointmentState>
-                      </ChartState>
-                    </CommentState>
-                  </SubstatusState>
-                </StatusState>
-              </ActivityState>
+              <StoreState>
+                <ActivityState>
+                  <StatusState>
+                    <SubstatusState>
+                      <CommentState>
+                        <ChartState>
+                          <AppointmentState>
+                            <VisitState>
+                              <Routes />
+                              <Toast ref={(ref) => Toast.setRef(ref)} />
+                            </VisitState>
+                          </AppointmentState>
+                        </ChartState>
+                      </CommentState>
+                    </SubstatusState>
+                  </StatusState>
+                </ActivityState>
+              </StoreState>
             </LeadState>
           </AuthState>
         </ApplicationProvider>

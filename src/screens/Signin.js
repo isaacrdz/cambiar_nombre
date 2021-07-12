@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 
 import useAuth from "../hooks/useAuth";
 
-const Signin = () => {
+const Signin = ({navigation}) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -43,7 +43,7 @@ const Signin = () => {
         <Input
           style={{ marginVertical: 2, width: "100%" }}
           size="large"
-          placeholder="Email"
+          placeholder="Correo"
           onChangeText={(email) => setEmail(email)}
           autoCapitalize="none"
         />
@@ -52,7 +52,7 @@ const Signin = () => {
         <Input
           style={{ marginVertical: 2, width: "100%" }}
           size="large"
-          placeholder="Pasword"
+          placeholder="Contraseña"
           secureTextEntry
           onChangeText={(password) => setPassword(password)}
           autoCapitalize="none"
@@ -66,6 +66,11 @@ const Signin = () => {
         >
           Ingresar
         </Button>
+      </Layout>
+      <Layout style={{ paddingHorizontal: 30, margin: 2, marginTop: 40 }}>
+        <Text category="p1" style={{ textAlign: "center" }} onPress={()=>navigation.navigate("Register")}>
+          ¿No tienes cuenta? Registrate!
+        </Text>
       </Layout>
     </Layout>
   );

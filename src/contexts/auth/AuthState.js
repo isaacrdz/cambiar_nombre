@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import {
   REGISTER_SUCCESS,
+  REGISTER,
   USER_LOADED,
   LOGIN_SUCCESS,
   LOGOUT,
@@ -35,6 +36,28 @@ const AuthState = (async = (props) => {
 
   // const clearState = () => dispatch({ type: CLEAR_STATE });
   const clearError = () => dispatch({ type: SET_ERROR })
+ 
+  const register = async values => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await api.post('/auth/register', values, config);
+      await AsyncStorage.setItem("token", res.data.token);
+
+      dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+
+      loadUser();
+    } catch (err) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: err.response.data
+      });
+    }
+  };
 
   //Update profile
   const updateProfile = async (values, type) => {
@@ -85,6 +108,7 @@ const AuthState = (async = (props) => {
 
   //Set Current User
   const loadUser = async () => {
+    console.log('aca es loadUser')
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -147,7 +171,8 @@ const AuthState = (async = (props) => {
         login,
         loadUser,
         logout,
-        updateProfile
+        updateProfile,
+        register
       }}
     >
       {props.children}

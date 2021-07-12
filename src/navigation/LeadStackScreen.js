@@ -85,6 +85,7 @@ const LeadStackScreen = () => (
     <LeadStack.Screen name="LeadMain" component={LeadMainStackScreen} />
     <LeadStack.Screen name="AddTask" component={AddTask} />
     <LeadStack.Screen name="AddAppointment" component={AddAppointment} />
+    {/* <LeadStack.Screen name="AddLead" component={AddAppointment} /> */}
   </LeadStack.Navigator>
 );
 
