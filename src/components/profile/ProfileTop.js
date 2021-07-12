@@ -54,10 +54,10 @@ const ProfileTop = ({ navigation }) => {
               marginBottom: 5,
             }}
           >
-            {user.name}
+            {user && user.name}
           </Text>
           <Text appearance="hint" style={{ textTransform: "capitalize" }}>
-            {user.job}
+            {user && user.job}
           </Text>
         </Layout>
       </Layout>
@@ -76,14 +76,14 @@ const ProfileTop = ({ navigation }) => {
       <Layout style={{ marginBottom: 10 }}>
         <Text style={{ fontWeight: "600", marginBottom: 5 }}>Correo</Text>
         <Text appearance="hint" style={{ marginBottom: 10 }}>
-          {user.email}
+          {user && user.email}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
       <Layout style={{ marginBottom: 10 }}>
         <Text style={{ fontWeight: "600", marginBottom: 5 }}>Teléfono</Text>
         <Text appearance="hint" style={{ marginBottom: 10 }}>
-          {user.phone}
+          {user && user.phone}
         </Text>
       </Layout>
 
@@ -105,7 +105,7 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {user.role}
+          {user && user.role}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
