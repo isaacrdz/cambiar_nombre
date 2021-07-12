@@ -115,12 +115,12 @@ const AppointmentDetail = ({ route, navigation }) => {
 
     if(state === true){
       return (
-        <DateTimePicker
-        value={currentAppointment.startDate}
-        mode="date"
-        display="spinner"
-        onChange={onChangeAndroid}
-        />
+          <DateTimePicker
+          value={currentAppointment.startDate}
+          mode="date"
+          display="spinner"
+          onChange={onChangeAndroid}
+          />
       )
     }
   }
@@ -186,7 +186,6 @@ const AppointmentDetail = ({ route, navigation }) => {
     }, [])
   );
 
-
   useFocusEffect(
     React.useCallback(() => {
       if (substatuses && currentAppointment && currentAppointment.lead) {
@@ -247,11 +246,10 @@ const AppointmentDetail = ({ route, navigation }) => {
   };
 
   const onChangeAndroid = (event, selectedDate) => {
+    setOpen(false);
     if (selectedDate !== undefined) {
       setCurrentAppointment({...currentAppointment, startDate: selectedDate});
-      console.log(selectedDate)
     }
-    setOpen(false);
   };
 
   return (
@@ -356,7 +354,12 @@ const AppointmentDetail = ({ route, navigation }) => {
               level="1"
             >
               <Text category="s1" style={{ marginBottom: 10 }}>
-                Fecha de Inicio
+                {
+                  Platform.OS === 'android' ? 
+                  `Fecha de Inicio: ${currentAppointment && currentAppointment.startDate && moment(currentAppointment.startDate).format('DD, MMMM YYYY')}` :
+                  `Fecha de Inicio`
+                }
+                
               </Text>
               {
                 Platform.OS === 'ios' &&
@@ -372,8 +375,7 @@ const AppointmentDetail = ({ route, navigation }) => {
                 <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
               }
               {
-                Platform.OS === 'android' &&
-                renderAndroidPicker(open)
+                Platform.OS === 'android' && renderAndroidPicker(open)
               }
               
             </Layout>
