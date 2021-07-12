@@ -51,3 +51,27 @@ export const GET_VISIT = 'GET_VISIT';
 export const CREATE_VISIT = 'CREATE_VISIT';
 export const DELETE_VISIT = 'DELETE_VISIT';
 export const UPDATE_VISIT = 'UPDATE_VISIT';
+
+// Sources
+export const GET_SOURCES = 'GET_SOURCES';
+export const GET_SOURCE = 'GET_SOURCE';
+export const CREATE_SOURCE = 'CREATE_SOURCE';
+export const DELETE_SOURCE = 'DELETE_SOURCE';
+export const UPDATE_SOURCE = 'UPDATE_SOURCE';
+
+// Companies
+export const GET_COMPANIES = 'GET_COMPANIES';
+export const GET_COMPANY = 'GET_COMPANY';
+export const CREATE_COMPANY = 'CREATE_COMPANY';
+export const DELETE_COMPANY = 'DELETE_COMPANY';
+export const UPDATE_COMPANY = 'UPDATE_COMPANY';
+
+// Mail Marketing
+export const CREATE_LIST = 'CREATE_LIST';
+export const GET_LISTS = 'GET_LISTS';
+export const GET_LIST = 'GET_LIST';
+export const UPDATE_LIST = 'UPDATE_LIST';
+export const DELETE_LIST = 'DELETE_LIST';
+export const GET_CONTACTS_BY_LIST = 'GET_CONTACTS_BY_LIST';
+export const GET_CAMPAIGNS_BY_LIST = 'GET_CAMPAIGNS_BY_LIST';
+export const GET_LIST_BY_STORE = 'GET_LIST_BY_STORE';

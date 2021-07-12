@@ -8,6 +8,7 @@ import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
 import { Icon } from "@ui-kitten/components";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
+import AddLead from "../components/leads/AddLead";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
@@ -18,22 +19,22 @@ const LeadMainStackScreen = ({ navigation }) => {
       <LeadMainStack.Screen
         name="Leads"
         component={Lead}
-        // options={{
-        //   headerRight: () => (
-        //     <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        //       <Icon
-        //         style={{
-        //           width: 25,
-        //           height: 25,
-        //           marginRight: 20,
-        //           color: "#5764b8",
-        //         }}
-        //         fill="#5e72e4"
-        //         name="settings"
-        //       />
-        //     </TouchableOpacity>
-        //   ),
-        // }}
+        options={{
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
+              <Icon
+                style={{
+                  width: 25,
+                  height: 25,
+                  marginRight: 20,
+                  color: "#5764b8",
+                }}
+                fill="#5e72e4"
+                name="plus-circle"
+              />
+            </TouchableOpacity>
+          ),
+        }}
       />
       <LeadMainStack.Screen
         name="LeadDetail"
@@ -85,7 +86,7 @@ const LeadStackScreen = () => (
     <LeadStack.Screen name="LeadMain" component={LeadMainStackScreen} />
     <LeadStack.Screen name="AddTask" component={AddTask} />
     <LeadStack.Screen name="AddAppointment" component={AddAppointment} />
-    {/* <LeadStack.Screen name="AddLead" component={AddAppointment} /> */}
+    <LeadStack.Screen name="AddLead" component={AddLead} />
   </LeadStack.Navigator>
 );
 

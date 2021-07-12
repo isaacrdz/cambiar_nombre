@@ -108,7 +108,6 @@ const AuthState = (async = (props) => {
 
   //Set Current User
   const loadUser = async () => {
-    console.log('aca es loadUser')
     const config = {
       headers: {
         "Content-Type": "application/json",
