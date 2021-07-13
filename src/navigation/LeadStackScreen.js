@@ -9,6 +9,7 @@ import { Icon } from "@ui-kitten/components";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
 import AddLead from "../components/leads/AddLead";
+import SendDocumentation from "../components/leads/documentation/SendDocumentation";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
@@ -87,6 +88,7 @@ const LeadStackScreen = () => (
     <LeadStack.Screen name="AddTask" component={AddTask} />
     <LeadStack.Screen name="AddAppointment" component={AddAppointment} />
     <LeadStack.Screen name="AddLead" component={AddLead} />
+    <LeadStack.Screen name="SendDocumentation" component={SendDocumentation} />
   </LeadStack.Navigator>
 );
 

@@ -86,14 +86,15 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            createActivity({
-              action: "mailing",
-              description: `${CapitalizeNames(
-                user.name
-              )} has sent an email from mobile App`,
-              lead: item._id,
-            });
-            Linking.openURL(`mailto: ${item.email}`);
+            // createActivity({
+            //   action: "mailing",
+            //   description: `${CapitalizeNames(
+            //     user.name
+            //   )} has sent an email from mobile App`,
+            //   lead: item._id,
+            // });
+            navigation.navigate('SendDocumentation')
+            // Linking.openURL(`mailto: ${item.email}`);
           }}
         >
           <Ionicons name="mail-outline" size={30} color="#535de2" />

@@ -50,7 +50,7 @@ const contactedStatus = [
 
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
-
+  const [open, setOpen] = useState(false)
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
   const { createComment, updateComment } = useComment();
@@ -70,6 +70,27 @@ const AddTask = ({ navigation }) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
+  };
+
+  const renderAndroidPicker = (state) => {
+
+    if(state === true){
+      return (
+          <DateTimePicker
+          value={date}
+          mode="date"
+          display="spinner"
+          onChange={onChangeAndroid}
+          />
+      )
+    }
+  }
+
+  const onChangeAndroid = (event, selectedDate) => {
+    setOpen(false);
+    if (selectedDate !== undefined) {
+      setDate(selectedDate);
+    }
   };
 
   const showMode = (currentMode) => {
@@ -326,13 +347,40 @@ const AddTask = ({ navigation }) => {
                 minHeight: 256,
               }}
             >
-              <DateTimePicker
+                {
+                   <Text
+                   style={styles.text}
+                   category="s1"
+                   style={{ marginBottom: 20 }}
+                  >
+                    {`Fecha: ${date && moment(date).format('DD, MMMM YYYY')}`}
+                  </Text>
+
+                }
+               {
+                Platform.OS === 'ios' &&
+                <DateTimePicker
+                  value={date}
+                  mode="datetime"
+                  onChange={onChange}
+                  display="spinner"
+                />
+              }
+              {
+                Platform.OS === 'android' &&
+                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
+              }
+              {
+                Platform.OS === 'android' && open && renderAndroidPicker(open)
+              }
+
+              {/* <DateTimePicker
                 value={date}
                 mode={Platform.OS === "ios" ? "datetime" : "date"}
                 display="default"
                 onChange={onChange}
                 display="spinner"
-              />
+              /> */}
             </Layout>
           </Layout>
           <Layout>

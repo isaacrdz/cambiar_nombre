@@ -51,13 +51,13 @@ const Routes = ({ token }) => {
         Notifications.removeNotificationSubscription(responseListener.current);
       };
     }
+  Notifications.setBadgeCountAsync(0);
+
   }, [user]);
 
   React.useEffect(() => {
     loadUser();
   }, []);
-
-  Notifications.setBadgeCountAsync(0);
 
   return (
     <NavigationContainer>
