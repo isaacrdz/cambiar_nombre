@@ -10,7 +10,8 @@ import {
   SET_LOADING,
   SET_ERROR,
   CLEAR_CURRENT_LEAD,
-  UPDATE_LEAD
+  UPDATE_LEAD,
+  CREATE_LEAD
 } from "../types";
 
 const LeadState = (props) => {
@@ -23,6 +24,8 @@ const LeadState = (props) => {
   };
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
+
+  const clearError = () => dispatch({ type: SET_ERROR })
 
   const clearCurrentLead = () => dispatch({ type: CLEAR_CURRENT_LEAD });
 
@@ -42,6 +45,24 @@ const LeadState = (props) => {
         dispatch({ type: SET_ERROR, payload: err.response.data });
       }
     };
+
+  //Create Lead
+  const createLead = async lead => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    clearState();
+    setLoading();
+    try {
+      const res = await api.post(`/leads`, { ...lead }, config);
+      dispatch({ type: CREATE_LEAD, payload: res.data.data });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
+    }
+  };
 
   const getLeads = async (pageCurrent, userId, {type, value}, query) => {
     setLoading();
@@ -112,7 +133,9 @@ const LeadState = (props) => {
         getLeads,
         getLead,
         clearCurrentLead,
-        updateLead
+        updateLead,
+        clearError,
+        createLead
       }}
     >
       {props.children}

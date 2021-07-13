@@ -1,10 +1,10 @@
 export const justLetters = (value) => {
-    let regex = new RegExp("^[a-zA-Z]+$");
+    let regex = new RegExp(/^[a-zA-Z\s]*$/);
     return regex.test(value);
 }
 
 export const justNumbers = (value) => {
-    let regex = new RegExp('^[0-9]+$');
+    let regex = new RegExp(/^[0-9]+$/);
     return regex.test(value);
 }
 
@@ -14,11 +14,11 @@ export const isEmail = (value) => {
 }
 
 export const isPhoneNumber = (value) => {
-    let regex = new RegExp('^\d{10}$');
+    let regex = new RegExp(/^[0-9]{10}$/);
     return regex.test(value);
 }
 
 export const isYear = (value) => {
-    let regex = new RegExp('^\d{4}$');
+    let regex = new RegExp(/^[0-9]{4}$/);
     return regex.test(value);
 }

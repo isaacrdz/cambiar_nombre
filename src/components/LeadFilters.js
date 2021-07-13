@@ -43,7 +43,7 @@ const filters = [
 ]
 
 
-const LeadFilters = ({ setPage, setCurrent, current }) => {
+const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
 
   const { clearState } = useLead();
 
@@ -65,6 +65,11 @@ const LeadFilters = ({ setPage, setCurrent, current }) => {
               </Layout>
             }
             onPress={() => {
+              if(item.type === 'all'){
+                setButtonAll(true)
+              }else{
+                setButtonAll(false)
+              }
               if(item !== current){
                 clearState();
                 setPage(1);

@@ -18,7 +18,7 @@ import _ from "lodash";
 import moment from "moment";
 import HeaderTitle from "../header/HeaderTitle";
 import { useFocusEffect } from "@react-navigation/native";
-import { justNumbers } from "../../utils/Validations";
+import { isEmail, isPhoneNumber, isYear, justLetters, justNumbers } from "../../utils/Validations";
 import { CapitalizeNames } from "../../utils/Capitalize";
 
 // Rockstar
@@ -40,11 +40,17 @@ const AddLead = ({ navigation }) => {
     const { sources, getSources } = useSource();
     const { companies, getCompanies } = useCompany();
     const { lists, getListsByStore } = useList();
+    const { createLead, error, clearError } = useLead();
 
     //CarType
     const carTypes = ["Nuevo", "Seminuevo"];
     const [carTypeSelect, setCarTypeSelect] = useState(new IndexPath(0))
     const displayCarType = carTypes[carTypeSelect.row];
+
+    //Stores
+    const [tiendas, setTiendas] = useState([""]);
+    const [storeSelect, setStoreSelect] = useState(new IndexPath(0))
+    const displayStore = tiendas[storeSelect.row];
 
     //Models
     const [models, setModels] = useState([""]);
@@ -75,24 +81,117 @@ const AddLead = ({ navigation }) => {
         name: '',
         email: '',
         phone: '',
-        carType: 'nuevo',
-        store: '',
-        model: '',
         year: '',
-        downPayment: 0,
-        timeFrame: '',
-        company: '',
-        list: '',
+        downPayment: '',
         comment: ''
     })
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
+        
+        if(!justLetters(currentLead.name)){
+            return Toast.show({
+                text1: "Agrega un nombre válido.",
+                type: "error",
+                position: "bottom",
+              });
+        }
 
-        return Toast.show({
-            text1: "Aun no crea el lead, estoy haciendo las validaciones de los campos",
-            type: "error",
-            position: "bottom",
-          });
+        if(!isEmail(currentLead.email)){
+            return Toast.show({
+                text1: "Agrega un correo válido. Ejemplo@ejemplo.com",
+                type: "error",
+                position: "bottom",
+              });
+        }
+
+        if(!isPhoneNumber(currentLead.phone)){
+            return Toast.show({
+                text1: "Agrega un numero de teléfono válido (10 Digitos).",
+                type: "error",
+                position: "bottom",
+              });
+        }
+
+        if(!isYear(currentLead.year)){
+            return Toast.show({
+                text1: "Agrega un año válido.",
+                type: "error",
+                position: "bottom",
+              });
+        }
+
+        if(!justNumbers(currentLead.downPayment)){
+            return Toast.show({
+                text1: "Agrega un enganche válido.",
+                type: "error",
+                position: "bottom",
+              });
+        }
+
+        let data = {
+            name: currentLead.name,
+            email: currentLead.email,
+            phone: currentLead.phone,
+            carType: displayCarType,
+            store: user.stores[storeSelect.row]._id,
+            vehicle: vehicles[modelSelect.row]._id,
+            year: currentLead.year,
+            downPayment: currentLead.downPayment,
+            source: sources[fuentesSelect.row]._id,
+            agent: user._id
+        }
+
+        let timeFrame = new Date();
+
+        if(timeframeSelect.row === 0){
+            timeFrame = moment(0).format();
+
+        }else if(timeframeSelect.row === 1){
+            timeFrame = moment(timeFrame).add(1, 'month');
+
+        }else if(timeframeSelect.row === 2){
+            timeFrame = moment(timeFrame).add(2, 'months');
+
+        }else if(timeframeSelect.row === 3){
+            timeFrame = moment(timeFrame).add(3, 'months');
+
+        }
+
+        data.timeFrame = timeFrame;
+
+        if(companySelect.row !== 0){
+            data.company = companies[companySelect.row - 1]._id;
+        }
+
+        if(listaSelect.row !== 0){
+            data.lists = [lists[listaSelect.row - 1]._id];
+        }
+
+        if(currentLead.comment !== ""){
+            data.comment = currentLead.comment;
+        }
+
+        await createLead(data);
+
+        if(error){
+            Toast.show({
+                text1: error,
+                type: "error",
+                position: "bottom"
+            });
+        
+            setTimeout(() => clearError(), 2000);
+        }else{
+            Toast.show({
+                text1: "Lead Creado",
+                type: "success",
+                position: "bottom"
+            });
+
+            navigation.pop();
+
+        }
+
     }
 
     //Esto servira si metemos rockstar
@@ -114,6 +213,14 @@ const AddLead = ({ navigation }) => {
     );
 
     useEffect(()=>{
+        if(user.stores){
+            let aux = [];
+            user.stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)))
+            setTiendas(aux);
+        }
+    },[user])
+
+    useEffect(()=>{
         if(vehicles){
             let aux = [];
             vehicles.map(item => aux.push(CapitalizeNames(item.model)))
@@ -131,7 +238,7 @@ const AddLead = ({ navigation }) => {
 
     useEffect(()=>{
         if(companies){
-            let aux = [];
+            let aux = ["Selecciona una compañía"];
             companies.map(item => aux.push(CapitalizeNames(item.name)))
             setcompanias(aux);
         }
@@ -139,7 +246,7 @@ const AddLead = ({ navigation }) => {
 
     useEffect(()=>{
         if(lists){
-            let aux = [""];
+            let aux = ["Selecciona una lista"];
             lists.map(item => aux.push(CapitalizeNames(item.name)))
             setListas(aux);
         }
@@ -230,14 +337,14 @@ const AddLead = ({ navigation }) => {
                     <Select
                         size="large"
                         style={{ marginBottom: 10 }}
-                        disabled={user && user.role && (user.role === 'user' || user.role === 'admin')}
-                        onSelect={(index)=>setCarTypeSelect(index)}
-                        value={user && user.stores && user.stores[0] && CapitalizeNames(user.stores[0].make.name + ' ' + user.stores[0].name)}
+                        disabled={user && user.stores && user.stores.length <= 1}
+                        onSelect={(index)=>setStoreSelect(index)}
+                        value={displayStore}
                     >
-                        {/*Rockstar*
                         {
-                            stores.map(item => <SelectItem title={CapitalizeNames(item.make.name + ' ' + item.name)} />)
-                        } */}
+                            tiendas.map(item => <SelectItem title={CapitalizeNames(item)} key={item} />)
+                        }
+                       
                     </Select>
                 </Layout>
                 <Layout style={{ marginBottom: 20 }} level="1">
@@ -368,8 +475,8 @@ const AddLead = ({ navigation }) => {
                         placeholder="Comentario"
                         textStyle={{ minHeight: 64 }}
                         style={{ minWidth: 400 }}
-                        value={currentLead.description}
-                        onChangeText={(comment) => setCurrentLead({...currentLead, description: comment})}
+                        value={currentLead.comment}
+                        onChangeText={(comment) => setCurrentLead({...currentLead, comment: comment})}
                     />
                 </Layout>
                 <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
