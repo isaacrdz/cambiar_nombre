@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import VehicleContext from "./vehicleContext";
 import VehicleReducer from "./vehicleReducer";
 import api from "../../api/api";
+import AsyncStorage from "@react-native-community/async-storage";
 import {
   GET_VEHICLES,
   GET_VEHICLES_BY_MAKE,
@@ -65,7 +66,7 @@ const VehicleState = (props) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
     clearState();
@@ -83,7 +84,7 @@ const VehicleState = (props) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
     clearState();
@@ -105,7 +106,7 @@ const VehicleState = (props) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
     clearState();

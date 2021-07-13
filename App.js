@@ -17,6 +17,11 @@ import CommentState from "./src/contexts/comment/CommentState";
 import ChartState from "./src/contexts/charts/ChartState";
 import AppointmentState from "./src/contexts/appointment/AppointmentState";
 import VisitState from "./src/contexts/visit/VisitState";
+import StoreState from "./src/contexts/store/StoreState";
+import VehicleState from "./src/contexts/vehicle/VehicleState";
+import SourceState from "./src/contexts/source/SourceState";
+import CompanyState from "./src/contexts/company/CompanyState";
+import ListState from "./src/contexts/list/ListState";
 
 import Toast from "react-native-toast-message";
 
@@ -47,22 +52,32 @@ const App = () => {
         <ApplicationProvider {...eva} theme={eva[theme]}>
           <AuthState>
             <LeadState>
-              <ActivityState>
-                <StatusState>
-                  <SubstatusState>
-                    <CommentState>
-                      <ChartState>
-                        <AppointmentState>
-                          <VisitState>
-                            <Routes />
-                            <Toast ref={(ref) => Toast.setRef(ref)} />
-                          </VisitState>
-                        </AppointmentState>
-                      </ChartState>
-                    </CommentState>
-                  </SubstatusState>
-                </StatusState>
-              </ActivityState>
+              <CompanyState>
+                <ListState>
+                  <VehicleState>
+                    <SourceState>
+                      <StoreState>
+                        <ActivityState>
+                          <StatusState>
+                            <SubstatusState>
+                              <CommentState>
+                                <ChartState>
+                                  <AppointmentState>
+                                    <VisitState>
+                                      <Routes />
+                                      <Toast ref={(ref) => Toast.setRef(ref)} />
+                                    </VisitState>
+                                  </AppointmentState>
+                                </ChartState>
+                              </CommentState>
+                            </SubstatusState>
+                          </StatusState>
+                        </ActivityState>
+                      </StoreState>
+                    </SourceState>
+                  </VehicleState>
+                </ListState>
+              </CompanyState>
             </LeadState>
           </AuthState>
         </ApplicationProvider>

@@ -157,7 +157,7 @@ const AddAppointment = ({ navigation }) => {
           >
             <Input
               multiline={true}
-              placeholder="Multiline"
+              placeholder="Descripción"
               textStyle={{ minHeight: 64 }}
               style={{ minWidth: 400 }}
               value={values.description}
