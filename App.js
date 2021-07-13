@@ -22,8 +22,10 @@ import VehicleState from "./src/contexts/vehicle/VehicleState";
 import SourceState from "./src/contexts/source/SourceState";
 import CompanyState from "./src/contexts/company/CompanyState";
 import ListState from "./src/contexts/list/ListState";
+import DocumentState from "./src/contexts/document/DocumentState";
 
 import Toast from "react-native-toast-message";
+import MailState from "./src/contexts/mail/MailState";
 
 // import i18n from 'i18n-js';
 // import en from './src/lan/en';
@@ -52,32 +54,36 @@ const App = () => {
         <ApplicationProvider {...eva} theme={eva[theme]}>
           <AuthState>
             <LeadState>
-              <CompanyState>
-                <ListState>
-                  <VehicleState>
-                    <SourceState>
-                      <StoreState>
-                        <ActivityState>
-                          <StatusState>
-                            <SubstatusState>
-                              <CommentState>
-                                <ChartState>
-                                  <AppointmentState>
-                                    <VisitState>
-                                      <Routes />
-                                      <Toast ref={(ref) => Toast.setRef(ref)} />
-                                    </VisitState>
-                                  </AppointmentState>
-                                </ChartState>
-                              </CommentState>
-                            </SubstatusState>
-                          </StatusState>
-                        </ActivityState>
-                      </StoreState>
-                    </SourceState>
-                  </VehicleState>
-                </ListState>
-              </CompanyState>
+              <DocumentState>
+                <CompanyState>
+                  <ListState>
+                    <MailState>
+                      <VehicleState>
+                        <SourceState>
+                          <StoreState>
+                            <ActivityState>
+                              <StatusState>
+                                <SubstatusState>
+                                  <CommentState>
+                                    <ChartState>
+                                      <AppointmentState>
+                                        <VisitState>
+                                          <Routes />
+                                          <Toast ref={(ref) => Toast.setRef(ref)} />
+                                        </VisitState>
+                                      </AppointmentState>
+                                    </ChartState>
+                                  </CommentState>
+                                </SubstatusState>
+                              </StatusState>
+                            </ActivityState>
+                          </StoreState>
+                        </SourceState>
+                      </VehicleState>
+                    </MailState>
+                  </ListState>
+                </CompanyState>
+              </DocumentState>
             </LeadState>
           </AuthState>
         </ApplicationProvider>

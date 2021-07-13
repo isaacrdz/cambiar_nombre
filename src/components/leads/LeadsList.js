@@ -21,6 +21,7 @@ const LeadsList = ({
   const { getLeads, leads, loading, clearState, leadsSize } = useLead();
 
   const [size, setSize] = useState(0)
+  const [buttonAll, setButtonAll] = useState(false)
 
   React.useEffect(()=>{
     setSize(leadsSize)
@@ -38,7 +39,7 @@ const LeadsList = ({
   );
 
   React.useEffect(() => {
-    if(pageCurrent !== 1 || currentSearch || search){
+    if(pageCurrent !== 1 || search !== '' || buttonAll){
       if(leadsSize !== 0){
 
         getLeads(pageCurrent, user._id, currentSearch, query);
@@ -51,7 +52,6 @@ const LeadsList = ({
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        clearState()
         setpageCurrent(1)
       }
     }, [])
@@ -79,6 +79,7 @@ const LeadsList = ({
         setCurrent={setCurrentSearch}
         id={user._id}
         current={currentSearch}
+        setButtonAll={setButtonAll}
       />
       <Layout>
         <List

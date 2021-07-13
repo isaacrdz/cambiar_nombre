@@ -62,7 +62,6 @@ const Register = ({navigation}) => {
       name
     };
 
-    console.log('register', data)
     register(data);
   };
 

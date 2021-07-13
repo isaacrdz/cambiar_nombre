@@ -365,7 +365,7 @@ const AppointmentDetail = ({ route, navigation }) => {
                 Platform.OS === 'ios' &&
                 <DateTimePicker
                   value={currentAppointment.startDate}
-                  mode="ios"
+                  mode="datetime"
                   onChange={onChange}
                   display="spinner"
                 />
