@@ -20,11 +20,11 @@ export const translateSubstatus = (value) => {
     translatedValue = translatedValue.replace("reschedule", "Reagendada")
     translatedValue = translatedValue.replace("visited", "Visita Exitosa")
     translatedValue = translatedValue.replace("visit_tracking", "Seguimiento")
+    translatedValue = translatedValue.replace("confirmed", "Confirmada")
     translatedValue = translatedValue.replace("confirm", "Confirmada")
     translatedValue = translatedValue.replace("callagain", "Llamar de nuevo")
     translatedValue = translatedValue.replace("followup", "Seguimiento")
     translatedValue = translatedValue.replace("new", "Nuevo")
-    translatedValue = translatedValue.replace("confirmed", "Confirmada")
     return translatedValue;
 }
 

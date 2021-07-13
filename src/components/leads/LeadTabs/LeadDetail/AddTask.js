@@ -27,7 +27,7 @@ import useLead from "../../../../hooks/useLead";
 import useAuth from "../../../../hooks/useAuth";
 import useComment from "../../../../hooks/useComment";
 import _ from "lodash";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import HeaderTitle from "../../../header/HeaderTitle";
 
 const contactedStatus = [
@@ -50,6 +50,8 @@ const contactedStatus = [
 
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
+  const [hour, setHour] = useState(new Date());
+  const [finalDate, setFinalDate] = useState('')
   const [open, setOpen] = useState(false)
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
@@ -65,6 +67,7 @@ const AddTask = ({ navigation }) => {
 
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  moment.locale('es-mx')
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -76,15 +79,34 @@ const AddTask = ({ navigation }) => {
 
     if(state === true){
       return (
+        <>
           <DateTimePicker
-          value={date}
-          mode="date"
-          display="spinner"
-          onChange={onChangeAndroid}
+            value={hour}
+            mode="time"
+            display="spinner"
+            onChange={onChangeAndroidHour}
           />
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="spinner"
+            onChange={onChangeAndroid}
+          />
+        </>
       )
     }
   }
+
+  const onChangeAndroidHour = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      let finalDate = date.toString().split(' ')
+      let finalHour = selectedTime.toString().split(' ')
+
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setHour(selectedTime);
+      setFinalDate(postDate)
+    }
+  };
 
   const onChangeAndroid = (event, selectedDate) => {
     setOpen(false);
@@ -153,7 +175,7 @@ const AddTask = ({ navigation }) => {
         comment: text,
         user: userId,
         action: selectedActions,
-        reschedule: moment(date).format(),
+        reschedule: moment(finalDate).format(),
       };
 
       if (author !== "") {
@@ -347,16 +369,19 @@ const AddTask = ({ navigation }) => {
                 minHeight: 256,
               }}
             >
-                {
-                   <Text
-                   style={styles.text}
-                   category="s1"
-                   style={{ marginBottom: 20 }}
-                  >
-                    {`Fecha: ${date && moment(date).format('DD, MMMM YYYY')}`}
-                  </Text>
-
-                }
+             
+                  <Text
+                  style={styles.text}
+                  category="s1"
+                  style={{ marginBottom: 20 }}
+                >
+                  
+                  {
+                    Platform.OS === 'android' ? 
+                    `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - HH:MM a')}` :
+                    `Fecha`
+                  } 
+                </Text>
                {
                 Platform.OS === 'ios' &&
                 <DateTimePicker
@@ -381,12 +406,12 @@ const AddTask = ({ navigation }) => {
                 onChange={onChange}
                 display="spinner"
               /> */}
+            <Layout>
+              <Button style={styles.button} onPress={handleSubmit}>
+                Crear Tarea
+              </Button>
             </Layout>
-          </Layout>
-          <Layout>
-            <Button style={styles.button} onPress={handleSubmit}>
-              Crear Tarea
-            </Button>
+            </Layout>
           </Layout>
         </Layout>
       </ScrollView>

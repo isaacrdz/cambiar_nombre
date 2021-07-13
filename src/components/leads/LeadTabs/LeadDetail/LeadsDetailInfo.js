@@ -3,16 +3,17 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 
 import { Layout, Divider, Text, Button, Icon } from "@ui-kitten/components";
-import NumberFormat from "react-number-format";
+import numeral from 'numeral';
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 
 import useLead from "../../../../hooks/useLead";
 import { translateTemperature } from "../../../../utils/tranlsateSubstatus";
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
+  moment.locale("es-mx");
 
   useEffect(() => {
     getLead(itemId);
@@ -20,7 +21,7 @@ const LeadDetailInfo = ({ itemId }) => {
     return () => clearCurrentLead();
   }, []);
 
-  const createdAt = moment(lead.createdAt).format("MMMM D, YYYY ");
+  const createdAt = moment(lead.createdAt).format("DD MMMM YYYY ");
 
   const leadInformation = () => (
     <Layout style={styles.container}>
@@ -91,8 +92,7 @@ const LeadDetailInfo = ({ itemId }) => {
           <Text category="p1" appearance="hint">
             Enganche
           </Text>
-
-          <Text style={styles.mr}>${lead.downPayment}</Text>
+          <Text style={styles.mr}>${numeral(lead.downPayment).format('0,0')}</Text>
         </Layout>
         <Divider />
         <Layout style={styles.ContainerDetail}>

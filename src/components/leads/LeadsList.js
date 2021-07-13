@@ -29,18 +29,17 @@ const LeadsList = ({
 
   useFocusEffect(
     React.useCallback(() => {
-      if(pageCurrent === 1){
         if(leadsSize !== 0){
-          clearState()
-          getLeads(pageCurrent, user._id, currentSearch, query);
+          getLeads(1, user._id, currentSearch, query);
         }
-      }
     }, [])
   );
 
   React.useEffect(() => {
     if(pageCurrent !== 1 || search !== '' || buttonAll){
       if(leadsSize !== 0){
+        console.log('effect')
+        clearState();
 
         getLeads(pageCurrent, user._id, currentSearch, query);
       }
@@ -52,7 +51,7 @@ const LeadsList = ({
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        setpageCurrent(1)
+        clearState();
       }
     }, [])
   );

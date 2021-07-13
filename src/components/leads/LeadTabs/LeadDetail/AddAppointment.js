@@ -27,6 +27,8 @@ const AddAppointment = ({ navigation }) => {
   const { lead, updateLead } = useLead(); 
   const { user } = useAuth(); 
   const [date, setDate] = useState(new Date());
+  const [finalDate, setFinalDate] = useState('');
+  const [hour, setHour] = useState(new Date());
   const [selectedAction, setSelectedAction] = useState(new IndexPath(0));
   const actions = ["information", "documentation", "driving test"];
   const times = ["1 Hora", "2 Horas"];
@@ -35,6 +37,7 @@ const AddAppointment = ({ navigation }) => {
   const displayValueTime = times[time.row];
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [values, setValues] = useState({
     title: '',
@@ -49,7 +52,7 @@ const AddAppointment = ({ navigation }) => {
         position: "bottom",
       });
     }
-    let endDate = moment(date).add((time.row + 1), 'hours');
+    let endDate = moment(finalDate).add((time.row + 1), 'hours');
 
     ////
     let BodyComment = {
@@ -68,7 +71,7 @@ const AddAppointment = ({ navigation }) => {
 
     await createAppointment({
       ...values, 
-      startDate: date, 
+      startDate: finalDate, 
       endDate, 
       action: displayValue, 
       substatus: "605bd6b0bed49524ae40f885", 
@@ -104,6 +107,47 @@ const AddAppointment = ({ navigation }) => {
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
+  };
+
+  const renderAndroidPicker = (state) => {
+
+    if(state === true){
+      return (
+        <>
+          <DateTimePicker
+            value={hour}
+            mode="time"
+            display="spinner"
+            onChange={onChangeAndroidHour}
+          />
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="spinner"
+            onChange={onChangeAndroid}
+          />
+        </>
+      )
+    }
+  }
+
+  const onChangeAndroidHour = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      let finalDate = date.toString().split(' ')
+      let finalHour = selectedTime.toString().split(' ')
+
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setHour(selectedTime);
+      setFinalDate(postDate)
+    }
+  };
+
+
+  const onChangeAndroid = (event, selectedDate) => {
+    setOpen(false);
+    if (selectedDate !== undefined) {
+      setDate(selectedDate);
+    }
   };
 
   return (
@@ -190,18 +234,38 @@ const AddAppointment = ({ navigation }) => {
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
             4. Elige una Fecha
           </Text>
-          <DateTimePicker
-            value={date}
-            mode={Platform.OS === "ios" ? "datetime" : "date"}
-            display="default"
-            onChange={onChange}
-            display="spinner"
-          />
+          <Text
+            style={styles.text}
+            category="s1"
+            style={{ marginBottom: 20 }}
+          >
+            {
+              Platform.OS === 'android' ? 
+              `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - HH:MM a')}` :
+              `Fecha`
+            } 
+          </Text>
+            {
+              Platform.OS === 'ios' &&
+              <DateTimePicker
+                value={date}
+                mode="datetime"
+                onChange={onChange}
+                display="spinner"
+              />
+            }
+            {
+              Platform.OS === 'android' &&
+              <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
+            }
+            {
+              Platform.OS === 'android' && renderAndroidPicker(open)
+            }
         </Layout>
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            4. Elige una Hora
+            5. Elige el tiempo de la cita
           </Text>
           <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value="Selecciona" value={displayValueTime}>
             {times.map((action, i) => (
