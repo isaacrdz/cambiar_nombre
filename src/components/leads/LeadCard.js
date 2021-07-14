@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import moment from "moment/min/moment-with-locales";
 import { Icon, ListItem, Layout, Text } from "@ui-kitten/components";
-import { translateSubstatus } from '../../utils/tranlsateSubstatus';
+import { translateSubstatus } from "../../utils/tranlsateSubstatus";
 import { useNavigation } from "@react-navigation/native";
 import { setSubstatusColor } from "../../utils/colorsSubstatus";
 
@@ -24,7 +24,7 @@ const LeadCard = ({ item }) => {
           <Text style={styles.ItemTextName}>{item.name} </Text>
 
           <Text appearance="hint" style={styles.ItemText}>
-            {moment(item.createdA).format('MMMM D, YYYY')}
+            {moment(item.createdA).format("MMMM D, YYYY")}
           </Text>
         </Layout>
       )}
@@ -32,13 +32,18 @@ const LeadCard = ({ item }) => {
       accessoryRight={() => (
         <Layout
           style={{ alignItems: "flex-end" }}
-          style={{...styles.controlContainer, 
+          style={{
+            ...styles.controlContainer,
             borderColor: setSubstatusColor(item.substatus.name),
           }}
         >
-          <Text style={styles.ItemText} style={{ 
-            color: setSubstatusColor(item.substatus.name),
-          }}>
+          <Text
+            style={styles.ItemText}
+            style={{
+              color: setSubstatusColor(item.substatus.name),
+              textAlign: "center",
+            }}
+          >
             {translateSubstatus(item.substatus.name)}
           </Text>
         </Layout>
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     margin: 4,
     padding: 4,
     borderWidth: 1,
-    width: 100,
+    width: 150,
     alignItems: "center",
   },
   controlContainerFilters: {

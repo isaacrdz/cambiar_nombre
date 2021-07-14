@@ -2,49 +2,45 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import useLead from "../hooks/useLead";
 
-import {
-  List,
-  ListItem,
-  Layout,
-  Text,
-} from "@ui-kitten/components";
+import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 
 const filters = [
   {
-    title: "Todos", 
-    value: "all", 
-    type: "all"
+    title: "Todos",
+    value: "all",
+    type: "all",
   },
-  {
-    title: "Nuevo", 
-    value: "605bd5c4bed49524ae40f882", 
-    type: "substatus"
-  },
-  {
-    title: "Vendido", 
-    value: "5d7a514b5dac12c7449ce043", 
-    type: "status"
-  },
-  {
-    title: "Visita", 
-    value: "6064f8065b21e51052eed547", 
-    type: "status"
-  },
-  {
-    title: "Cita", 
-    value: "604f80222b372e0cb11966dc", 
-    type: "status"
-  },
-  {
-    title: "Lead", 
-    value: "605bd4e80a4330245535db3c", 
-    type: "status"
-  }
-]
+  // {
+  //   title: "Nuevo",
+  //   value: "605bd5c4bed49524ae40f882",
+  //   type: "substatus"
+  // },
 
+  {
+    title: "Lead",
+    value: "605bd4e80a4330245535db3c",
+    type: "status",
+  },
+  {
+    title: "Cita",
+    value: "604f80222b372e0cb11966dc",
+    type: "status",
+  },
+
+  {
+    title: "Visita",
+    value: "6064f8065b21e51052eed547",
+    type: "status",
+  },
+
+  {
+    title: "Vendido",
+    value: "5d7a514b5dac12c7449ce043",
+    type: "status",
+  },
+];
 
 const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
-
   const { clearState } = useLead();
 
   return (
@@ -57,25 +53,35 @@ const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
         data={filters}
         renderItem={({ item }) => (
           <ListItem
-            title={ evaProps => 
-              <Layout style={item.value === current.value ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
-                <Text style={styles.ItemText} style={{ color: item.value === current.value ? 'white' : "#5764b8" }}>
+            title={(evaProps) => (
+              <Layout
+                style={
+                  item.value === current.value
+                    ? styles.controlContainerFiltersActive
+                    : styles.controlContainerFilters
+                }
+              >
+                <Text
+                  style={styles.ItemText}
+                  style={{
+                    color: item.value === current.value ? "white" : "#5764b8",
+                  }}
+                >
                   {item.title}
                 </Text>
               </Layout>
-            }
+            )}
             onPress={() => {
-              if(item.type === 'all'){
-                setButtonAll(true)
-              }else{
-                setButtonAll(false)
+              if (item.type === "all") {
+                setButtonAll(true);
+              } else {
+                setButtonAll(false);
               }
-              if(item !== current){
+              if (item !== current) {
                 clearState();
                 setPage(1);
-                setCurrent(item)
+                setCurrent(item);
               }
-              
             }}
           />
         )}
@@ -83,7 +89,6 @@ const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
     </Layout>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -136,7 +141,6 @@ const styles = StyleSheet.create({
     borderColor: "#5764b8",
     width: 100,
     alignItems: "center",
-    
   },
   controlContainerFilters: {
     borderRadius: 4,
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "#5764b8",
-    backgroundColor: '#5764b8',
+    backgroundColor: "#5764b8",
     padding: 5,
     minWidth: 100,
     alignItems: "center",
