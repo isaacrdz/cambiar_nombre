@@ -10,13 +10,14 @@ import {
   List,
   Divider,
 } from "@ui-kitten/components";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { translateHistory } from "../../../../../utils/tranlsateSubstatus";
 
 const LeadDetailHistory = ({ activities }) => {
   const renderItem = ({ item, index }) => {
+    moment.locale('es-mx')
     const createdAt = moment(item.createdAt).format("DD MMMM YYYY - hh:mm a");
 
     return (

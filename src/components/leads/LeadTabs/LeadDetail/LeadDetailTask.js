@@ -1,6 +1,4 @@
 import React from "react";
-import moment from "moment";
-
 import { StyleSheet, View, ScrollView, InteractionManager } from "react-native";
 import {
   Button,
@@ -14,9 +12,11 @@ import {
 } from "@ui-kitten/components";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+import moment from "moment/min/moment-with-locales";
 
 const LeadDetailTask = ({ tasks }) => {
   const renderItem = ({ item, index }) => {
+    moment.locale("es-mx");
     const createdAt = moment(item.createdAt).format("DD MMMM YYYY - hh:mm a");
     const nextTask = moment(item.reschedule).format("DD MMMM YYYY - hh:mm a");
     return (

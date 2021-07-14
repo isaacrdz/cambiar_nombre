@@ -35,6 +35,8 @@ const AppointmentDetail = ({ route, navigation }) => {
   const { substatuses, getSubstatuses } = useSubstatus();
   const { updateComment, createComment } = useComment();
   const times = ["1 Hora", "2 Horas"];
+  const [hour, setHour] = useState(new Date());
+  const [finalDate, setFinalDate] = useState('')
   const [time, setTime] = useState({row: 0});
   const [textVisit, setTextVisit] = useState('');
   const displayValueTime = times[time.row];
@@ -115,12 +117,20 @@ const AppointmentDetail = ({ route, navigation }) => {
 
     if(state === true){
       return (
+        <>
           <DateTimePicker
-          value={currentAppointment.startDate}
-          mode="date"
-          display="spinner"
-          onChange={onChangeAndroid}
+            value={hour}
+            mode="time"
+            display="spinner"
+            onChange={onChangeAndroidHour}
           />
+          <DateTimePicker
+            value={currentAppointment.startDate}
+            mode="date"
+            display="spinner"
+            onChange={onChangeAndroid}
+          />
+        </>
       )
     }
   }
@@ -151,6 +161,7 @@ const AppointmentDetail = ({ route, navigation }) => {
   }
 
   const handleSaveAppointment = async() => {
+
     if(currentAppointment.description === '' || currentAppointment.title === ''){
       return Toast.show({
         text1: "Por favor llena todos los campos",
@@ -159,11 +170,11 @@ const AppointmentDetail = ({ route, navigation }) => {
       });
     }
 
-    let endDate = moment(currentAppointment.startDate).add((time.row + 1), 'hours');
+    let endDate = moment(finalDate).add((time.row + 1), 'hours');
     await updateAppointment({
       title: currentAppointment.title, 
       description: currentAppointment.description, 
-      startDate: currentAppointment.startDate, 
+      startDate: finalDate, 
       endDate
     }, item._id);
 
@@ -243,6 +254,19 @@ const AppointmentDetail = ({ route, navigation }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setCurrentAppointment({...currentAppointment, startDate: currentDate});
+  };
+
+  const onChangeAndroidHour = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      console.log(currentAppointment.startDate)
+      let finalDate = currentAppointment.startDate.toString().split(' ')
+      let finalHour = selectedTime.toString().split(' ')
+
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setHour(selectedTime);
+      setFinalDate(postDate)
+      // setCurrentAppointment({...currentAppointment, startDate: postDate})
+    }
   };
 
   const onChangeAndroid = (event, selectedDate) => {
@@ -356,7 +380,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 {
                   Platform.OS === 'android' ? 
-                  `Fecha de Inicio: ${currentAppointment && currentAppointment.startDate && moment(currentAppointment.startDate).format('DD, MMMM YYYY')}` :
+                  `Fecha de Inicio: ${finalDate && moment(finalDate).format('DD, MMMM YYYY - HH:MM a')}` :
                   `Fecha de Inicio`
                 }
                 
