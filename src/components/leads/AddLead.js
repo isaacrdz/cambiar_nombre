@@ -251,9 +251,15 @@ const AddLead = ({ navigation }) => {
             setListas(aux);
         }
     },[lists])
+
+    let paddingTop = 0;
+
+    if(Platform.OS === 'android'){
+      paddingTop = 30;
+    }
  
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
         <HeaderTitle title="Crear Lead" />
         <ScrollView>
             <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>

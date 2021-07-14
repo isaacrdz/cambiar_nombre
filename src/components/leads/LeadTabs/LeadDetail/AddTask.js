@@ -69,6 +69,12 @@ const AddTask = ({ navigation }) => {
   const [show, setShow] = useState(false);
   moment.locale('es-mx')
 
+  let paddingTop = 0;
+
+  if(Platform.OS === 'android'){
+    paddingTop = 30;
+  }
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
@@ -99,14 +105,20 @@ const AddTask = ({ navigation }) => {
 
   const onChangeAndroidHour = (event, selectedTime) => {
     if (selectedTime !== undefined) {
-      let finalDate = date.toString().split(' ')
-      let finalHour = selectedTime.toString().split(' ')
 
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
       setHour(selectedTime);
-      setFinalDate(postDate)
+     
     }
   };
+
+  useEffect(()=>{
+    if(hour && date){
+      let finalDate = date.toString().split(' ')
+      let finalHour = hour.toString().split(' ')
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setFinalDate(postDate)
+    }
+  },[hour])
 
   const onChangeAndroid = (event, selectedDate) => {
     setOpen(false);
@@ -259,7 +271,7 @@ const AddTask = ({ navigation }) => {
   }, [substatuses, lead]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
       <HeaderTitle title="Agregar Tarea" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
@@ -378,7 +390,7 @@ const AddTask = ({ navigation }) => {
                   
                   {
                     Platform.OS === 'android' ? 
-                    `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - HH:MM a')}` :
+                    `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - hh:mm a')}` :
                     `Fecha`
                   } 
                 </Text>
