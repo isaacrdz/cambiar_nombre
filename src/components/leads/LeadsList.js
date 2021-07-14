@@ -16,35 +16,24 @@ const LeadsList = ({
   currentSearch,
   setCurrentSearch,
   setpageCurrent,
-  search,
 }) => {
   const { getLeads, leads, loading, clearState, leadsSize } = useLead();
 
-  const [size, setSize] = useState(0)
   const [buttonAll, setButtonAll] = useState(false)
-
-  React.useEffect(()=>{
-    setSize(leadsSize)
-  },[leadsSize])
 
   useFocusEffect(
     React.useCallback(() => {
-        if(leadsSize !== 0){
+        if(leadsSize !== 0 && JSON.stringify(currentSearch) !== '{}'){
           getLeads(1, user._id, currentSearch, query);
         }
     }, [])
   );
 
   React.useEffect(() => {
-    if(pageCurrent !== 1 || search !== '' || buttonAll){
       if(leadsSize !== 0){
-        console.log('effect')
-        clearState();
-
         getLeads(pageCurrent, user._id, currentSearch, query);
       }
-    }
-  }, [currentSearch, pageCurrent, search]);
+  }, [currentSearch, pageCurrent]);
 
   
 
