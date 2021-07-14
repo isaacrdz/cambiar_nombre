@@ -294,4 +294,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddAppointment;
+export default AddAppointment
