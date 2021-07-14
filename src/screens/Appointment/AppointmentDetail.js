@@ -225,10 +225,21 @@ const AppointmentDetail = ({ route, navigation }) => {
     }, [substatuses, currentAppointment])
   );
 
+
+  useEffect(()=>{
+    if(hour && currentAppointment.startDate){
+      let finalDate = currentAppointment.startDate.toString().split(' ')
+      let finalHour = hour.toString().split(' ')
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setFinalDate(postDate)
+    }
+  },[hour])
+
   useEffect(() => {
     if(appointment && appointment._id){
       let timeDif = moment(appointment.endDate).diff(appointment.startDate, 'hours');
 
+      setFinalDate(appointment.startDate)
       setTime({row: (timeDif-1)})
 
       setCurrentAppointment({ 
@@ -258,13 +269,7 @@ const AppointmentDetail = ({ route, navigation }) => {
 
   const onChangeAndroidHour = (event, selectedTime) => {
     if (selectedTime !== undefined) {
-      console.log(currentAppointment.startDate)
-      let finalDate = currentAppointment.startDate.toString().split(' ')
-      let finalHour = selectedTime.toString().split(' ')
-
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
       setHour(selectedTime);
-      setFinalDate(postDate)
       // setCurrentAppointment({...currentAppointment, startDate: postDate})
     }
   };
@@ -276,9 +281,15 @@ const AppointmentDetail = ({ route, navigation }) => {
     }
   };
 
+  let paddingTop = 0;
+
+  if(Platform.OS === 'android'){
+    paddingTop = 30;
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <HeaderTitle title="Appointment Detail" /> 
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
+      <HeaderTitle title="Detalle de la Cita" /> 
 
       <ScrollView>
         <Layout style={{ marginBottom: 20 }}>
@@ -380,7 +391,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 {
                   Platform.OS === 'android' ? 
-                  `Fecha de Inicio: ${finalDate && moment(finalDate).format('DD, MMMM YYYY - HH:MM a')}` :
+                  `Fecha de Inicio: ${finalDate && moment(finalDate).format('DD, MMMM YYYY - hh:mm a')}` :
                   `Fecha de Inicio`
                 }
                 

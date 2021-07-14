@@ -23,7 +23,8 @@ const LeadsList = ({
 
   useFocusEffect(
     React.useCallback(() => {
-        if(leadsSize !== 0 && JSON.stringify(currentSearch) !== '{}'){
+      console.log(leadsSize, currentSearch)
+        if((leadsSize !== 0 && JSON.stringify(currentSearch) !== '{}') || buttonAll){
           getLeads(1, user._id, currentSearch, query);
         }
     }, [])

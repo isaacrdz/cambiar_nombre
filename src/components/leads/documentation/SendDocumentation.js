@@ -27,6 +27,12 @@ const SendDocumentation = ({ navigation }) => {
   const { getDocumentsByStore } = useDocument();
   const { createMailAttachment, error, clearError} = useMail();
 
+  let paddingTop = 0;
+
+  if(Platform.OS === 'android'){
+    paddingTop = 30;
+  }
+
   const handleSubmit = async() => {
     let email = {
       email: lead.email,
@@ -78,7 +84,7 @@ const SendDocumentation = ({ navigation }) => {
   );
 
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
       <HeaderTitle title="Enviar Documentación" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>

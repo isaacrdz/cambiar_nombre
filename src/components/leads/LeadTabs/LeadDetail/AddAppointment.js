@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
 import Toast from "react-native-toast-message";
 import HeaderTitle from "../../../header/HeaderTitle";
+<<<<<<< HEAD
 import useAppointment from "../../../../hooks/useAppointment";
 import useComment from "../../../../hooks/useComment";
 import useAuth from "../../../../hooks/useAuth";
 import moment from "moment";
+=======
+import useAppointment from '../../../../hooks/useAppointment';
+import useComment from '../../../../hooks/useComment';
+import useAuth from '../../../../hooks/useAuth';
+import moment from "moment/min/moment-with-locales";
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
 import {
   Layout,
   Divider,
@@ -20,6 +27,7 @@ import {
 } from "@ui-kitten/components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import useLead from "../../../../hooks/useLead";
+import { translateActions } from "../../../../utils/tranlsateSubstatus";
 
 const AddAppointment = ({ navigation }) => {
   const { createAppointment } = useAppointment();
@@ -44,8 +52,14 @@ const AddAppointment = ({ navigation }) => {
     description: "",
   });
 
+<<<<<<< HEAD
   const handleSubmit = async () => {
     if (values.description === "" || values.title === "") {
+=======
+  moment.locale('es-mx')
+  const handleSubmit = async() =>{
+    if(values.description === '' || values.title === ''){
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
       return Toast.show({
         text1: "Fill all the fields",
         type: "error",
@@ -93,8 +107,29 @@ const AddAppointment = ({ navigation }) => {
     }
 
     await updateLead(updateLeadBody, lead._id);
+
+    Toast.show({
+      text1: "Cita Creada",
+      type: "success",
+      position: "bottom",
+    });
+
     navigation.navigate("LeadTabs");
+<<<<<<< HEAD
   };
+=======
+
+  }
+
+  React.useEffect(()=>{
+    if(hour && date){
+      let finalDate = date.toString().split(' ')
+      let finalHour = hour.toString().split(' ')
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setFinalDate(postDate)
+    }
+  },[hour])
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -130,12 +165,16 @@ const AddAppointment = ({ navigation }) => {
 
   const onChangeAndroidHour = (event, selectedTime) => {
     if (selectedTime !== undefined) {
+<<<<<<< HEAD
       let finalDate = date.toString().split(" ");
       let finalHour = selectedTime.toString().split(" ");
 
       let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
       setHour(selectedTime);
       setFinalDate(postDate);
+=======
+      setHour(selectedTime);
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
     }
   };
 
@@ -146,8 +185,13 @@ const AddAppointment = ({ navigation }) => {
     }
   };
 
+  let paddingTop = 0;
+
+  if(Platform.OS === 'android'){
+    paddingTop = 30;
+  }
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" ,paddingTop}}>
       <HeaderTitle title="Agregar Cita" />
       <ScrollView>
         <Layout
@@ -169,7 +213,7 @@ const AddAppointment = ({ navigation }) => {
             level="1"
           >
             <Input
-              placeholder="Multiline"
+              placeholder="Comentario"
               style={{ minWidth: 400 }}
               value={values.title}
               onChangeText={(string) => {
@@ -200,7 +244,6 @@ const AddAppointment = ({ navigation }) => {
             <Input
               multiline={true}
               placeholder="Descripción"
-              textStyle={{ minHeight: 64 }}
               style={{ minWidth: 400 }}
               value={values.description}
               onChangeText={(string) => {
@@ -214,6 +257,7 @@ const AddAppointment = ({ navigation }) => {
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
             3. Elige una acción
           </Text>
+<<<<<<< HEAD
           <Select
             size="large"
             style={{ marginBottom: 10 }}
@@ -224,6 +268,16 @@ const AddAppointment = ({ navigation }) => {
           >
             {actions.map((action, i) => (
               <SelectItem title={action} key={i} />
+=======
+          <Select size="large" 
+            style={{ marginBottom: 10 }} 
+            value="Selecciona" 
+            selectedIndex={selectedAction} 
+            value={translateActions(displayValue)}
+            onSelect={(index) => setSelectedAction(index)}>
+            {actions.map((action, i) => (
+              <SelectItem title={translateActions(action)} key={i}  />
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
             ))}
           </Select>
         </Layout>
@@ -232,6 +286,7 @@ const AddAppointment = ({ navigation }) => {
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
             4. Elige una Fecha
           </Text>
+<<<<<<< HEAD
           <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
             {Platform.OS === "android"
               ? `Fecha: ${
@@ -239,6 +294,18 @@ const AddAppointment = ({ navigation }) => {
                   moment(finalDate).format("DD MMMM YYYY - HH:MM a")
                 }`
               : `Fecha`}
+=======
+          <Text
+            style={styles.text}
+            category="s1"
+            style={{ marginBottom: 20 }}
+          >
+            {
+              Platform.OS === 'android' ? 
+              `Fecha de Inicio: ${finalDate && moment(finalDate).format('DD MMMM YYYY - hh:mm a')}` :
+              `Fecha de Inicio`
+            } 
+>>>>>>> 60345b2bbfae880547c70a06cf2d376e1658f36f
           </Text>
           {Platform.OS === "ios" && (
             <DateTimePicker
