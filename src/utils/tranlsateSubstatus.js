@@ -107,3 +107,15 @@ export const translateHistory = (string) => {
     
     return string;
   }
+
+  export const translateActions = (value) =>{
+    let translatedValue = '';
+
+    if(!value) return ''
+    translatedValue = value.replace("information", "Información")
+    translatedValue = translatedValue.replace("documentation", "Documentarción")
+    translatedValue = translatedValue.replace("driving test", "Prueba de Manejo")
+    
+    return translatedValue;
+
+  }
