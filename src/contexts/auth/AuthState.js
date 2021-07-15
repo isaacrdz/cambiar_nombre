@@ -47,7 +47,6 @@ const AuthState = (async = (props) => {
     try {
       const res = await api.post('/auth/register', values, config);
       await AsyncStorage.setItem("token", res.data.token);
-
       dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 
       loadUser();

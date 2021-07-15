@@ -14,7 +14,7 @@ export const translateSubstatus = (value) => {
     translatedValue = translatedValue.replace("application", "Llenó Solicitud")
     translatedValue = translatedValue.replace("sold", "Venta")
     translatedValue = translatedValue.replace("documentation", "Documentación")
-    translatedValue = translatedValue.replace("rejected", "rechazo")
+    translatedValue = translatedValue.replace("rejected", "Rechazo")
     translatedValue = translatedValue.replace("wrongnumber", "Número Equivocado")
     translatedValue = translatedValue.replace("client_na", "Cliente N/A")
     translatedValue = translatedValue.replace("reschedule", "Reagendada")

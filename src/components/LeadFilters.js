@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import useLead from "../hooks/useLead";
+import useAuth from "../hooks/useAuth";
 
 import {
   List,
@@ -43,9 +44,17 @@ const filters = [
 ]
 
 
-const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
+const LeadFilters = ({ current, setCurrent, setPage, query }) => {
 
-  const { clearState } = useLead();
+  const { clearState, getLeads } = useLead();
+  const { user } = useAuth();
+
+
+  const handleSearch = async(item) => {
+    console.log('buscando desde leadFilter', item, query, user._id)
+    await clearState();
+    await getLeads(1, user._id, item, query);
+  }
 
   return (
     <Layout style={{ marginTop: 20 }} level="4">
@@ -65,15 +74,10 @@ const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
               </Layout>
             }
             onPress={() => {
-              if(item.type === 'all'){
-                setButtonAll(true)
-              }else{
-                setButtonAll(false)
-              }
               if(item !== current){
-                clearState();
-                setPage(1);
                 setCurrent(item)
+                setPage(1)
+                handleSearch(item);
               }
               
             }}

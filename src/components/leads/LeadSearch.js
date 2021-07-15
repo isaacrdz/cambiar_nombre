@@ -16,13 +16,11 @@ const LeadSearch = ({
 
   const { getLeads, loading, clearState } = useLead();
 
-  const handleSubmit = (e) => {
-    clearState();
-    if (pageCurrent === 1) {
-      getLeads(pageCurrent, user._id, currentSearch, query);
-    } else {
-      setpageCurrent(1);
-    }
+  const handleSubmit = async(e) => {
+    console.log('buscando desde leadSearch', currentSearch, query)
+    setpageCurrent(1)
+    await clearState();
+    await getLeads(1, user._id, currentSearch, query);
   };
 
   return (
@@ -30,7 +28,7 @@ const LeadSearch = ({
       <Input
         onSubmitEditing={handleSubmit}
         style={styles.input}
-        placeholder="Busqueda de Leads"
+        placeholder="Búsqueda de Leads"
         value={query}
         onChangeText={setQuery}
         accessoryRight={renderInputIcon}
