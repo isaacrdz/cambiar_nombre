@@ -2,11 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import moment from "moment/min/moment-with-locales";
 import { Icon, ListItem, Layout, Text } from "@ui-kitten/components";
-<<<<<<< HEAD
-import { translateSubstatus } from "../../utils/tranlsateSubstatus";
-=======
-import { translateStatus, translateSubstatus } from '../../utils/tranlsateSubstatus';
->>>>>>> f97c8a4eead8f3e890a980155150ac691190b3cc
+import {
+  translateStatus,
+  translateSubstatus,
+} from "../../utils/tranlsateSubstatus";
 import { useNavigation } from "@react-navigation/native";
 import { setSubstatusColor } from "../../utils/colorsSubstatus";
 
@@ -45,7 +44,6 @@ const LeadCard = ({ item }) => {
             style={styles.ItemText}
             style={{
               color: setSubstatusColor(item.substatus.name),
-              textAlign: "center",
             }}
           >
             {translateSubstatus(item.substatus.name)}

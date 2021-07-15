@@ -11,15 +11,19 @@ const filters = [
     value: "all",
     type: "all",
   },
-  // {
-  //   title: "Nuevo",
-  //   value: "605bd5c4bed49524ae40f882",
-  //   type: "substatus"
-  // },
-
   {
-    title: "Lead",
-    value: "605bd4e80a4330245535db3c",
+    title: "Nuevo",
+    value: "605bd5c4bed49524ae40f882",
+    type: "substatus",
+  },
+  {
+    title: "Vendido",
+    value: "5d7a514b5dac12c7449ce043",
+    type: "status",
+  },
+  {
+    title: "Visita",
+    value: "6064f8065b21e51052eed547",
     type: "status",
   },
   {
@@ -27,36 +31,22 @@ const filters = [
     value: "604f80222b372e0cb11966dc",
     type: "status",
   },
-
   {
-    title: "Visita",
-    value: "6064f8065b21e51052eed547",
-    type: "status",
-  },
-
-  {
-    title: "Vendido",
-    value: "5d7a514b5dac12c7449ce043",
+    title: "Lead",
+    value: "605bd4e80a4330245535db3c",
     type: "status",
   },
 ];
 
-<<<<<<< HEAD
-const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
-  const { clearState } = useLead();
-=======
 const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-
   const { clearState, getLeads } = useLead();
   const { user } = useAuth();
 
-
-  const handleSearch = async(item) => {
-    console.log('buscando desde leadFilter', item, query, user._id)
+  const handleSearch = async (item) => {
+    console.log("buscando desde leadFilter", item, query, user._id);
     await clearState();
     await getLeads(1, user._id, item, query);
-  }
->>>>>>> f97c8a4eead8f3e890a980155150ac691190b3cc
+  };
 
   return (
     <Layout style={{ marginTop: 20 }} level="4">
@@ -87,22 +77,10 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
               </Layout>
             )}
             onPress={() => {
-<<<<<<< HEAD
-              if (item.type === "all") {
-                setButtonAll(true);
-              } else {
-                setButtonAll(false);
-              }
               if (item !== current) {
-                clearState();
-                setPage(1);
                 setCurrent(item);
-=======
-              if(item !== current){
-                setCurrent(item)
-                setPage(1)
+                setPage(1);
                 handleSearch(item);
->>>>>>> f97c8a4eead8f3e890a980155150ac691190b3cc
               }
             }}
           />
