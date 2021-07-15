@@ -19,31 +19,33 @@ const LeadsList = ({
 }) => {
   const { getLeads, leads, loading, clearState, leadsSize } = useLead();
 
-  const [buttonAll, setButtonAll] = useState(false);
   const [size, setSize] = useState(-1);
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log(size, currentSearch)
-        if((size !== 0) || buttonAll){
-          getLeads(1, user._id, {type: 'all', value: 'all'}, '');
-        }
+      clearState();
+      console.log('buscando desde leadList onfocuseffect')
+      getLeads(1, user._id, {type: 'all', value: 'all'}, '');
     }, [])
   );
 
   React.useEffect(() => {
-      if(size !== 0){
-        getLeads(pageCurrent, user._id, currentSearch, query);
-      }
-  }, [currentSearch, pageCurrent]);
+    if(size !== 0 && pageCurrent !== 1){
+    console.log('buscando desde leadList useEffect', pageCurrent, user._id, currentSearch, query)
+
+      getLeads(pageCurrent, user._id, currentSearch, query);
+    }
+  }, [pageCurrent]);
 
   React.useEffect(() => {
-   setSize(leadsSize)
-}, [leadsSize]);
+    setSize(leadsSize)
+  }, [leadsSize]);
 
   useFocusEffect(
     React.useCallback(() => {
       return () => {
+        console.log('limpiando el state')
+        setpageCurrent(1)
         setSize(-1)
         clearState();
       }
@@ -70,9 +72,9 @@ const LeadsList = ({
         page={pageCurrent}
         setPage={setpageCurrent}
         setCurrent={setCurrentSearch}
-        id={user._id}
+        id={user && user._id}
         current={currentSearch}
-        setButtonAll={setButtonAll}
+        query={query}
       />
       <Layout>
         <List

@@ -38,6 +38,7 @@ export default (state, action) => {
         loading: false
       }
     case USER_LOADED:
+
       return {
         ...state,
         isAuthenticated: true,
@@ -48,6 +49,7 @@ export default (state, action) => {
       };
 
     case LOGIN_SUCCESS:
+
       return {
         ...state,
         ...action.payload,
