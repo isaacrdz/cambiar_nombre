@@ -98,7 +98,7 @@ const Appointment = () => {
       // onRefresh={() => handleRefresh()}
       // refreshing={refreshing}
       // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-      minDate={moment().format()}
+      // minDate={moment().format()}
       // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
       // maxDate={"2025-05-30"}
       showClosingKnob={true}
