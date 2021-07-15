@@ -11,29 +11,28 @@ const filters = [
     value: "all",
     type: "all",
   },
+
   {
-    title: "Nuevo",
-    value: "605bd5c4bed49524ae40f882",
-    type: "substatus",
-  },
-  {
-    title: "Vendido",
-    value: "5d7a514b5dac12c7449ce043",
+    title: "Lead",
+    value: "605bd4e80a4330245535db3c",
     type: "status",
   },
-  {
-    title: "Visita",
-    value: "6064f8065b21e51052eed547",
-    type: "status",
-  },
+
   {
     title: "Cita",
     value: "604f80222b372e0cb11966dc",
     type: "status",
   },
+
   {
-    title: "Lead",
-    value: "605bd4e80a4330245535db3c",
+    title: "Visita",
+    value: "6064f8065b21e51052eed547",
+    type: "status",
+  },
+
+  {
+    title: "Vendido",
+    value: "5d7a514b5dac12c7449ce043",
     type: "status",
   },
 ];
