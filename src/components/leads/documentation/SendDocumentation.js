@@ -51,7 +51,6 @@ const SendDocumentation = ({ navigation }) => {
       documentsNames.push(item.title)
     })
 
-    console.log(attachments, documentsNames)
 
     await createMailAttachment(email, attachments, documentsNames);
 

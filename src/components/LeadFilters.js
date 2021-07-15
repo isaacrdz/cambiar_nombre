@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import useLead from "../hooks/useLead";
+import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 
@@ -40,8 +41,22 @@ const filters = [
   },
 ];
 
+<<<<<<< HEAD
 const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
   const { clearState } = useLead();
+=======
+const LeadFilters = ({ current, setCurrent, setPage, query }) => {
+
+  const { clearState, getLeads } = useLead();
+  const { user } = useAuth();
+
+
+  const handleSearch = async(item) => {
+    console.log('buscando desde leadFilter', item, query, user._id)
+    await clearState();
+    await getLeads(1, user._id, item, query);
+  }
+>>>>>>> f97c8a4eead8f3e890a980155150ac691190b3cc
 
   return (
     <Layout style={{ marginTop: 20 }} level="4">
@@ -72,6 +87,7 @@ const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
               </Layout>
             )}
             onPress={() => {
+<<<<<<< HEAD
               if (item.type === "all") {
                 setButtonAll(true);
               } else {
@@ -81,6 +97,12 @@ const LeadFilters = ({ setPage, setCurrent, current, setButtonAll }) => {
                 clearState();
                 setPage(1);
                 setCurrent(item);
+=======
+              if(item !== current){
+                setCurrent(item)
+                setPage(1)
+                handleSearch(item);
+>>>>>>> f97c8a4eead8f3e890a980155150ac691190b3cc
               }
             }}
           />

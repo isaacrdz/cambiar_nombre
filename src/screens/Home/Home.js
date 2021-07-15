@@ -8,7 +8,7 @@ import useChart from '../../hooks/useChart';
 import useAuth from '../../hooks/useAuth';
 import { CapitalizeNames } from "../../utils/Capitalize";
 
-const Home = ({}) => {
+const Home = ({navigation}) => {
 
   const { user } = useAuth();
   const { getTotalsDashboard, total, totalLeads, totalAppointments, totalVisits, totalSolds } = useChart();

@@ -94,7 +94,7 @@ const CommentState = props => {
       const res = await api.put(`/comments/${commentId}`, {...comment} ,config);
       dispatch({ type: UPDATE_COMMENT, payload: res.data.data })
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error})
     }
   };
 

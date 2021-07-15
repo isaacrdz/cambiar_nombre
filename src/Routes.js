@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { registerForPushNotificationsAsync } from "/utils/ExpoPushNotifications";
 import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-community/async-storage";
 
 // Stacks
 import HomeStackScreen from "./navigation/HomeStackScreen";
@@ -23,13 +24,13 @@ const Routes = ({ token }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const [tok, setTok] = useState(null)
 
   React.useEffect(() => {
     if (user && user._id) {
       registerForPushNotificationsAsync().then(
         (token) => {
           updateProfile({ pushNotificationToken: token });
-          // console.log("token", token);
         }
         // setExpoPushToken(token)}
       );
@@ -55,8 +56,20 @@ const Routes = ({ token }) => {
 
   }, [user]);
 
+  const getToken = async() => {
+    let t = await AsyncStorage.getItem("token")
+
+    setTok(t)
+  }
+
   React.useEffect(() => {
-    loadUser();
+    if(tok){
+      loadUser();
+    }
+  }, [tok]);
+
+  React.useEffect(() => {
+    getToken()
   }, []);
 
   return (
