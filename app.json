@@ -14,7 +14,7 @@
       "backgroundColor": "#ffffff"
     }, "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "1.0.2"
+      "buildNumber": "1.0.3"
     },
     "android": {
       "package": "com.ellyonsoft.dpx",
