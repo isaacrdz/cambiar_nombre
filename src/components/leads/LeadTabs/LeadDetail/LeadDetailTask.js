@@ -12,6 +12,7 @@ import {
 } from "@ui-kitten/components";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { CapitalizeNames } from "../../../../utils/Capitalize";
 import moment from "moment/min/moment-with-locales";
 
 const LeadDetailTask = ({ tasks }) => {
@@ -45,7 +46,7 @@ const LeadDetailTask = ({ tasks }) => {
               appearance="hint"
               style={{ textTransform: "capitalize", marginBottom: 2 }}
             >
-              {item.user.name}
+              {CapitalizeNames(item.user.name)}
             </Text>
 
             <Text category="c1" appearance="hint">
