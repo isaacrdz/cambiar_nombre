@@ -27,7 +27,7 @@ const LeadCard = ({ item }) => {
           <Text style={styles.ItemTextName}>{item.name} </Text>
 
           <Text appearance="hint" style={styles.ItemText}>
-            {moment(item.createdA).format("MMMM D, YYYY")}
+            {moment(item.createdAt).format("MMMM D, YYYY")}
           </Text>
         </Layout>
       )}

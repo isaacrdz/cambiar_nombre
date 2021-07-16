@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment/min/moment-with-locales";
 import { useNavigation } from "@react-navigation/native";
+import { Badge } from 'react-native-paper';
+
 import {
   StyleSheet,
   View,
@@ -28,6 +30,16 @@ const AppointmentItem = ({ item }) => {
   const startDate = moment(item.startDate).format("DD MMMM YYYY");
   const time = moment(item.startDate).format("hh:mm a");
 
+  let color = '';
+
+  if(moment(item.startDate).format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')){
+    color = '#388e3c'
+  }else if( moment(item.startDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')) {
+    color = '#d32f2f'
+  } else {
+    color = '#f9a825'
+  }
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("AppointmentDetail", { item: item })}
@@ -41,8 +53,20 @@ const AppointmentItem = ({ item }) => {
           borderColor: "#d8d8d8",
           margin: 5,
           borderRadius: 10,
+          position: 'relative',
         }}
       >
+            <Layout
+              style={{
+                position: 'absolute',
+                right: 10,
+                top: 10,
+                zIndex: 2
+              }}
+            >
+            
+              <Badge size={15} style={{backgroundColor: color}}/>
+            </Layout>
         <Layout>
           <Text
             category="c1"
