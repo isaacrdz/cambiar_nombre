@@ -113,7 +113,7 @@ export const translateHistory = (string) => {
 
     if(!value) return ''
     translatedValue = value.replace("information", "Información")
-    translatedValue = translatedValue.replace("documentation", "Documentarción")
+    translatedValue = translatedValue.replace("documentation", "Documentación")
     translatedValue = translatedValue.replace("driving test", "Prueba de Manejo")
     
     return translatedValue;
