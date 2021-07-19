@@ -2,35 +2,34 @@ import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Layout, Text, Input, Button, Select, IndexPath, SelectItem } from "@ui-kitten/components";
 import Toast from 'react-native-toast-message';
-import useStore from '../../hooks/useStore';
+// import useStore from '../../hooks/useStore';
 import useAuth from "../../hooks/useAuth";
-import { useFocusEffect } from "@react-navigation/native";
-import { CapitalizeNames } from "../../utils/Capitalize";
+// import { CapitalizeNames } from "../../utils/Capitalize";
 
 const Register = ({navigation}) => {
   const [email, setEmail] = React.useState("");
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [storesNames, setStoresNames] = React.useState([]);
+  // const [storesNames, setStoresNames] = React.useState([]);
   const [store, setStore] = React.useState(new IndexPath(0));
-  const { stores, getStores } = useStore();
+  // const { stores, getStores } = useStore();
   const { register, error, clearError } = useAuth();
-  const displayValue = storesNames[store.row];
+  // const displayValue = storesNames[store.row];
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getStores()
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     getStores()
+  //   }, [])
+  // );
 
-  useEffect(()=>{
-    if(stores){
-      let aux = []
-      stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)));
-      setStoresNames(aux)
-    }
-  },[stores])
+  // useEffect(()=>{
+  //   if(stores){
+  //     let aux = []
+  //     stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)));
+  //     setStoresNames(aux)
+  //   }
+  // },[stores])
 
   useEffect(()=>{
     if(error){
@@ -56,8 +55,8 @@ const Register = ({navigation}) => {
     const data = {
       email,
       password,
-      stores: [stores[store.row]._id],
-      store: stores[store.row]._id,
+      stores: ["60f5890cf852df12c8d10591"],
+      store: "60f5890cf852df12c8d10591",
       role: "user",
       name
     };
@@ -111,7 +110,7 @@ const Register = ({navigation}) => {
           autoCapitalize="none"
         />
       </Layout>
-      <Layout style={{ paddingHorizontal: 30, margin: 2 }}>
+      {/* <Layout style={{ paddingHorizontal: 30, margin: 2 }}>
         <Select
           size="large"
           style={{ marginBottom: 10 }}
@@ -126,7 +125,7 @@ const Register = ({navigation}) => {
           }
           
         </Select>
-      </Layout>
+      </Layout> */}
 
       <Layout style={{ paddingHorizontal: 30, margin: 2 }}>
         <Button
