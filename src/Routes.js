@@ -18,6 +18,8 @@ import AppointmentStackScreen from "./navigation/AppointmentStackScreen";
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+let notificationAmount = 0;
+
 const Routes = ({ token }) => {
   const { isAuthenticated, loadUser, user, updateProfile } = useAuth();
   // const [expoPushToken, setExpoPushToken] = useState("");
@@ -39,11 +41,17 @@ const Routes = ({ token }) => {
       notificationListener.current =
         Notifications.addNotificationReceivedListener((notification) => {
           setNotification(notification);
+          console.log('here in listener receive')
+          Notifications.setBadgeCountAsync(notificationAmount);
+          notificationAmount++;
         });
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current =
-        Notifications.addNotificationResponseReceivedListener((response) => {});
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log('here in notification response listener receive')
+
+        });
 
       return () => {
         Notifications.removeNotificationSubscription(
@@ -52,7 +60,6 @@ const Routes = ({ token }) => {
         Notifications.removeNotificationSubscription(responseListener.current);
       };
     }
-  Notifications.setBadgeCountAsync(0);
 
   }, [user]);
 
@@ -70,6 +77,8 @@ const Routes = ({ token }) => {
 
   React.useEffect(() => {
     getToken()
+    Notifications.setBadgeCountAsync(0);
+
   }, []);
 
   return (
