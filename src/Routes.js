@@ -42,8 +42,11 @@ const Routes = ({ token }) => {
         Notifications.addNotificationReceivedListener((notification) => {
           setNotification(notification);
           console.log('here in listener receive')
-          Notifications.setBadgeCountAsync(notificationAmount);
-          notificationAmount++;
+          if(Platform.OS === 'ios'){
+            Notifications.setBadgeNumberAsync(notificationAmount);
+            notificationAmount++;
+
+          }
         });
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
