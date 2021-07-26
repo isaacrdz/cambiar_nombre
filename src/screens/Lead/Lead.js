@@ -27,7 +27,6 @@ const Lead = ({ navigation }) => {
   return (
     <>
       <LeadSearch
-        user={user}
         setQuery={setQuery}
         query={query}
         pageCurrent={pageCurrent}

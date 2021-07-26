@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet, Platform } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import Toast from "react-native-toast-message";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -170,12 +170,23 @@ const AppointmentDetail = ({ route, navigation }) => {
       });
     }
 
-    let endDate = moment(finalDate).add((time.row + 1), 'hours');
+    let endDate;
+    let startDate;
+    if(Platform.OS === 'ios'){
+      startDate = currentAppointment.startDate;
+      endDate = moment(startDate).add((time.row + 1), 'hours');
+    }else{
+      startDate = finalDate;
+      endDate = moment(startDate).add((time.row + 1), 'hours');
+    }
+
+    
+
     await updateAppointment({
       title: currentAppointment.title, 
       description: currentAppointment.description, 
-      startDate: finalDate, 
-      endDate
+      endDate,
+      startDate,
     }, item._id);
 
     Toast.show({

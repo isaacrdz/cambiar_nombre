@@ -138,11 +138,13 @@ const AddLead = ({ navigation }) => {
             year: currentLead.year,
             downPayment: currentLead.downPayment,
             source: sources[fuentesSelect.row]._id,
-            agent: user._id
         }
 
         let timeFrame = new Date();
 
+        if(user && user.role === 'user'){
+            data.agent = user._id
+        }
         if(timeframeSelect.row === 0){
             timeFrame = moment(0).format();
 

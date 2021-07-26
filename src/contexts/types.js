@@ -20,6 +20,7 @@ export const GET_LEADS = "GET_LEADS";
 export const GET_LEAD = "GET_LEAD";
 export const CLEAR_CURRENT_LEAD = "CLEAR_CURRENT_LEAD";
 export const UPDATE_LEAD = "UPDATE_LEAD";
+export const CREATE_LEAD = "CREATE_LEAD";
 
 // Activity
 // Activities

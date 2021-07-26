@@ -3,24 +3,29 @@ import { StyleSheet } from "react-native";
 import { Icon, Input, Layout } from "@ui-kitten/components";
 
 import useLead from "../../hooks/useLead";
+import useAuth from "../../hooks/useAuth";
+import { getMultiStoresIds } from "../../utils/storesUser";
 
 const LeadSearch = ({
   query,
   setQuery,
-  user,
   setpageCurrent,
   pageCurrent,
   currentSearch,
 }) => {
   const renderInputIcon = (props) => <Icon {...props} name="search" />;
 
-  const { getLeads, loading, clearState } = useLead();
+  const { getLeads, loading, clearState, getLeadsByStore } = useLead();
+  const { user } = useAuth()
 
   const handleSubmit = async(e) => {
-    console.log('buscando desde leadSearch', currentSearch, query)
     setpageCurrent(1)
     await clearState();
-    await getLeads(1, user._id, currentSearch, query);
+    if(user && user.role === 'user'){
+      await getLeads(1, user._id, currentSearch, query);
+    }else if(user && user.role === 'admin'){
+      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query);
+    }
   };
 
   return (

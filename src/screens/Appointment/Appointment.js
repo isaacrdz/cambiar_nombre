@@ -6,12 +6,13 @@ import EmpyDate from "../../components/appointment/EmptyDate";
 import useAppointment from "../../hooks/useAppointment";
 import useAuth from "../../hooks/useAuth";
 import { useFocusEffect } from "@react-navigation/native";
+import { getMultiStoresIds } from "../../utils/storesUser";
 
 const Appointment = () => {
   const [items, setItems] = React.useState({});
   const [marked, setMarked] = React.useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-  const { getAppointmentsByUser, appointments, loading } = useAppointment();
+  const { getAppointmentsByUser, getAppointmentsByStore, appointments, loading } = useAppointment();
   const { user } = useAuth();
 
   React.useEffect(() => {
@@ -66,7 +67,11 @@ const Appointment = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id) getAppointmentsByUser(user._id);
+      if (user && user.role === 'user') {
+        getAppointmentsByUser(user._id)
+      }else if(user && user.role === 'admin' && user.stores){
+        getAppointmentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
+      }
     }, [user])
   );
 

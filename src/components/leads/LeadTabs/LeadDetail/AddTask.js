@@ -183,19 +183,30 @@ const AddTask = ({ navigation }) => {
         userId = user._id;
       }
 
+
+      console.log('final date', finalDate)
       let BodyComment = {
         comment: text,
         user: userId,
         action: selectedActions,
-        reschedule: moment(finalDate).format(),
       };
+
+      if(Platform.OS === 'ios'){
+        BodyComment.reschedule = moment(date).format()
+      }else{
+        BodyComment.reschedule = moment(finalDate).format()
+      }
 
       if (author !== "") {
         BodyComment.assignedBy = author;
       }
 
       if (userId === "") {
-        //error poner agente
+        Toast.show({
+          text1: "Por favor asigna un agente primero",
+          type: "error",
+          position: "bottom",
+        });
       } else {
         BodyComment.store = lead.store._id;
 

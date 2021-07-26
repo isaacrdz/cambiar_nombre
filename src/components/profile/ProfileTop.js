@@ -16,6 +16,7 @@ import {
 } from "@ui-kitten/components";
 
 import useAuth from "../../hooks/useAuth";
+import { CapitalizeNames } from "../../utils/Capitalize";
 
 const ProfileTop = ({ navigation }) => {
   const { user, logout } = useAuth();
@@ -94,7 +95,14 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {user && user.store && user.store.make.name} {user && user.store && user.store.name}
+          {
+            user && user.role && (user.role === 'rockstar' || user.role === 'super admin') ?
+              "Global" :
+            user && user.stores && user.stores.length > 1 ?
+              "Multiagencia" : 
+            user && user.stores &&
+              CapitalizeNames(user.stores[0].make.name) + ' ' + CapitalizeNames(user.stores[0].name)
+          }
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />

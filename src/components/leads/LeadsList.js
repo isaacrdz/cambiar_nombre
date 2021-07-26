@@ -8,6 +8,7 @@ import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 import Header from "../header/Header";
+import { getMultiStoresIds } from '../../utils/storesUser'
 
 const LeadsList = ({
   user,
@@ -17,23 +18,28 @@ const LeadsList = ({
   setCurrentSearch,
   setpageCurrent,
 }) => {
-  const { getLeads, leads, loading, clearState, leadsSize } = useLead();
+  const { getLeads, getLeadsByStore, leads, loading, clearState, leadsSize } = useLead();
 
   const [size, setSize] = useState(-1);
 
   useFocusEffect(
     React.useCallback(() => {
       clearState();
-      console.log('buscando desde leadList onfocuseffect')
-      getLeads(1, user._id, {type: 'all', value: 'all'}, '');
+      if(user && user.role === 'user'){
+        getLeads(1, user._id, {type: 'all', value: 'all'}, '');
+      }else if(user && user.role === 'admin'){
+        getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, { type: 'all', value: 'all'}, '')
+      }
     }, [])
   );
 
   React.useEffect(() => {
     if(size !== 0 && pageCurrent !== 1){
-    console.log('buscando desde leadList useEffect', pageCurrent, user._id, currentSearch, query)
-
-      getLeads(pageCurrent, user._id, currentSearch, query);
+      if(user && user.role === 'user'){
+        getLeads(pageCurrent, user._id, currentSearch, query);
+      }else if(user && user.role === 'admin'){
+        getLeadsByStore(pageCurrent, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query)
+      }
     }
   }, [pageCurrent]);
 

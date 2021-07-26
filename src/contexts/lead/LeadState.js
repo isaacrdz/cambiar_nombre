@@ -13,6 +13,7 @@ import {
   UPDATE_LEAD,
   CREATE_LEAD
 } from "../types";
+import { Value } from "react-native-reanimated";
 
 const LeadState = (props) => {
   const initialState = {
@@ -61,6 +62,42 @@ const LeadState = (props) => {
       dispatch({ type: CREATE_LEAD, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error });
+    }
+  };
+
+  //getLeadsByStore('', {limit: limit, page: page + 1} , currentTab, query, typeQuery, `&multiStores=${getMultiStoresIds(user.stores)}` );
+  //const getLeadsByStore = async (storequery, pagination, tabs, query, typeQuery, multiStore) => 
+  //Get Leads
+  const getLeadsByStore = async (pageCurrent, multiStore, { type, value }, query ) => {
+    setLoading();
+    try {
+      let leads;
+      if (!query) query = '';
+
+      switch(type){
+        case 'status':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`
+          );
+        break;
+        case 'subStatus':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`
+          );
+        break;
+        case 'all':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`
+          );
+        break;
+      }
+    
+      dispatch({
+        type: GET_LEADS,
+        payload: leads.data.data,
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -134,7 +171,8 @@ const LeadState = (props) => {
         clearCurrentLead,
         updateLead,
         clearError,
-        createLead
+        createLead,
+        getLeadsByStore
       }}
     >
       {props.children}
