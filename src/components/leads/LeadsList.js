@@ -18,7 +18,7 @@ const LeadsList = ({
   setCurrentSearch,
   setpageCurrent,
 }) => {
-  const { getLeads, getLeadsByStore, leads, loading, clearState, leadsSize } = useLead();
+  const { getLeads, getLeadsByStore, getLeadsRockstar, leads, loading, clearState, leadsSize } = useLead();
 
   const [size, setSize] = useState(-1);
 
@@ -29,6 +29,8 @@ const LeadsList = ({
         getLeads(1, user._id, {type: 'all', value: 'all'}, '');
       }else if(user && user.role === 'admin'){
         getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, { type: 'all', value: 'all'}, '')
+      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+        getLeadsRockstar(1, { type: 'all', value: 'all'}, '')
       }
     }, [])
   );
@@ -39,6 +41,8 @@ const LeadsList = ({
         getLeads(pageCurrent, user._id, currentSearch, query);
       }else if(user && user.role === 'admin'){
         getLeadsByStore(pageCurrent, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query)
+      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+        getLeadsRockstar(pageCurrent, currentSearch, query)
       }
     }
   }, [pageCurrent]);

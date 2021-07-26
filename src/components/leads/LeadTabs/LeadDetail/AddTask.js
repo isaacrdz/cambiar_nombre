@@ -184,7 +184,6 @@ const AddTask = ({ navigation }) => {
       }
 
 
-      console.log('final date', finalDate)
       let BodyComment = {
         comment: text,
         user: userId,

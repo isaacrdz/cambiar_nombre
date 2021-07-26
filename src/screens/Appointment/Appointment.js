@@ -12,7 +12,7 @@ const Appointment = () => {
   const [items, setItems] = React.useState({});
   const [marked, setMarked] = React.useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-  const { getAppointmentsByUser, getAppointmentsByStore, appointments, loading } = useAppointment();
+  const { getAppointmentsByUser, getAppointmentsByStore, getAppointments, appointments, loading } = useAppointment();
   const { user } = useAuth();
 
   React.useEffect(() => {
@@ -71,6 +71,8 @@ const Appointment = () => {
         getAppointmentsByUser(user._id)
       }else if(user && user.role === 'admin' && user.stores){
         getAppointmentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
+      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+        getAppointments();
       }
     }, [user])
   );
@@ -84,14 +86,14 @@ const Appointment = () => {
   };
 
   const handleRefresh = () => {
-    setRefreshing(true);
-    getData();
-    setRefreshing(false);
+    if (user && user.role === 'user') {
+      getAppointmentsByUser(user._id)
+    }else if(user && user.role === 'admin' && user.stores){
+      getAppointmentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
+    }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+      getAppointments();
+    }
   };
-
-  const getColor = ( ) => {
-    return 'yellow'
-  }
 
   return (
     <Agenda
@@ -100,8 +102,8 @@ const Appointment = () => {
       renderEmptyData={renderEmptyDate}
       markedDates={marked}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      // onRefresh={() => handleRefresh()}
-      // refreshing={refreshing}
+      onRefresh={() => handleRefresh()}
+      refreshing={loading}
       // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
       // minDate={moment().format()}
       // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined

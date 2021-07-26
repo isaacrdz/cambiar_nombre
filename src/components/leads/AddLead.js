@@ -20,6 +20,7 @@ import HeaderTitle from "../header/HeaderTitle";
 import { useFocusEffect } from "@react-navigation/native";
 import { isEmail, isPhoneNumber, isYear, justLetters, justNumbers } from "../../utils/Validations";
 import { CapitalizeNames } from "../../utils/Capitalize";
+import useStore from "../../hooks/useStore";
 
 // Rockstar
 // import useStore from '../../hooks/useStore';
@@ -39,6 +40,7 @@ const AddLead = ({ navigation }) => {
     const { vehicles, getVehiclesByMake } = useVehicle();
     const { sources, getSources } = useSource();
     const { companies, getCompanies } = useCompany();
+    const { stores, getStores } = useStore();
     const { lists, getListsByStore } = useList();
     const { createLead, error, clearError } = useLead();
 
@@ -76,6 +78,7 @@ const AddLead = ({ navigation }) => {
     const [listas, setListas] = useState([""]);
     const [listaSelect, setListaSelect] = useState(new IndexPath(0))
     const displayLista = listas[listaSelect.row];
+    const [disableButton, setDisableButton] = useState(false)
 
     const [currentLead, setCurrentLead] = useState({
         name: '',
@@ -87,7 +90,6 @@ const AddLead = ({ navigation }) => {
     })
 
     const handleSubmit = async() => {
-        
         if(!justLetters(currentLead.name)){
             return Toast.show({
                 text1: "Agrega un nombre válido.",
@@ -128,16 +130,31 @@ const AddLead = ({ navigation }) => {
               });
         }
 
+        if(!vehicles || vehicles.length === 0){
+            return Toast.show({
+                text1: "Agrega un vehículo",
+                type: "error",
+                position: "bottom",
+              });
+        }
+
         let data = {
             name: currentLead.name,
             email: currentLead.email,
             phone: currentLead.phone,
             carType: displayCarType,
-            store: user.stores[storeSelect.row]._id,
             vehicle: vehicles[modelSelect.row]._id,
             year: currentLead.year,
             downPayment: currentLead.downPayment,
             source: sources[fuentesSelect.row]._id,
+        }
+
+        if(user && (user.role === 'user' || user.role === 'admin')){
+            data.store = user.stores[storeSelect.row]._id
+        }
+
+        if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+            data.store = stores[storeSelect.row]._id
         }
 
         let timeFrame = new Date();
@@ -209,18 +226,45 @@ const AddLead = ({ navigation }) => {
                 getVehiclesByMake(user.stores[0].make._id);
                 getListsByStore(user.stores[0]._id)
             }
+
+            if (user && user.role && (user.role === 'rockstar' || user.role === 'super admin')){
+                getStores();
+            }
+
             getSources()
             getCompanies()
         }, [])
     );
 
+
     useEffect(()=>{
-        if(user.stores){
+        if(user.role === 'user'){
+            setDisableButton(true)
+        }
+
+        if(user.role === 'admin' && user.stores && user.stores.length <= 1 ){
+            setDisableButton(true)
+        }
+
+
+    },[user])
+
+    useEffect(()=>{
+        if(user.stores && user.role !== 'rockstar' && user.role !== 'super admin'){
             let aux = [];
             user.stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)))
             setTiendas(aux);
         }
     },[user])
+
+    useEffect(()=>{
+        if(stores && (user.role === 'rockstar' || user.role === 'super admin')){
+            let aux = [];
+            stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)))
+            setTiendas(aux);
+        }
+    },[stores])
+
 
     useEffect(()=>{
         if(vehicles){
@@ -341,12 +385,16 @@ const AddLead = ({ navigation }) => {
                     <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
                         Agencia
                     </Text>
-                   
                     <Select
                         size="large"
                         style={{ marginBottom: 10 }}
-                        disabled={user && user.stores && user.stores.length <= 1}
-                        onSelect={(index)=>setStoreSelect(index)}
+                        disabled={disableButton}
+                        onSelect={(index)=>{
+                            setStoreSelect(index);
+                            if(user && user.role && (user.role === 'super admin' || user.role === 'rockstar')){
+                                getVehiclesByMake(stores[index].make._id)
+                            }
+                        }}
                         value={displayStore}
                     >
                         {

@@ -65,8 +65,42 @@ const LeadState = (props) => {
     }
   };
 
-  //getLeadsByStore('', {limit: limit, page: page + 1} , currentTab, query, typeQuery, `&multiStores=${getMultiStoresIds(user.stores)}` );
-  //const getLeadsByStore = async (storequery, pagination, tabs, query, typeQuery, multiStore) => 
+  
+   //Get Leads
+   const getLeadsRockstar = async (pageCurrent, { type, value }, query) => {
+    setLoading();
+    try {
+      let leads;
+      if (!query) query = '';
+
+      switch(type){
+        case 'status':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&status=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+          );
+          break;
+        case 'subStatus':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&substatus=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+          );
+          break;
+        case 'all':
+          leads = await api.get(
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+          );
+            break;
+      }
+
+      dispatch({
+        type: GET_LEADS,
+        payload: leads.data.data,
+        count: leads.data.pagination.total
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+  };
+
   //Get Leads
   const getLeadsByStore = async (pageCurrent, multiStore, { type, value }, query ) => {
     setLoading();
@@ -122,9 +156,7 @@ const LeadState = (props) => {
             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`
           );
         break;
-        default:
-          console.log('no valid search')
-        break;
+        
       }
 
       dispatch({
@@ -172,7 +204,8 @@ const LeadState = (props) => {
         updateLead,
         clearError,
         createLead,
-        getLeadsByStore
+        getLeadsByStore,
+        getLeadsRockstar
       }}
     >
       {props.children}
