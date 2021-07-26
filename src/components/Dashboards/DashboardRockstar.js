@@ -7,7 +7,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import useChart from '../../hooks/useChart';
 import useAuth from '../../hooks/useAuth';
 import { CapitalizeNames } from "../../utils/Capitalize";
-import { getMultiStoresIds } from "../../utils/storesUser";
 import { Spinner } from '@ui-kitten/components';
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -44,7 +43,7 @@ const HomeAdmin = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       if(user && user._id){
-        getTotalsDashboard(`${date}&store[in]=${getMultiStoresIds(user.stores)}`)
+        getTotalsDashboard(date)
       }
     }, [date, user])
   );
@@ -61,6 +60,7 @@ const HomeAdmin = ({navigation}) => {
           getFilter={setCustom} 
         />
       </Layout>
+      {console.log(total === null)}
       <Layout style={styles.subContainerText}>
         <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
         {
@@ -70,8 +70,7 @@ const HomeAdmin = ({navigation}) => {
           <Text category="p1" appearance="hint" >{`Tienes un total de ${total} leads acumulados`}</Text>
         }
       </Layout>
-    
- 
+      
       <Layout style={styles.subContainerCards}>
 
         <Layout style={styles.card}>
@@ -156,7 +155,6 @@ const HomeAdmin = ({navigation}) => {
         
       </Layout>
       
-
       <Layout style={styles.subContainerDivider}>
         <Divider /> 
       </Layout>

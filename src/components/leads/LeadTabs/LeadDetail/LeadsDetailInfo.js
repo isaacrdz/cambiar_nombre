@@ -165,7 +165,7 @@ const LeadDetailInfo = ({ itemId }) => {
               Agente
             </Text>
             <Text style={[styles.mr]}>
-              {lead && lead.agent && CapitalizeNames(lead.agent.name)}
+              {lead && lead.agent ? CapitalizeNames(lead.agent.name) : 'Sin Asignar'}
             </Text>
           </Layout>
           <Divider />
