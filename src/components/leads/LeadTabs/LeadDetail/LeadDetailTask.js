@@ -98,7 +98,14 @@ const LeadDetailTask = ({ tasks }) => {
             {item.comment}
           </Text>
         </Layout>
-
+        {
+          item.assignedBy &&
+          <Layout style={{ marginBottom: 5 }}>
+            <Text category="c1" appearance="hint">
+              Asignado por: {CapitalizeNames(item.assignedBy.name)}
+            </Text>
+          </Layout>
+        }
         <Layout>
           <Text category="c1" appearance="hint">
             Siguiente tarea: <Ionicons name="time-outline" size={13} />{" "}

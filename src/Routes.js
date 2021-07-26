@@ -45,7 +45,6 @@ const Routes = ({ token }) => {
           if(Platform.OS === 'ios'){
             Notifications.setBadgeNumberAsync(notificationAmount);
             notificationAmount++;
-
           }
         });
 

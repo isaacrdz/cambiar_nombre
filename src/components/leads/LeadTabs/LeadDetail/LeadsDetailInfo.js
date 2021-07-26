@@ -10,10 +10,13 @@ import moment from "moment/min/moment-with-locales";
 
 import useLead from "../../../../hooks/useLead";
 import { translateTemperature } from "../../../../utils/tranlsateSubstatus";
+import useAuth from "../../../../hooks/useAuth";
+import { CapitalizeNames } from '../../../../utils/Capitalize';
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
   moment.locale("es-mx");
+  const { user } = useAuth()
 
   useEffect(() => {
     getLead(itemId);
@@ -87,7 +90,7 @@ const LeadDetailInfo = ({ itemId }) => {
         <Divider />
       </Layout>
 
-      <Layout style={{ marginBottom: 300 }}>
+      <Layout style={styles.container}>
         <Layout style={styles.ContainerDetail}>
           <Text category="p1" appearance="hint">
             Enganche
@@ -152,6 +155,22 @@ const LeadDetailInfo = ({ itemId }) => {
           </Text>
         </Layout>
       </Layout>
+                
+      { /* Lead Agent */}
+      {
+        user && (user.role === 'admin' || user.role === 'super admin' || user.role === 'rockstar') &&
+        <Layout style={{ marginBottom: 300 }}>
+          <Layout style={styles.ContainerDetail}>
+            <Text category="p1" appearance="hint">
+              Agente
+            </Text>
+            <Text style={[styles.mr]}>
+              {lead && lead.agent && CapitalizeNames(lead.agent.name)}
+            </Text>
+          </Layout>
+          <Divider />
+        </Layout>
+      }
     </ScrollView>
   );
 };

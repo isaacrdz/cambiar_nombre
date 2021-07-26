@@ -4,6 +4,7 @@ import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
+import { getMultiStoresIds } from "../utils/storesUser";
 
 const filters = [
   {
@@ -38,13 +39,16 @@ const filters = [
 ];
 
 const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-  const { clearState, getLeads } = useLead();
+  const { clearState, getLeads, getLeadsByStore } = useLead();
   const { user } = useAuth();
 
   const handleSearch = async (item) => {
-    console.log("buscando desde leadFilter", item, query, user._id);
     await clearState();
-    await getLeads(1, user._id, item, query);
+    if(user && user.role === 'user'){
+      await getLeads(1, user._id, item, query);
+    }else if(user && user.role === 'admin'){
+      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, item, query)
+    }
   };
 
   return (

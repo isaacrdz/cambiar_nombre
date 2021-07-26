@@ -49,31 +49,50 @@ const AddAppointment = ({ navigation }) => {
   const handleSubmit = async () => {
     if (values.description === "" || values.title === "") {
       return Toast.show({
-        text1: "Fill all the fields",
+        text1: "Completa todos los campos",
         type: "error",
         position: "bottom",
       });
     }
-    let endDate = moment(finalDate).add(time.row + 1, "hours");
+
+    if (!lead.agent) {
+      return Toast.show({
+        text1: "Primero asigna un agente",
+        type: "error",
+        position: "bottom",
+      });
+    }
+
+
+    let endDate;
+    if(Platform.OS === 'ios'){
+      endDate = moment(date).add(time.row + 1, "hours");
+    }else{
+      endDate = moment(finalDate).add(time.row + 1, "hours");
+    }
 
     ////
     let BodyComment = {
       comment: values.description,
-      user: user._id,
       action: ["appointment"],
       store: lead.store._id,
+      user: lead.agent._id
     };
+
+    if(user && (user.role === 'admin' || user.role === 'super admin' || user.role === 'rockstar')){
+      BodyComment.assignedBy = user._id
+    }
+
+
 
     await createComment(BodyComment, lead._id);
 
     if (lead && lead.comments && lead.comments.length > 0) {
       await updateComment({ pending: false }, lead.comments[0]._id);
     }
-    /////
 
-    await createAppointment({
+    let BodyApp = {
       ...values,
-      startDate: finalDate,
       endDate,
       action: displayValue,
       substatus: "605bd6b0bed49524ae40f885",
@@ -82,7 +101,17 @@ const AddAppointment = ({ navigation }) => {
       lead: lead._id,
       email: lead.email,
       customer: lead.name,
-    });
+    }
+
+    if(Platform.OS === 'ios'){
+      BodyApp.startDate = date
+
+    }else{
+      BodyApp.startDate = finalDate
+
+    }
+
+    await createAppointment(BodyApp);
 
     let updateLeadBody = {
       status: "604f80222b372e0cb11966dc",
