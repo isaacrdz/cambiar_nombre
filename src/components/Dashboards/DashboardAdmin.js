@@ -20,6 +20,7 @@ import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import ChartsAdmin from "../Charts/ChartsAdmin";
 import { ScrollView } from "react-native-gesture-handler";
+import TopList from "./dashboardComponents/TopList";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -68,27 +69,10 @@ const HomeAdmin = ({ navigation }) => {
     return () => clearCharts();
   }, []);
 
-  const data2 = new Array(8).fill({
-    title: "Title for Item",
-    description: "Description for Item",
+  const data = new Array(8).fill({
+    name: "Isaac Rodriguez",
+    results: "22",
   });
-
-  const renderItemAccessory = (props) => (
-    <Text category="p1" style={{ marginRight: 10 }}>
-      22 Ventas
-    </Text>
-  );
-
-  const renderItemIcon = (props) => <Ionicons name="person-sharp" size={20} />;
-
-  const renderItem = ({ item, index }) => (
-    <ListItem
-      title={`${item.title} ${index + 1}`}
-      description={`${item.description} ${index + 1}`}
-      accessoryLeft={renderItemIcon}
-      accessoryRight={renderItemAccessory}
-    />
-  );
 
   return (
     <ScrollView>
@@ -96,7 +80,7 @@ const HomeAdmin = ({ navigation }) => {
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
-            style={{ fontSize: 30, marginTop: 15 }}
+            style={{ fontSize: 28, marginTop: 15 }}
           >{`${greeting}, ${user && CapitalizeNames(user.name)}`}</Text>
           {loadingCharts ? (
             <Text
@@ -107,7 +91,7 @@ const HomeAdmin = ({ navigation }) => {
             <Text category="p1">{`Tienes un total de ${total} leads acumulados`}</Text>
           )}
         </Layout>
-
+        <Divider />
         <Layout style={styles.subContainer}>
           <Calendar setDate={setDate} getFilter={setCustom} />
         </Layout>
@@ -193,19 +177,9 @@ const HomeAdmin = ({ navigation }) => {
 
           <ChartsAdmin />
         </Layout>
-
-        <Layout>
-          <Text category="h5" style={{ textAlign: "center" }}>
-            Top 10 Asesores
-          </Text>
-          <Divider style={{ marginTop: 10 }} />
-          <List
-            data={data2}
-            renderItem={renderItem}
-            style={{ marginLeft: 10 }}
-          />
-        </Layout>
       </Layout>
+
+      <TopList data={data} title="Top 10 Ventas" />
     </ScrollView>
   );
 };
