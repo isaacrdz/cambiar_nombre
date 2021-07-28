@@ -13,20 +13,21 @@ const HomeStackScreen = ({ navigation }) => (
       name="DPX"
       component={Home}
       options={{
-        headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-            <Icon
-              style={{
-                width: 25,
-                height: 25,
-                marginRight: 20,
-                color: "#5764b8",
-              }}
-              fill="#5e72e4"
-              name="settings"
-            />
-          </TouchableOpacity>
-        ),
+        headerShown: false,
+        // headerRight: () => (
+        //   <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+        //     <Icon
+        //       style={{
+        //         width: 25,
+        //         height: 25,
+        //         marginRight: 20,
+        //         color: "#5764b8",
+        //       }}
+        //       fill="#5e72e4"
+        //       name="settings"
+        //     />
+        //   </TouchableOpacity>
+        // ),
       }}
     />
     <HomeStack.Screen name="Settings" component={Settings} />
