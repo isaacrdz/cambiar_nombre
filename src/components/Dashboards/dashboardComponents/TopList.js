@@ -19,9 +19,8 @@ const TopList = ({ data, title }) => {
       <Divider style={{ marginTop: 10 }} />
 
       {data.map((user, i) => (
-        <>
+        <Layout key={i}>
           <Layout
-            key={i}
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -30,14 +29,14 @@ const TopList = ({ data, title }) => {
             }}
           >
             <Text category="s1" style={styles.marginleft}>
-              {user.name}
+              {`${i + 1}. `} {user.name}
             </Text>
             <Text category="p1" style={styles.marginRight}>
               {`${user.results} `}
             </Text>
           </Layout>
           <Divider />
-        </>
+        </Layout>
       ))}
     </Layout>
   );

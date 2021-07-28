@@ -69,7 +69,7 @@ const HomeAdmin = ({ navigation }) => {
     return () => clearCharts();
   }, []);
 
-  const data = new Array(8).fill({
+  const data = new Array(10).fill({
     name: "Isaac Rodriguez",
     results: "22",
   });
