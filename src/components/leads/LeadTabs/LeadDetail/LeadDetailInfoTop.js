@@ -10,6 +10,7 @@ import {
 } from "@ui-kitten/components";
 
 import useActivity from "../../../../hooks/useActivity";
+import useLead from "../../../../hooks/useLead";
 import useAuth from "../../../../hooks/useAuth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
@@ -22,7 +23,12 @@ const EmailIcon = (props) => <Icon {...props} name="mail" />;
 const LeadDetailInfoTop = ({ item, loading }) => {
   const navigation = useNavigation();
   const { createActivity } = useActivity();
+  const { call } = useLead();
   const { user } = useAuth();
+
+  const callCustomer = () => {
+    call();
+  };
 
   return (
     <>
@@ -61,16 +67,18 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            createActivity({
-              action: "call",
-              description: `${CapitalizeNames(
-                user.name
-              )} has made a phone call to ${CapitalizeNames(
-                item.name
-              )} from mobile App`,
-              lead: item._id,
-            });
-            Linking.openURL(`tel:${item.phone}`);
+            // createActivity({
+            //   action: "call",
+            //   description: `${CapitalizeNames(
+            //     user.name
+            //   )} has made a phone call to ${CapitalizeNames(
+            //     item.name
+            //   )} from mobile App`,
+            //   lead: item._id,
+            // });
+            // Linking.openURL(`tel:${item.phone}`);
+
+            callCustomer();
           }}
         >
           <Ionicons name="phone-portrait-outline" size={30} color="#1299de" />
@@ -79,7 +87,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
           style={styles.button}
           appearance="ghost"
           onPress={() => {
-            navigation.navigate('SendDocumentation')
+            navigation.navigate("SendDocumentation");
           }}
         >
           <Ionicons name="mail-outline" size={30} color="#535de2" />
