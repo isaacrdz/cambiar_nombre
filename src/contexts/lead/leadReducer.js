@@ -6,25 +6,26 @@ import {
   CLEAR_STATE,
   SET_LOADING,
   UPDATE_LEAD,
-  CREATE_LEAD
+  CREATE_LEAD,
+  CALL_USER,
 } from "../types";
 import _ from "lodash";
 
 export default (state, action) => {
   switch (action.type) {
-    case CLEAR_CURRENT_LEAD: 
-    return {
-      ...state,
-      lead: {},
-      loading: false,
-      error: null
-    }
+    case CLEAR_CURRENT_LEAD:
+      return {
+        ...state,
+        lead: {},
+        loading: false,
+        error: null,
+      };
     case CREATE_LEAD:
       return {
         ...state,
         leads: [...state.leads, action.payload],
         loading: false,
-        error: null
+        error: null,
       };
     case GET_LEADS:
       return {
@@ -39,26 +40,34 @@ export default (state, action) => {
         ...state,
         lead: action.payload,
         loading: false,
-        error: null
+        error: null,
+      };
+
+    case CALL_USER:
+      return {
+        ...state,
+        loading: false,
+        callToken: action.payload,
+        error: null,
       };
 
     case GET_LEAD:
       let sortedActivities = action.payload.activities;
-      sortedActivities = _.orderBy(sortedActivities, ['createdAt'],['desc']);
+      sortedActivities = _.orderBy(sortedActivities, ["createdAt"], ["desc"]);
       action.payload.activities = sortedActivities;
-      
+
       let sortedComments = action.payload.comments;
-      sortedComments = _.orderBy(sortedComments, ['createdAt'],['desc']);
+      sortedComments = _.orderBy(sortedComments, ["createdAt"], ["desc"]);
       action.payload.comments = sortedComments;
 
       let sortedRecordings = action.payload.recordings;
-      sortedRecordings = _.orderBy(sortedRecordings, ['createdAt'],['desc']);
+      sortedRecordings = _.orderBy(sortedRecordings, ["createdAt"], ["desc"]);
       action.payload.recordings = sortedRecordings;
       return {
         ...state,
         lead: action.payload,
         loading: false,
-        error: null
+        error: null,
       };
 
     case SET_ERROR:

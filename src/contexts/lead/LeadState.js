@@ -12,6 +12,7 @@ import {
   CLEAR_CURRENT_LEAD,
   UPDATE_LEAD,
   CREATE_LEAD,
+  CALL_USER,
 } from "../types";
 import { Value } from "react-native-reanimated";
 
@@ -22,6 +23,7 @@ const LeadState = (props) => {
     loading: false,
     error: null,
     leadsSize: -1,
+    callToken: null,
   };
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
@@ -192,13 +194,28 @@ const LeadState = (props) => {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
-    clearState();
-    setLoading();
+
     try {
       const res = await api.post(`/utils/mobilecall`, config);
-      console.log(res);
+      console.log("si jala la ruta");
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const generateToken = async (data) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
+    try {
+      const res = await api.post("/calls/generate", { data }, config);
+      AsyncStorage.setItem("callToken", res.data.token);
+      dispatch({ type: CALL_USER, payload: res.data.token });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err });
     }
   };
 
@@ -211,6 +228,7 @@ const LeadState = (props) => {
   return (
     <LeadContext.Provider
       value={{
+        callToken: state.callToken,
         leads: state.leads,
         leadsSize: state.leadsSize,
         lead: state.lead,
@@ -227,6 +245,7 @@ const LeadState = (props) => {
         getLeadsByStore,
         getLeadsRockstar,
         call,
+        generateToken,
       }}
     >
       {props.children}

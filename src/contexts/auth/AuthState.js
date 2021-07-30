@@ -122,6 +122,7 @@ const AuthState = (async = (props) => {
       });
     } catch (err) {
       dispatch({ type: LOGIN_FAIL, payload: err.response.data.error });
+    console.log(err.response.data.error)
     }
   };
 

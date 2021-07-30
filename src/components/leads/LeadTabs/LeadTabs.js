@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import { StyleSheet, ActivityIndicator } from "react-native";
 import {
   Layout,
@@ -15,16 +16,29 @@ import LeadDetailTask from "./LeadDetail/LeadDetailTask";
 import useLead from "../../../hooks/useLead";
 import LeadDetailHistory from "./LeadDetail/history/LeadDetailHistory";
 import Records from "./LeadDetail/record/Records";
+import useAuth from "../../../hooks/useAuth";
 
 const LeadTabs = ({ route }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const { item } = route.params;
+  const { user } = useAuth();
 
-  const { getLead, loading, clearState, lead } = useLead();
+  const { getLead, loading, clearState, lead, generateToken, callToken } =
+    useLead();
+
+  const [isTokenGenerated, setTokenGenerated] = useState(false);
 
   React.useEffect(() => {
     getLead(item._id);
   }, []);
+
+  useEffect(() => {
+    if (user && user._id && !isTokenGenerated && lead && lead.store) {
+      setTokenGenerated(true);
+      generateToken(lead);
+    }
+    //eslint-disable-next-line
+  }, [lead]);
   return (
     <>
       <LeadDetailInfoTop item={lead} loading={loading} />

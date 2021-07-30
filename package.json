@@ -55,7 +55,8 @@
     "react-native-track-player": "^1.2.7",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
-    "react-number-format": "^4.5.5"
+    "react-number-format": "^4.5.5",
+    "twilio-client": "^1.14.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
