@@ -6,7 +6,6 @@ import useActivity from "../../../../hooks/useActivity";
 import useAuth from "../../../../hooks/useAuth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
-import { Device } from "twilio-client";
 import { useNavigation } from "@react-navigation/native";
 import useLead from "../../../../hooks/useLead";
 
@@ -15,50 +14,62 @@ const LeadDetailInfoTop = ({ item, loading }) => {
   const { createActivity } = useActivity();
   const { generateToken, callToken } = useLead();
   const [callStatus, setCallStatus] = useState("");
-
   const { user } = useAuth();
+  const [deviceState, setDevice] = useState()
 
-  useEffect(() => {
-    if (callToken) {
-      try {
-        device = new Device(callToken, {
-          codecPreferences: ["opus", "pcmu"],
-          fakeLocalDTMF: true,
-          enableRingingState: true,
-        });
+  // useEffect(() => {
+  //   if (callToken) {
+  //     try {
+  //       console.log('aca ando', new Device(callToken, {
+  //         codecPreferences: ["opus", "pcmu"],
+  //         fakeLocalDTMF: true,
+  //         enableRingingState: true,
+  //       }))
 
-        device.on("ready", function (device) {
-          updateCallStatus(t("Leads.CallReady"));
-        });
+  //       setDevice( new Device(callToken, {
+  //         codecPreferences: ["opus", "pcmu"],
+  //         fakeLocalDTMF: true,
+  //         enableRingingState: true,
+  //       }))
 
-        device.on("error", function (error) {
-          if (error.code === 31205) {
-            generateToken(item);
-            updateCallStatus(t("Leads.GeneratingToken"));
-          } else {
-            updateCallStatus("ERROR: " + error.message);
-          }
-        });
+  //       deviceState.on("ready", function (device) {
+  //         updateCallStatus("Listo");
+  //       });
 
-        device.on("connect", function (conn) {
-          updateCallStatus(
-            t("Leads.CallInCall") + " " + conn.message.phoneNumber
-          );
-        });
+  //       deviceState.on("error", function (error) {
+  //         if (error.code === 31205) {
+  //           generateToken(item);
+  //           updateCallStatus("Generando Token");
+  //         } else {
+  //           updateCallStatus("ERROR: " + error.message);
+  //         }
+  //       });
 
-        device.on("disconnect", function (conn) {
-          updateCallStatus(t("Leads.CallReady"));
-        });
+  //       deviceState.on("connect", function (conn) {
+  //         updateCallStatus(
+  //           "Llamada con" + " " + conn.message.phoneNumber
+  //         );
+  //       });
 
-        device.on("ringing", function (hasEarlyMedia) {});
-      } catch (err) {
-        setCallStatus("ERROR: ", err.message);
-      }
-    } else {
-      return;
-    }
-    //eslint-disable-next-line
-  }, [callToken]);
+  //       deviceState.on("disconnect", function (conn) {
+  //         updateCallStatus("Listo");
+  //       });
+
+  //       deviceState.on("ringing", function (hasEarlyMedia) {});
+  //     } catch (err) {
+  //       console.log(err)
+  //       setCallStatus("ERROR: ", err.message);
+  //     }
+  //   }
+  //   //eslint-disable-next-line
+  // }, [callToken]);
+
+  // const removeSubscription = TwilioVoice.on("connect", connectedCall => call = connectedCall)
+
+  useEffect(()=>{
+    console.log('state',deviceState)
+  },[deviceState])
+
   return (
     <>
       <Layout style={{ justifyContent: "center", alignItems: "center" }}>
@@ -97,7 +108,35 @@ const LeadDetailInfoTop = ({ item, loading }) => {
             style={styles.button}
             appearance="ghost"
             onPress={() => {
-              navigation.navigate("Calling", { status: status });
+
+              // Subscribe to call events
+              // let call
+              // call removeSubscription() to stop listening
+              
+              // start a call
+              // TwilioVoice.connect(accessToken, {to: '+528121785577'})
+              
+              // hangup
+              // call.disconnect()
+              
+              // mute or un-mute the call
+              // mutedValue must be a boolean
+              // call.muted(mutedValue)
+              
+              // Send the call audio to the speaker phone
+              // speakerPhoneEnabled must be a boolean
+              // call.setSpeakerPhone(speakerPhoneEnabled)
+              
+              // call.sendDigits(digits)
+              
+              // // Call properties
+              // call.from
+              // call.to
+              // call.sid
+              // call.state // "RINGING" | "CONNECTING" | "CONNECTED" | "RECONNECTING" | "DISCONNECTED"
+
+
+              // navigation.navigate("Calling", { lead: item, device: deviceState, updateCallStatus: updateCallStatus, handleCallUser:handleCallUser });
             }}
           >
             <Ionicons name="phone-portrait-outline" size={30} color="#1299de" />

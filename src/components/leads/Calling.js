@@ -3,9 +3,16 @@ import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Layout, Button, Text, Input } from "@ui-kitten/components";
 import HeaderTitle from "../header/HeaderTitle";
 import useLead from "../../hooks/useLead";
+import useAuth from "../../hooks/useAuth";
+import useComment from "../../hooks/useComment";
+import { CapitalizeNames } from "../../utils/Capitalize"
 
 const Calling = ({ route, navigation }) => {
-  const { status } = route.params;
+
+  const { device, updateCallStatus, handleCallUser } = route.params;
+  const { user } = useAuth()
+  const { updateLead, lead } = useLead()
+  const { updateComment, createComment } = useComment()
 
   let paddingTop = 0;
 
@@ -13,8 +20,19 @@ const Calling = ({ route, navigation }) => {
     paddingTop = 30;
   }
 
-  const callCustomer = async (obj) => {
-    updateCallStatus(t("Leads.CallCalling") + obj.phoneNumber + "...");
+  const callCustomer = async () => {
+
+    let obj = {
+      callerdId: lead.store.twilioNumber,
+      phoneNumber: lead.phone,
+      description: `${CapitalizeNames(
+        user.name
+      )} has made a phone call to  ${CapitalizeNames(lead.name)}`,
+      action: 'call',
+      lead: lead._id
+    };
+
+    updateCallStatus("Llamando" + obj.phoneNumber + "...");
 
     let params = {
       phoneNumber: obj.phoneNumber,
@@ -32,7 +50,7 @@ const Calling = ({ route, navigation }) => {
       params.store = "---";
     }
 
-    device.connect(params);
+    handleCallUser(params);
     createActivity(obj);
 
     let author = "";
@@ -87,8 +105,8 @@ const Calling = ({ route, navigation }) => {
       <HeaderTitle title="Calling" />
 
       <Layout style={styles.container}>
-        <Button>Calling</Button>
-        <Button>Hangup</Button>
+        <Button onPress={callCustomer}>Calling</Button>
+        <Button onPress={hangUp}>Hangup</Button>
       </Layout>
     </SafeAreaView>
   );
