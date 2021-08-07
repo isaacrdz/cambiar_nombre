@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Layout, Text } from "@ui-kitten/components";
+import { Layout, Text, Divider } from "@ui-kitten/components";
 import Calendar from '../../components/SelectDate'
 import moment from 'moment'
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -9,24 +9,34 @@ import useAuth from '../../hooks/useAuth';
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { Spinner } from '@ui-kitten/components';
 import { useFocusEffect } from "@react-navigation/native";
-
+import ChartsUser from "../Charts/ChartsUser";
+import { ScrollView } from "react-native-gesture-handler";
 const HomeUser = ({navigation}) => {
 
   const { user } = useAuth();
-  const { 
-    getTotalsDashboard, 
+
+  const {
+    getSubstatusAgentChart,
+    substatusAgentChart,
+    getPieStatusChart,
+    pieStatus,
+    clearCharts,
+    getTotalsDashboard,
     total, 
     totalLeads, 
-    totalAppointments, 
     totalVisits, 
-    totalSolds,
+    totalAppointments, 
+    totalSolds, 
     loadingCharts,
+    getLeadsMonthlyChart,
+    leadsMonthlyChart
   } = useChart();
   const [date, setDate] = useState(`&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`)
 
   const today = new Date();
   const curHr = today.getHours();
-
+  const [filter, setFilter] = useState('month');
+  const [custom, setCustom] = useState({date:`&createdAt[gte]=${moment().startOf('year').format()}&createdAt[lt]=${moment().endOf('month').format()}`,filter:'MMMM'});
   let greeting;
 
   if (curHr < 12) {
@@ -40,13 +50,16 @@ const HomeUser = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       if(user && user._id){
-        getTotalsDashboard(`${date}&agent=${user._id}`)
+        getTotalsDashboard(`${date}&agent=${user._id}`);
+        getLeadsMonthlyChart(`${custom.date}&agent=${user._id}&filter=${custom.filter}`);
+        getPieStatusChart(`${date}&agent=${user._id}`);
       }
-    }, [date, user])
+    }, [filter, date, user])
   );
 
 
   return (
+    <ScrollView>
     <Layout style={styles.container}>
       <Layout style={styles.subContainer}>
         <Calendar setDate={setDate}/>
@@ -147,6 +160,21 @@ const HomeUser = ({navigation}) => {
 
 
     </Layout>
+
+        <Layout style={styles.subContainerDivider}>
+          {!leadsMonthlyChart || !pieStatus ? (
+            <Layout style={styles.center}>
+              <Spinner size="giant" />
+            </Layout>
+
+          ) : (
+            <>
+              <Divider />
+              <ChartsUser leads={leadsMonthlyChart} status={pieStatus} />
+            </>
+          )}
+        </Layout>
+    </ScrollView>
   );
 };
 
@@ -164,6 +192,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     padding: 20,
+  },
+ subContainerDivider: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   subContainerText: {
     justifyContent: "space-between",

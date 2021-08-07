@@ -3,7 +3,11 @@ import {
   CLEAR_STATE,
   SET_LOADING,
   GET_TOTALS_DASHBOARD,
-  GET_LEADS_MONTHLY_CHART
+  GET_LEADS_MONTHLY_CHART,
+  GET_CLOSURE_TOP_STORES,
+  GET_CLOSURE_TOP_USERS,
+GET_SUBSTATUS_AGENT_CHART,
+GET_PIE_STATUS_CHART
 } from "../types";
 
 export default (state, action) => {
@@ -18,10 +22,38 @@ export default (state, action) => {
         loadingCharts: false,
         error: null
       }
+      case GET_SUBSTATUS_AGENT_CHART:
+        return {
+          ...state,
+          substatusAgentChart: action.payload,
+          loadingCharts: false,
+          error: null
+        }
+        case GET_PIE_STATUS_CHART:
+      return {
+        ...state,
+        pieStatus: action.payload,
+        loadingCharts: false,
+        error: null
+      }
     case GET_TOTALS_DASHBOARD:
       return {
         ...state,
         ...action.payload,
+        loadingCharts: false,
+        error: null
+      }
+    case GET_CLOSURE_TOP_STORES:
+      return {
+        ...state,
+        closureTopStores: action.payload,
+        loadingCharts: false,
+        error: null
+      }
+    case GET_CLOSURE_TOP_USERS:
+      return {
+        ...state,
+        closureTopUsers: action.payload,
         loadingCharts: false,
         error: null
       }
@@ -52,7 +84,11 @@ export default (state, action) => {
         totalAppointments: null,
         totalSolds: null,
         loadingCharts: false,
-        error: null
+        error: null,
+        closureTopUsers:false,
+        closureTopStores:false,
+        // leadsMonthlyChart:false,
+        pieStatus:false
       };
     case SET_LOADING:
       return {
