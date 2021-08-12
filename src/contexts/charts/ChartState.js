@@ -9,7 +9,11 @@ import {
   GET_TOTALS_DASHBOARD,
   CLEAR_STATE,
   SET_LOADING,
-  GET_LEADS_MONTHLY_CHART
+  GET_LEADS_MONTHLY_CHART,
+  GET_CLOSURE_TOP_STORES,
+  GET_CLOSURE_TOP_USERS,
+  GET_SUBSTATUS_AGENT_CHART,
+  GET_PIE_STATUS_CHART
 } from '../types';
 
 const ChartState = props => {
@@ -22,13 +26,55 @@ const ChartState = props => {
     totalSolds: null,
     error: null,
     loadingCharts: false,
-    leadsMonthlyChart: [],
+    leadsMonthlyChart: false,
+    pieStatus:false,
+    substatusAgentChart:false,
+    closureTopStores:false,
+    closureTopUsers:false,
 
   };
 
   const [state, dispatch] = useReducer(ChartReducer, initialState);
+//Get Pie Status Chart
 
-  
+const getPieStatusChart  = async (query) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    setLoading();
+    try {
+
+    console.log('piechart');
+    const res = await api.get(`/charts/pieStatusChart?${query}`, config);
+    dispatch({ type: GET_PIE_STATUS_CHART, payload: res.data.data });
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+    }
+  };
+
+  const getSubstatusAgentChart = async (query) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    setLoading();
+    try {
+      console.log(query);
+
+      const res = await api.get(`/charts/substatusAgentChart?${query}`, config);
+      console.log('aqui',res.data.data);
+      dispatch({ type: GET_SUBSTATUS_AGENT_CHART , payload: res.data.data });
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+    }
+  };
   //Get Monthly Leads
   const getLeadsMonthlyChart = async (query) => {
     const config = {
@@ -39,7 +85,9 @@ const ChartState = props => {
     };
     setLoading();
     try {
+      console.log('leadsmonth');
       const res = await api.get(`/charts/leadsMonthlyChart?${query}`, config);
+      // console.log('leads',res.data);
       dispatch({ type: GET_LEADS_MONTHLY_CHART, payload: res.data.data });
     } catch (err) {
       console.log(err)
@@ -64,6 +112,39 @@ const ChartState = props => {
     }
   };
 
+  //Get Top Users
+  const getClosureTopUsers = async (query) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    setLoading();
+    try {
+      const res = await api.get(`/charts/closureTopUsers?${query}`, config);
+      dispatch({ type: GET_CLOSURE_TOP_USERS, payload: res.data.data });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+    }
+  };
+//Get Top Stores
+  const getClosureTopStores = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
+    setLoading();
+    try {
+      const res = await api.get(`/charts/closureTopStores`, config);
+      console.log(res.data.data[0]);
+      dispatch({ type: GET_CLOSURE_TOP_STORES, payload: res.data.data });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+    }
+  };
   //Clear State
   const clearCharts = () => dispatch({ type: CLEAR_STATE });
 
@@ -85,6 +166,18 @@ const ChartState = props => {
 
         getLeadsMonthlyChart,
         leadsMonthlyChart: state.leadsMonthlyChart,
+
+        getClosureTopUsers,
+        closureTopUsers: state.closureTopUsers,
+
+        getClosureTopStores,
+        closureTopStores: state.closureTopStores,
+
+        getSubstatusAgentChart,
+        substatusAgentChart: state.substatusAgentChart,
+        
+        getPieStatusChart,
+        pieStatus: state.pieStatus,
 
         clearCharts,
         setLoading

@@ -22,7 +22,7 @@ import {
 const ChartsAdmin = () => {
   const width = Dimensions.get("window").width - 40;
   // const screen = Dimensions.get("screen").width;
-
+  
   const data = [
     {
       name: "Lead",
