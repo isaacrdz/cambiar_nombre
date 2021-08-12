@@ -53,6 +53,7 @@
     "react-native-tab-view": "^2.15.2",
     "react-native-toast-message": "^1.4.9",
     "react-native-track-player": "^1.2.7",
+    "react-native-twilio-voice-sdk": "^0.5.2",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-number-format": "^4.5.5",

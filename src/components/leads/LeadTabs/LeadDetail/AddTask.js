@@ -20,6 +20,7 @@ import {
   Button,
   Calendar,
   Input,
+  Spinner
 } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import useSubstatus from "../../../../hooks/useSubstatus";
@@ -55,7 +56,7 @@ const AddTask = ({ navigation }) => {
   const [open, setOpen] = useState(false)
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
-  const { createComment, updateComment } = useComment();
+  const { createComment, updateComment, loading } = useComment();
   const { user } = useAuth();
   const { lead, updateLead, getLead } = useLead();
   const [substatusArray, setSubstatusArray] = useState([]);
@@ -285,99 +286,115 @@ const AddTask = ({ navigation }) => {
       <HeaderTitle title="Agregar Tarea" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Layout style={{ marginBottom: 30 }} level="1">
-            <Text
-              style={styles.text}
-              category="s1"
-              style={{ marginBottom: 20 }}
-            >
-              1. Deja un comentario
-            </Text>
-            <Layout
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-              }}
-              level="1"
-            >
-              <Input
-                multiline={true}
-                placeholder="Multiline"
-                textStyle={{ minHeight: 64 }}
-                style={{ minWidth: 400 }}
-                value={text}
-                onChangeText={(string) => {
-                  setText(string);
-                }}
-              />
-            </Layout>
-          </Layout>
-          <Layout style={{ marginBottom: 30 }} level="1">
-            <Text
-              style={styles.text}
-              category="s1"
-              style={{ marginBottom: 20 }}
-            >
-              2. Elige una acción
-            </Text>
-            <Layout
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-              }}
-              level="1"
-            >
-              {actions.map((item) => (
-                <CheckBox
-                  key={item.value}
-                  status="primary"
-                  onChange={() => handleSetAction(item.value)}
-                  checked={selectedActions.includes(item.value)}
+          {
+             loading ? 
+              <Layout style={{ paddingHorizontal: 15, paddingVertical: '50%' }}>
+                <Layout style={{ paddingHorizontal: 30, marginBottom: 50, alignSelf: 'center' }}>
+                  <Spinner size='giant' />
+                </Layout> 
+                <Layout style={{ marginBottom: 30, alignSelf: 'center' }} level="1">
+                    <Text
+                      style={styles.text}
+                      category="h3"
+                    >
+                      Creando comentario...
+                    </Text>
+                </Layout>
+              </Layout>
+             : 
+             <>
+              <Layout style={{ marginBottom: 30 }} level="1">
+                <Text
+                  style={styles.text}
+                  category="s1"
+                  style={{ marginBottom: 20 }}
                 >
-                  {" "}
-                  {item.icon}
-                </CheckBox>
-              ))}
-            </Layout>
-          </Layout>
-
-          <Layout>
-            <Text
-              style={styles.text}
-              category="s1"
-              style={{ marginBottom: 20 }}
-            >
-              3. Elige un Estatus
-            </Text>
-            <Layout
-              level="1"
-              style={{
-                minHeight: 128,
-              }}
-            >
-              <Select
-                size="large"
-                style={{ marginBottom: 10 }}
-                value={lead && lead.status && translateStatus(lead.status.name)}
-              >
-                <SelectItem title={lead && lead.status && translateStatus(lead.status.name)} />
-              </Select>
-              <Select
-                size="large"
-                selectedIndex={selectedSubstatus}
-                onSelect={(index) => {
-                  setSelectedSubstatus(index);
-                }}
-                value={displayValue}
-              >
-                {substatusArray.map((substatus) => (
-                  <SelectItem key={substatus} title={substatus} />
-                ))}
-              </Select>
-            </Layout>
-          </Layout>
-          <Layout>
+                  1. Deja un comentario
+                </Text>
+                <Layout
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                  }}
+                  level="1"
+                >
+                  <Input
+                    multiline={true}
+                    placeholder="Multiline"
+                    textStyle={{ minHeight: 64 }}
+                    style={{ minWidth: 400 }}
+                    value={text}
+                    onChangeText={(string) => {
+                      setText(string);
+                    }}
+                  />
+                </Layout>
+              </Layout>
+              <Layout style={{ marginBottom: 30 }} level="1">
+                <Text
+                  style={styles.text}
+                  category="s1"
+                  style={{ marginBottom: 20 }}
+                >
+                  2. Elige una acción
+                </Text>
+                <Layout
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "space-around",
+                  }}
+                  level="1"
+                >
+                  {actions.map((item) => (
+                    <CheckBox
+                      key={item.value}
+                      status="primary"
+                      onChange={() => handleSetAction(item.value)}
+                      checked={selectedActions.includes(item.value)}
+                    >
+                      {" "}
+                      {item.icon}
+                    </CheckBox>
+                  ))}
+                </Layout>
+              </Layout>
+              <Layout>
+                <Text
+                  style={styles.text}
+                  category="s1"
+                  style={{ marginBottom: 20 }}
+                >
+                  3. Elige un Estatus
+                </Text>
+                <Layout
+                  level="1"
+                  style={{
+                    minHeight: 128,
+                  }}
+                >
+                  <Select
+                    size="large"
+                    style={{ marginBottom: 10 }}
+                    value={lead && lead.status && translateStatus(lead.status.name)}
+                  >
+                    <SelectItem title={lead && lead.status && translateStatus(lead.status.name)} />
+                  </Select>
+                  <Select
+                    size="large"
+                    selectedIndex={selectedSubstatus}
+                    onSelect={(index) => {
+                      setSelectedSubstatus(index);
+                    }}
+                    value={displayValue}
+                  >
+                    {substatusArray.map((substatus) => (
+                      <SelectItem key={substatus} title={substatus} />
+                    ))}
+                  </Select>
+                </Layout>
+              </Layout>
+              <Layout>
             <Text
               style={styles.text}
               category="s1"
@@ -435,6 +452,8 @@ const AddTask = ({ navigation }) => {
             </Layout>
             </Layout>
           </Layout>
+            </>
+          }
         </Layout>
       </ScrollView>
     </SafeAreaView>
