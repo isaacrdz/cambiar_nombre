@@ -59,7 +59,7 @@ const HomeAdmin = ({ navigation }) => {
     React.useCallback(() => {
       if (user && user._id) {
         getTotalsDashboard(date);
-        getClosureTopUsers();
+        getClosureTopUsers(date);
         getClosureTopStores();
         getPieStatusChart(date);
       }
