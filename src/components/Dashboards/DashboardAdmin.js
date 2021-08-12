@@ -18,7 +18,7 @@ import { CapitalizeNames } from "../../utils/Capitalize";
 import { getMultiStoresIds } from "../../utils/storesUser";
 import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
-import ChartsAdmin from "../Charts/ChartsAdmin";
+import ChartsUser from "../Charts/ChartsUser";
 import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 
@@ -33,9 +33,21 @@ const HomeAdmin = ({ navigation }) => {
     totalSolds,
     loadingCharts,
     clearCharts,
+    getLeadsMonthlyChart,
+    leadsMonthlyChart,
+    getPieStatusChart,
+    pieStatus,
+    getClosureTopUsers,
+    closureTopUsers,
   } = useChart();
-  const [custom, setCustom] = useState("D MMMM");
+  // const [custom, setCustom] = useState("D MMMM");
 
+  const [custom, setCustom] = useState({
+    date: `&createdAt[gte]=${moment()
+      .startOf("year")
+      .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
+    filter: "MMMM",
+  });
   const [date, setDate] = useState(
     `&createdAt[gte]=${moment()
       .startOf("month")
@@ -61,18 +73,29 @@ const HomeAdmin = ({ navigation }) => {
         getTotalsDashboard(
           `${date}&store[in]=${getMultiStoresIds(user.stores)}`
         );
+        getPieStatusChart(
+          `${date}&store[in]=${getMultiStoresIds(user.stores)}`
+        );
+        getClosureTopUsers(`&store=${user.store._id}`);
       }
+      console.log("aquiiiiiiiiiiiiii", user);
     }, [date, user])
   );
 
   React.useEffect(() => {
-    return () => clearCharts();
-  }, []);
+    clearCharts();
 
-  const data = new Array(10).fill({
-    name: "Isaac Rodriguez",
-    results: "22",
-  });
+    customDate = `&createdAt[gte]=${moment()
+      .startOf("year")
+      .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
+    customFilter = "MMMM";
+    getLeadsMonthlyChart(
+      `${customDate}&store[in]=${getMultiStoresIds(
+        user.stores
+      )}&filter=${customFilter}`
+    );
+  }, []);
+  const data = [];
 
   return (
     <ScrollView>
@@ -173,13 +196,27 @@ const HomeAdmin = ({ navigation }) => {
         </Layout>
 
         <Layout style={styles.subContainerDivider}>
-          <Divider />
-
-          <ChartsAdmin />
+          {!leadsMonthlyChart || !pieStatus ? (
+            <Layout style={styles.center}>
+              <Spinner size="giant" />
+            </Layout>
+          ) : (
+            <>
+              <Divider />
+              <ChartsUser leads={leadsMonthlyChart} status={pieStatus} />
+            </>
+          )}
         </Layout>
       </Layout>
 
-      <TopList data={data} title="Top 10 Ventas" />
+      {!closureTopUsers ? (
+        <></>
+      ) : (
+        <TopList
+          data={closureTopUsers ? closureTopUsers : data}
+          title="Top 10 Ventas"
+        />
+      )}
     </ScrollView>
   );
 };
@@ -233,6 +270,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     textAlignVertical: "center",
+  },
+  center: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
+    width: "100%",
   },
 });
 

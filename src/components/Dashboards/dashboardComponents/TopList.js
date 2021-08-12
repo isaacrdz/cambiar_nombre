@@ -18,7 +18,7 @@ const TopList = ({ data, title }) => {
       </Text>
       <Divider style={{ marginTop: 10 }} />
 
-      {data.map((user, i) => (
+      {data.map((item, i) => (
         <Layout key={i}>
           <Layout
             style={{
@@ -29,10 +29,10 @@ const TopList = ({ data, title }) => {
             }}
           >
             <Text category="s1" style={styles.marginleft}>
-              {`${i + 1}. `} {user.name}
+              {`${i + 1}. `} {item.info[0].name}
             </Text>
             <Text category="p1" style={styles.marginRight}>
-              {`${user.results} `}
+              {`${item.sales} `}
             </Text>
           </Layout>
           <Divider />
