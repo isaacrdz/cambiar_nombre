@@ -15,7 +15,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
   const { generateToken, callToken } = useLead();
   const [callStatus, setCallStatus] = useState("");
   const { user } = useAuth();
-  const [deviceState, setDevice] = useState()
+  const [deviceState, setDevice] = useState();
 
   // useEffect(() => {
   //   if (callToken) {
@@ -66,9 +66,9 @@ const LeadDetailInfoTop = ({ item, loading }) => {
 
   // const removeSubscription = TwilioVoice.on("connect", connectedCall => call = connectedCall)
 
-  useEffect(()=>{
-    console.log('state',deviceState)
-  },[deviceState])
+  useEffect(() => {
+    console.log("state", deviceState);
+  }, [deviceState]);
 
   return (
     <>
@@ -108,35 +108,16 @@ const LeadDetailInfoTop = ({ item, loading }) => {
             style={styles.button}
             appearance="ghost"
             onPress={() => {
-
-              // Subscribe to call events
-              // let call
-              // call removeSubscription() to stop listening
-              
-              // start a call
-              // TwilioVoice.connect(accessToken, {to: '+528121785577'})
-              
-              // hangup
-              // call.disconnect()
-              
-              // mute or un-mute the call
-              // mutedValue must be a boolean
-              // call.muted(mutedValue)
-              
-              // Send the call audio to the speaker phone
-              // speakerPhoneEnabled must be a boolean
-              // call.setSpeakerPhone(speakerPhoneEnabled)
-              
-              // call.sendDigits(digits)
-              
-              // // Call properties
-              // call.from
-              // call.to
-              // call.sid
-              // call.state // "RINGING" | "CONNECTING" | "CONNECTED" | "RECONNECTING" | "DISCONNECTED"
-
-
-              // navigation.navigate("Calling", { lead: item, device: deviceState, updateCallStatus: updateCallStatus, handleCallUser:handleCallUser });
+              createActivity({
+                action: "call",
+                description: `${CapitalizeNames(
+                  user.name
+                )} has made a phone call to ${CapitalizeNames(
+                  item.name
+                )} from mobile App`,
+                lead: item._id,
+              });
+              Linking.openURL(`tel:${item.phone}`);
             }}
           >
             <Ionicons name="phone-portrait-outline" size={30} color="#1299de" />
