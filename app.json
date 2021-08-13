@@ -15,11 +15,11 @@
     },
     "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "1.0.7"
+      "buildNumber": "1.0.8"
     },
     "android": {
       "package": "com.ellyonsoft.dpx",
-      "versionCode": 8
+      "versionCode": 9
     }
   }
 }
