@@ -9,6 +9,7 @@ import {
   Button,
 } from "@ui-kitten/components";
 import { StyleSheet, ScrollView } from "react-native";
+import { CapitalizeNames } from "../../../utils/Capitalize";
 
 const TopList = ({ data, title }) => {
   return (
@@ -29,7 +30,7 @@ const TopList = ({ data, title }) => {
             }}
           >
             <Text category="s1" style={styles.marginleft}>
-              {`${i + 1}. `} {item.info[0].name}
+              {`${i + 1}. `} {CapitalizeNames(item.info[0].name)}
             </Text>
             <Text category="p1" style={styles.marginRight}>
               {`${item.sales} `}

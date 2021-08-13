@@ -76,8 +76,7 @@ const HomeAdmin = ({ navigation }) => {
         getPieStatusChart(
           `${date}&store[in]=${getMultiStoresIds(user.stores)}`
         );
-        console.log(date);
-        getClosureTopUsers(`${date}&store=${user.store._id}`);
+        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}`);
       }
     }, [date, user])
   );
@@ -85,10 +84,10 @@ const HomeAdmin = ({ navigation }) => {
   React.useEffect(() => {
     clearCharts();
 
-    customDate = `&createdAt[gte]=${moment()
+    let customDate = `&createdAt[gte]=${moment()
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
-    customFilter = "MMMM";
+    let customFilter = "MMMM";
     getLeadsMonthlyChart(
       `${customDate}&store[in]=${getMultiStoresIds(
         user.stores
@@ -208,7 +207,6 @@ const HomeAdmin = ({ navigation }) => {
           )}
         </Layout>
       </Layout>
-
       {!closureTopUsers ? (
         <></>
       ) : (
