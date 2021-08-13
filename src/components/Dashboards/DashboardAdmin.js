@@ -207,7 +207,6 @@ const HomeAdmin = ({ navigation }) => {
           )}
         </Layout>
       </Layout>
-
       {!closureTopUsers ? (
         <></>
       ) : (
