@@ -11,6 +11,7 @@ import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointme
 import AddLead from "../components/leads/AddLead";
 import SendDocumentation from "../components/leads/documentation/SendDocumentation";
 import Calling from "../components/leads/Calling";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
@@ -22,6 +23,23 @@ const LeadMainStackScreen = ({ navigation }) => {
         name="Leads"
         component={Lead}
         options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => console.log("assign leads")}
+              disabled
+            >
+              <Ionicons
+                name="person-add-outline"
+                size={25}
+                style={{
+                  width: 25,
+                  height: 25,
+                  marginLeft: 20,
+                  color: "#5764b8",
+                }}
+              />
+            </TouchableOpacity>
+          ),
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
               <Icon

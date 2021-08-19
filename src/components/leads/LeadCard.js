@@ -8,8 +8,20 @@ import {
 } from "../../utils/tranlsateSubstatus";
 import { useNavigation } from "@react-navigation/native";
 import { setSubstatusColor } from "../../utils/colorsSubstatus";
+import { CheckBox } from "@ui-kitten/components";
 
-const LeadIcon = (props) => <Icon {...props} name="user" />;
+const LeadIcon = (props) => {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <CheckBox
+      style={{ marginRight: 10, marginLeft: 10 }}
+      checked={checked}
+      onChange={(nextChecked) => setChecked(nextChecked)}
+    />
+  );
+};
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");

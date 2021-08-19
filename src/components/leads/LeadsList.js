@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 import { List, Layout, Divider } from "@ui-kitten/components";
-import { useFocusEffect } from '@react-navigation/native';
-import { Spinner } from '@ui-kitten/components';
+import { useFocusEffect } from "@react-navigation/native";
+import { Spinner } from "@ui-kitten/components";
 
 import useLead from "../../hooks/useLead";
 import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 import Header from "../header/Header";
-import { getMultiStoresIds } from '../../utils/storesUser'
+import { getMultiStoresIds } from "../../utils/storesUser";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const LeadsList = ({
   user,
@@ -18,60 +19,84 @@ const LeadsList = ({
   setCurrentSearch,
   setpageCurrent,
 }) => {
-  const { getLeads, getLeadsByStore, getLeadsRockstar, leads, loading, clearState, leadsSize } = useLead();
+  const {
+    getLeads,
+    getLeadsByStore,
+    getLeadsRockstar,
+    leads,
+    loading,
+    clearState,
+    leadsSize,
+  } = useLead();
 
   const [size, setSize] = useState(-1);
 
   useFocusEffect(
     React.useCallback(() => {
       clearState();
-      if(user && user.role === 'user'){
-        getLeads(1, user._id, {type: 'all', value: 'all'}, '');
-      }else if(user && user.role === 'admin'){
-        getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, { type: 'all', value: 'all'}, '')
-      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
-        getLeadsRockstar(1, { type: 'all', value: 'all'}, '')
+      if (user && user.role === "user") {
+        getLeads(1, user._id, { type: "all", value: "all" }, "");
+      } else if (user && user.role === "admin") {
+        getLeadsByStore(
+          1,
+          `&multiStores=${getMultiStoresIds(user.stores)}`,
+          { type: "all", value: "all" },
+          ""
+        );
+      } else if (
+        user &&
+        (user.role === "rockstar" || user.role === "super admin")
+      ) {
+        getLeadsRockstar(1, { type: "all", value: "all" }, "");
       }
     }, [])
   );
 
   React.useEffect(() => {
-    if(size !== 0 && pageCurrent !== 1){
-      if(user && user.role === 'user'){
+    if (size !== 0 && pageCurrent !== 1) {
+      if (user && user.role === "user") {
         getLeads(pageCurrent, user._id, currentSearch, query);
-      }else if(user && user.role === 'admin'){
-        getLeadsByStore(pageCurrent, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query)
-      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
-        getLeadsRockstar(pageCurrent, currentSearch, query)
+      } else if (user && user.role === "admin") {
+        getLeadsByStore(
+          pageCurrent,
+          `&multiStores=${getMultiStoresIds(user.stores)}`,
+          currentSearch,
+          query
+        );
+      } else if (
+        user &&
+        (user.role === "rockstar" || user.role === "super admin")
+      ) {
+        getLeadsRockstar(pageCurrent, currentSearch, query);
       }
     }
   }, [pageCurrent]);
 
   React.useEffect(() => {
-    setSize(leadsSize)
+    setSize(leadsSize);
   }, [leadsSize]);
 
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        console.log('limpiando el state')
-        setpageCurrent(1)
-        setSize(-1)
+        console.log("limpiando el state");
+        setpageCurrent(1);
+        setSize(-1);
         clearState();
-      }
+      };
     }, [])
   );
 
   const renderFooter = () => {
     return loading ? (
       <View style={styles.loader}>
-          <Spinner size='giant'/>
+        <Spinner size="giant" />
       </View>
     ) : null;
   };
 
   const handleLoadMore = () => {
-    if(!loading){
+    if (!loading) {
       setpageCurrent(pageCurrent + 1);
     }
   };
@@ -92,7 +117,7 @@ const LeadsList = ({
           data={leads}
           renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
           keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={Divider}    
+          ItemSeparatorComponent={Divider}
           initialNumToRender={10}
           ListFooterComponent={renderFooter}
           onEndReached={handleLoadMore}
