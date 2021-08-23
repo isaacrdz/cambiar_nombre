@@ -22,6 +22,9 @@ export const CLEAR_CURRENT_LEAD = "CLEAR_CURRENT_LEAD";
 export const UPDATE_LEAD = "UPDATE_LEAD";
 export const CREATE_LEAD = "CREATE_LEAD";
 export const CALL_USER = "CALL_USER";
+export const ASSIGN_AGENTS = "ASSIGN_AGENTS";
+export const SELECTED_LEADS = "SELECTED_LEADS";
+
 
 // Activity
 // Activities

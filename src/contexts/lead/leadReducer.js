@@ -8,11 +8,20 @@ import {
   UPDATE_LEAD,
   CREATE_LEAD,
   CALL_USER,
+  ASSIGN_AGENTS,
+  SELECTED_LEADS
 } from "../types";
 import _ from "lodash";
 
 export default (state, action) => {
   switch (action.type) {
+    case SELECTED_LEADS:
+      return {
+        ...state,
+        selectedLeads: [...state.selectedLeads, action.payload],
+        loading: false,
+        error: null,
+      };
     case CLEAR_CURRENT_LEAD:
       return {
         ...state,
@@ -81,6 +90,7 @@ export default (state, action) => {
         lead: {},
         leads: [],
         chart: [],
+        selectedLeads:[],
         loading: false,
         error: null,
       };
@@ -89,6 +99,33 @@ export default (state, action) => {
         ...state,
         loading: true,
       };
+
+      case ASSIGN_AGENTS: 
+    state.leads.map( ( lead, index ) => {
+      if(action.payload.leads.includes(lead._id)){
+        state.leads[index].agent = action.payload.user;
+        state.leads[index].assignedDate = action.payload.assignedDate;
+      }
+      return false;
+    })
+
+    if(action.tab !== 'all'){
+      let type = action.tab.split('.')[0];
+      switch(type){
+        case 'assigned':
+          state.leads = state.leads.filter( item => item.agent === undefined || item.agent === null)
+          break;
+        default:
+          break;
+      }
+    }
+
+
+    return {
+      ...state,
+      loading: false,
+      error: false
+    }
 
     default:
       return state;

@@ -25,13 +25,11 @@ const ChartsUser = ({ leads, status }) => {
 
   React.useEffect(() => {
     if (status) {
-      console.log("statuiiiiiiiiiiiiiiis");
     }
   }, [status]);
 
 React.useEffect(() => {
     if (leads) {
-      console.log("leadsssssssssssssssss", leads);
     }
   }, [leads]);
   return (

@@ -13,6 +13,7 @@ import {
   UPDATE_LEAD,
   CREATE_LEAD,
   CALL_USER,
+  SELECTED_LEADS,
 } from "../types";
 import { Value } from "react-native-reanimated";
 
@@ -24,6 +25,8 @@ const LeadState = (props) => {
     error: null,
     leadsSize: -1,
     callToken: null,
+    selectedLeads:[],
+    agent:false
   };
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
@@ -219,6 +222,37 @@ const LeadState = (props) => {
     }
   };
 
+  const assignAgents = async (leads, agent, currentTab) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    };
+    // setLoading();
+    try {
+      console.log('okasssss');
+      return;
+      const res = await api.post(
+        `/leads/assignAgent`,
+        { leads, agent },
+        config
+      );
+      dispatch({ type: ASSIGN_AGENTS, payload: res.data.data, tab: currentTab });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+  };
+
+const handleSelectedLeads = async (leads)=>{
+try {
+// tab: currentTab 
+      dispatch({ type: SELECTED_LEADS, payload:leads, });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+};
+
   //Clear State
   const clearState = () => dispatch({ type: CLEAR_STATE });
 
@@ -234,6 +268,9 @@ const LeadState = (props) => {
         lead: state.lead,
         loading: state.loading,
         error: state.error,
+        selectedLeads: state.selectedLeads,
+        agent: state.agent,
+        handleSelectedLeads,
         clearState,
         setLoading,
         getLeads,
@@ -246,6 +283,7 @@ const LeadState = (props) => {
         getLeadsRockstar,
         call,
         generateToken,
+        assignAgents
       }}
     >
       {props.children}

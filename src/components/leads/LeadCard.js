@@ -6,22 +6,33 @@ import {
   translateStatus,
   translateSubstatus,
 } from "../../utils/tranlsateSubstatus";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { setSubstatusColor } from "../../utils/colorsSubstatus";
 import { CheckBox } from "@ui-kitten/components";
-
-const LeadIcon = (props) => {
+import useLead from "../../hooks/useLead";
+const LeadIcon = (item) => {
   const [checked, setChecked] = React.useState(false);
+  const {selectedLeads,handleSelectedLeads} =  useLead();
+
+ useFocusEffect(
+    React.useCallback(() => {
+      console.log(selectedLeads);
+          }, [selectedLeads])
+  );
 
   return (
     <CheckBox
       style={{ marginRight: 10, marginLeft: 10 }}
       checked={checked}
-      onChange={(nextChecked) => setChecked(nextChecked)}
+      onChange={(nextChecked) =>{
+      handleSelectedLeads(item._id);
+      setChecked(nextChecked)
+      }}
     />
   );
 };
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { rest } from "lodash";
 
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
@@ -43,7 +54,8 @@ const LeadCard = ({ item }) => {
           </Text>
         </Layout>
       )}
-      accessoryLeft={LeadIcon}
+      accessoryLeft={LeadIcon(item)}
+      
       accessoryRight={() => (
         <Layout
           style={{ alignItems: "flex-end" }}
