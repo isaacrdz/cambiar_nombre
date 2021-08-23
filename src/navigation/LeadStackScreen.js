@@ -9,14 +9,18 @@ import { Icon } from "@ui-kitten/components";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
 import AddLead from "../components/leads/AddLead";
+import AssignLead from "../components/leads/AssignLead";
 import SendDocumentation from "../components/leads/documentation/SendDocumentation";
 import Calling from "../components/leads/Calling";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import useLead from '../hooks/useLead';
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
+
+const {selectedLeads} =  useLead();
   return (
     <LeadMainStack.Navigator>
       <LeadMainStack.Screen
@@ -25,7 +29,9 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => console.log("assign leads")}
+              onPress={() => {
+                (selectedLeads.length >= 1)?navigation.navigate("AddLead"):"";
+                }}
               disabled
             >
               <Ionicons
@@ -107,6 +113,7 @@ const LeadStackScreen = () => (
     <LeadStack.Screen name="AddTask" component={AddTask} />
     <LeadStack.Screen name="AddAppointment" component={AddAppointment} />
     <LeadStack.Screen name="AddLead" component={AddLead} />
+    <LeadStack.Screen name="AssignLead" component={AssignLead} />
     <LeadStack.Screen name="Calling" component={Calling} />
     <LeadStack.Screen name="SendDocumentation" component={SendDocumentation} />
   </LeadStack.Navigator>
