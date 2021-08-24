@@ -24,7 +24,17 @@ export const CREATE_LEAD = "CREATE_LEAD";
 export const CALL_USER = "CALL_USER";
 export const ASSIGN_AGENTS = "ASSIGN_AGENTS";
 export const SELECTED_LEADS = "SELECTED_LEADS";
+export const SET_TAB = 'SET_TAB'
 
+//User
+export const GET_USERS = 'GET_USERS' 
+export const GET_USER = 'GET_USER' 
+export const GET_AGENTS = 'GET_AGENTS' 
+export const UPDATE_USER = 'UPDATE_USER' 
+export const DELETE_USER = 'DELETE_USER' 
+export const CREATE_USER = 'CREATE_USER' 
+export const GET_USERS_BY_STORE = 'GET_USERS_BY_STORE'
+export const SET_AGENT = 'SET_AGENT'
 
 // Activity
 // Activities

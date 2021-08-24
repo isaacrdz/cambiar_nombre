@@ -3,6 +3,7 @@ import LeadContext from "./leadContext";
 import LeadReducer from "./leadReducer";
 import AsyncStorage from "@react-native-community/async-storage";
 import api from "../../api/api";
+import _ from 'lodash'
 import {
   GET_LEADS,
   GET_LEAD,
@@ -12,10 +13,10 @@ import {
   CLEAR_CURRENT_LEAD,
   UPDATE_LEAD,
   CREATE_LEAD,
-  CALL_USER,
   SELECTED_LEADS,
+  SET_TAB,
+  ASSIGN_AGENTS
 } from "../types";
-import { Value } from "react-native-reanimated";
 
 const LeadState = (props) => {
   const initialState = {
@@ -25,7 +26,8 @@ const LeadState = (props) => {
     error: null,
     leadsSize: -1,
     callToken: null,
-    selectedLeads:[],
+    selectedLeads: [],
+    tab: 'all',
     agent:false
   };
 
@@ -106,7 +108,7 @@ const LeadState = (props) => {
   };
 
   //Get Leads
-  const getLeadsByStore = async (
+  const getLeadsByStore = async(
     pageCurrent,
     multiStore,
     { type, value },
@@ -133,6 +135,11 @@ const LeadState = (props) => {
             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`
           );
           break;
+        case "unassigned":
+          leads = await api.get(
+             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&assigned=false&searchText=${query}&searchType=or&validation=1${multiStore}`
+          );
+        break;
       }
 
       dispatch({
@@ -200,25 +207,8 @@ const LeadState = (props) => {
 
     try {
       const res = await api.post(`/utils/mobilecall`, config);
-      console.log("si jala la ruta");
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const generateToken = async (data) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      },
-    };
-    try {
-      const res = await api.post("/calls/generate", { data }, config);
-      AsyncStorage.setItem("callToken", res.data.token);
-      dispatch({ type: CALL_USER, payload: res.data.token });
-    } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err });
     }
   };
 
@@ -226,13 +216,12 @@ const LeadState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
       }
     };
     // setLoading();
     try {
-      console.log('okasssss');
-      return;
+
       const res = await api.post(
         `/leads/assignAgent`,
         { leads, agent },
@@ -244,14 +233,17 @@ const LeadState = (props) => {
     }
   };
 
-const handleSelectedLeads = async (leads)=>{
-try {
-// tab: currentTab 
-      dispatch({ type: SELECTED_LEADS, payload:leads, });
-    } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data });
-    }
-};
+  const setSelectedLeads = async (leads)=>{
+  try {
+        leads = _.uniqBy(leads)
+        dispatch({ type: SELECTED_LEADS, payload: leads, });
+      } catch (err) {
+        dispatch({ type: SET_ERROR, payload: err.response.data });
+      }
+  };
+
+  //Set Tab
+  const setTab = (tab) => dispatch({ type: SET_TAB, payload: tab });
 
   //Clear State
   const clearState = () => dispatch({ type: CLEAR_STATE });
@@ -270,7 +262,8 @@ try {
         error: state.error,
         selectedLeads: state.selectedLeads,
         agent: state.agent,
-        handleSelectedLeads,
+        tab: state.tab,
+        setSelectedLeads,
         clearState,
         setLoading,
         getLeads,
@@ -282,8 +275,8 @@ try {
         getLeadsByStore,
         getLeadsRockstar,
         call,
-        generateToken,
-        assignAgents
+        assignAgents,
+        setTab
       }}
     >
       {props.children}

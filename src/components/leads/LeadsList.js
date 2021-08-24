@@ -79,7 +79,6 @@ const LeadsList = ({
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        console.log("limpiando el state");
         setpageCurrent(1);
         setSize(-1);
         clearState();

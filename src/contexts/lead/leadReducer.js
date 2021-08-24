@@ -9,21 +9,28 @@ import {
   CREATE_LEAD,
   CALL_USER,
   ASSIGN_AGENTS,
-  SELECTED_LEADS
+  SELECTED_LEADS,
+  SET_TAB
 } from "../types";
 import _ from "lodash";
 
 export default (state, action) => {
   switch (action.type) {
-    case SELECTED_LEADS:
+    case SET_TAB:
       return {
         ...state,
-        selectedLeads: [...state.selectedLeads, action.payload],
+        tab: action.payload
+      }
+    case SELECTED_LEADS:
+      return{
+        ...state,
+        selectedLeads: action.payload,
+        x: action.payload.length,
         loading: false,
         error: null,
       };
     case CLEAR_CURRENT_LEAD:
-      return {
+      return{
         ...state,
         lead: {},
         loading: false,
@@ -51,7 +58,6 @@ export default (state, action) => {
         loading: false,
         error: null,
       };
-
     case CALL_USER:
       return {
         ...state,
@@ -59,7 +65,6 @@ export default (state, action) => {
         callToken: action.payload,
         error: null,
       };
-
     case GET_LEAD:
       let sortedActivities = action.payload.activities;
       sortedActivities = _.orderBy(sortedActivities, ["createdAt"], ["desc"]);
@@ -87,10 +92,10 @@ export default (state, action) => {
       };
     case CLEAR_STATE:
       return {
+        ...state,
         lead: {},
         leads: [],
         chart: [],
-        selectedLeads:[],
         loading: false,
         error: null,
       };
@@ -100,7 +105,7 @@ export default (state, action) => {
         loading: true,
       };
 
-      case ASSIGN_AGENTS: 
+    case ASSIGN_AGENTS: 
     state.leads.map( ( lead, index ) => {
       if(action.payload.leads.includes(lead._id)){
         state.leads[index].agent = action.payload.user;
@@ -124,10 +129,12 @@ export default (state, action) => {
     return {
       ...state,
       loading: false,
-      error: false
-    }
+      error: false,
+      }
 
     default:
-      return state;
+      return {
+        ...state
+      };
   }
 };

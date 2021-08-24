@@ -36,10 +36,15 @@ const filters = [
     value: "5d7a514b5dac12c7449ce043",
     type: "status",
   },
+  {
+    title: "Sin Asignar",
+    value: "Unassigned",
+    type: "unassigned"
+  }
 ];
 
 const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-  const { clearState, getLeads, getLeadsByStore } = useLead();
+  const { clearState, getLeads, getLeadsByStore, setTab } = useLead();
   const { user } = useAuth();
 
   const handleSearch = async (item) => {
@@ -81,6 +86,7 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
             )}
             onPress={() => {
               if (item !== current) {
+                setTab(`${item.type}.${item.value}`)
                 setCurrent(item);
                 setPage(1);
                 handleSearch(item);
