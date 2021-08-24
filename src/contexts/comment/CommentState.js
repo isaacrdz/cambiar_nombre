@@ -156,10 +156,10 @@ const CommentState = props => {
   };
 
   //Get Comments By Store
-  const getCommentsByStore = async (storeId) => {
+  const getCommentsByStore = async (query) => {
     setLoading();
     try {
-      const res = await api.get(`stores/${storeId}/comments?pending=true`);
+      const res = await api.get(`/comments/admin?&pending=true${query}`);
       dispatch({ type: GET_COMMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})

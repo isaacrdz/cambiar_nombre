@@ -85,7 +85,6 @@ const HomeAdmin = ({ navigation }) => {
         <Layout style={styles.subContainer}>
           <Calendar setDate={setDate} getFilter={setCustom} />
         </Layout>
-        {console.log(total === null)}
         <Layout style={styles.subContainerText}>
           <Text
             category="label"

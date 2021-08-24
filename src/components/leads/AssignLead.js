@@ -61,11 +61,6 @@ const AddAgent = ({ navigation }) => {
     //eslint-disable-next-line
   }, [agents]);
 
-  useEffect(() => {
-   console.log(selectedLeads)
-    //eslint-disable-next-line
-  }, [selectedLeads]);
-
   const handleAssingAgent = () => {
     assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab)
   }

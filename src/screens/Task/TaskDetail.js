@@ -1,35 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import HeaderTitle from "../../components/header/HeaderTitle";
 import Toast from "react-native-toast-message";
-import { Agenda } from "react-native-calendars";
-import {
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { translateStatus, translateSubstatus } from "../../../../utils/tranlsateSubstatus";
+import useAppointment from "../../hooks/useAppointment";
+import useVisit from "../../hooks/useVisit";
+import useLead from "../../hooks/useLead";
+import useAuth from "../../hooks/useAuth";
+import useSubstatus from "../../hooks/useSubstatus";
+import useComment from "../../hooks/useComment";
 import {
   Layout,
   Divider,
   Text,
-  CheckBox,
-  IndexPath,
-  Select,
-  SelectItem,
   Button,
-  Calendar,
   Input,
+  Select,
+  IndexPath,
+  SelectItem,
+  CheckBox,
   Spinner
 } from "@ui-kitten/components";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import useSubstatus from "../../../../hooks/useSubstatus";
-import useLead from "../../../../hooks/useLead";
-import useAuth from "../../../../hooks/useAuth";
-import useComment from "../../../../hooks/useComment";
-import _ from "lodash";
 import moment from "moment/min/moment-with-locales";
-import HeaderTitle from "../../../header/HeaderTitle";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useFocusEffect } from "@react-navigation/native";
+import { translateStatus, translateSubstatus } from "../../utils/tranlsateSubstatus";
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -49,15 +44,24 @@ const contactedStatus = [
   "606e2394c00bcb15b5e70826", // 'separated'
 ];
 
-const AddTask = ({ navigation }) => {
+const TaskDetail = ({ route, navigation }) => {
+  const { item } = route.params;
+  const { user } = useAuth();
+  const { updateComment, createComment, getComment, comment, loading } = useComment();
+  const [currentComment, setCurrentComment] = useState({
+    startDate: new Date()
+  });
+  const [substatusComment, setSubstatusComment] = useState([])  
+  const [substatusVisit, setSubstatusVisit] = useState([])  
+
+  ////////
+  
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
   const [hour, setHour] = useState(new Date());
   const [finalDate, setFinalDate] = useState('')
   const [open, setOpen] = useState(false)
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
-  const { createComment, updateComment, loading } = useComment();
-  const { user } = useAuth();
   const { lead, updateLead, getLead } = useLead();
   const [substatusArray, setSubstatusArray] = useState([]);
   const [substatusArrayIds, setSubstatusArrayIds] = useState([]);
@@ -70,11 +74,14 @@ const AddTask = ({ navigation }) => {
   const [show, setShow] = useState(false);
   moment.locale('es-mx')
 
-  let paddingTop = 0;
-
-  if(Platform.OS === 'android'){
-    paddingTop = 30;
-  }
+  const actions = [
+    { value: "whatsapp", icon: <Ionicons name="logo-whatsapp" size={20} /> },
+    { value: "recall", icon: <Ionicons name="call-outline" size={20} /> },
+    {
+      value: "documentation",
+      icon: <Ionicons name="document-outline" size={20} />,
+    },
+  ];
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -82,63 +89,6 @@ const AddTask = ({ navigation }) => {
     setDate(currentDate);
   };
 
-  const renderAndroidPicker = (state) => {
-
-    if(state === true){
-      return (
-        <>
-          <DateTimePicker
-            value={hour}
-            mode="time"
-            display="spinner"
-            onChange={onChangeAndroidHour}
-          />
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="spinner"
-            onChange={onChangeAndroid}
-          />
-        </>
-      )
-    }
-  }
-
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-
-      setHour(selectedTime);
-     
-    }
-  };
-
-  useEffect(()=>{
-    if(hour && date){
-      let finalDate = date.toString().split(' ')
-      let finalHour = hour.toString().split(' ')
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
-      setFinalDate(postDate)
-    }
-  },[hour])
-
-  const onChangeAndroid = (event, selectedDate) => {
-    setOpen(false);
-    if (selectedDate !== undefined) {
-      setDate(selectedDate);
-    }
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const now = new Date();
-  const yesterday = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - 1
-  );
 
   const handleSubmit = async () => {
     if (text === "") {
@@ -226,10 +176,16 @@ const AddTask = ({ navigation }) => {
         await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
         await getLead(lead._id);
-        navigation.navigate("LeadTabs");
+        navigation.navigate("TaskMain");
       }
     }
   };
+
+  useEffect(()=>{
+    if(comment && comment.lead){
+      getLead(comment.lead._id)
+    }
+  },[comment])
 
   const handleSetAction = (item) => {
     if (selectedActions.includes(item)) {
@@ -245,30 +201,18 @@ const AddTask = ({ navigation }) => {
     }
   };
 
-  const actions = [
-    { value: "whatsapp", icon: <Ionicons name="logo-whatsapp" size={20} /> },
-    { value: "recall", icon: <Ionicons name="call-outline" size={20} /> },
-    {
-      value: "documentation",
-      icon: <Ionicons name="document-outline" size={20} />,
-    },
-  ];
-
+  
   useEffect(() => {
-    getSubstatuses();
-    //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (substatuses) {
+    if (substatuses && comment && comment.lead) {
       let aux = [];
       let auxIds = [];
       substatuses.map((item) => {
         if (
-          item.status === lead.status._id &&
+          item.status === comment.lead.status &&
           item.name !== "new" &&
           item.name !== "rejected" &&
-          item.name !== "visit_rejected"
+          item.name !== "visit_rejected" && 
+          item.name !== "rsi" 
         ) {
           aux.push(translateSubstatus(item.name));
           auxIds.push(item._id);
@@ -279,15 +223,154 @@ const AddTask = ({ navigation }) => {
       setSubstatusArrayIds(auxIds);
     }
     //eslint-disable-next-line
-  }, [substatuses, lead]);
+  }, [substatuses, comment]);
+
+  ////////
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (item && item._id) getComment(item._id);
+    }, [item])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getSubstatuses()
+    }, [])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (substatuses && currentComment && currentComment.lead) {
+        let sA = [];
+        let sV = [];
+
+        let cA = 0;
+        let cV = 0;
+        substatuses.map(item => {
+          if(item.status === '604f80222b372e0cb11966dc'){
+            sA.push(item);
+            if(item._id.toString() === currentComment.substatus){
+              setSubtatusCommentIndex(new IndexPath(cA))
+            }
+            cA ++;
+          }
+
+          if(item.status === '6064f8065b21e51052eed547' && item.name !== 'frontdesk'){
+            sV.push(item);
+            cV ++;
+          }
+        })
+        setSubstatusComment(sA);
+        setSubstatusVisit(sV);
+      }
+    }, [substatuses, currentComment])
+  );
+
+
+  useEffect(()=>{
+    if(hour && currentComment.reschedule){
+      let finalDate = currentComment.reschedule.toString().split(' ')
+      let finalHour = hour.toString().split(' ')
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
+      setFinalDate(postDate)
+    }
+  },[hour])
+
+  useEffect(() => {
+    if(comment && comment._id){
+      setCurrentComment({ 
+        substatus: comment.substatus,
+        status: comment.lead.status,
+        lead: {
+          agent: comment.lead.agent,
+          _id: comment.lead._id,
+          name: comment.lead.name,
+          email: comment.lead.email,
+          phone: comment.lead.phone,
+          store: comment.lead.store,
+          comments: comment.lead.comments
+        },
+        reschedule: new Date(comment.reschedule)
+      })
+    }
+  }, [comment])
+
+  moment.locale("es-mx");
+  let paddingTop = 0;
+
+  if(Platform.OS === 'android'){
+    paddingTop = 30;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
-      <HeaderTitle title="Agregar Tarea" />
+      <HeaderTitle title="Detalle de la Tarea" /> 
+
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-            {
-             loading ? 
+          <Layout
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+            }}
+            level="1"
+          >
+            <Text category="s1">Nombre</Text>
+
+            <Text category="s1" style={{ textTransform: "capitalize" }}>
+              {currentComment.lead && currentComment.lead.name}
+            </Text>
+          </Layout>
+          <Divider />
+          <Layout
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+            }}
+            level="1"
+          >
+            <Text category="s1">Email</Text>
+
+            <Text category="s1">
+              {currentComment.lead && currentComment.lead.email}
+            </Text>
+          </Layout>
+          <Divider />
+          <Layout
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+            }}
+            level="1"
+          >
+            <Text category="s1">Teléfono</Text>
+
+            <Text category="s1">
+              {currentComment.lead && currentComment.lead.phone}
+            </Text>
+          </Layout>
+          <Divider />
+        </Layout>
+        <Text
+          category="h6"
+          style={{ textAlign: "center", marginBottom: 20, marginTop: 20, paddingTop: 20 }}
+        >
+          Crear Nueva Tarea
+        </Text>
+        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+
+        { 
+          loading ? 
               <Layout style={{ paddingHorizontal: 15, paddingVertical: '50%' }}>
                 <Layout style={{ paddingHorizontal: 30, marginBottom: 50, alignSelf: 'center' }}>
                   <Spinner size='giant' />
@@ -302,7 +385,7 @@ const AddTask = ({ navigation }) => {
                 </Layout>
               </Layout>
              : 
-             <>
+            <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
                   style={styles.text}
@@ -375,13 +458,6 @@ const AddTask = ({ navigation }) => {
                 >
                   <Select
                     size="large"
-                    style={{ marginBottom: 10 }}
-                    value={lead && lead.status && translateStatus(lead.status.name)}
-                  >
-                    <SelectItem title={lead && lead.status && translateStatus(lead.status.name)} />
-                  </Select>
-                  <Select
-                    size="large"
                     selectedIndex={selectedSubstatus}
                     onSelect={(index) => {
                       setSelectedSubstatus(index);
@@ -452,8 +528,8 @@ const AddTask = ({ navigation }) => {
             </Layout>
             </Layout>
           </Layout>
-            </>
-          }
+          </>
+          } 
         </Layout>
       </ScrollView>
     </SafeAreaView>
@@ -473,4 +549,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddTask;
+export default TaskDetail;
