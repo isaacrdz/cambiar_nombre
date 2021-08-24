@@ -23,22 +23,13 @@ const LeadTabs = ({ route }) => {
   const { item } = route.params;
   const { user } = useAuth();
 
-  const { getLead, loading, clearState, lead, generateToken, callToken } =
+  const { getLead, loading, clearState, lead } =
     useLead();
-
-  const [isTokenGenerated, setTokenGenerated] = useState(false);
 
   React.useEffect(() => {
     getLead(item._id);
   }, []);
 
-  useEffect(() => {
-    if (user && user._id && !isTokenGenerated && lead && lead.store) {
-      setTokenGenerated(true);
-      generateToken(lead);
-    }
-    //eslint-disable-next-line
-  }, [lead]);
   return (
     <>
       <LeadDetailInfoTop item={lead} loading={loading} />

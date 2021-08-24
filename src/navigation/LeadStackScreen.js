@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
 
@@ -19,20 +19,19 @@ const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-
-const {selectedLeads} =  useLead();
+  
+  const { selectedLeads } = useLead()
   return (
     <LeadMainStack.Navigator>
+
       <LeadMainStack.Screen
         name="Leads"
         component={Lead}
         options={{
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => {
-                (selectedLeads.length >= 1)?navigation.navigate("AddLead"):"";
-                }}
-              disabled
+              onPress={() => { navigation.navigate("AssignLead")}}
+              disabled={selectedLeads.length < 1}
             >
               <Ionicons
                 name="person-add-outline"
@@ -41,7 +40,7 @@ const {selectedLeads} =  useLead();
                   width: 25,
                   height: 25,
                   marginLeft: 20,
-                  color: "#5764b8",
+                  color: selectedLeads.length === 0 ? "#bbb" : "#5764b8",
                 }}
               />
             </TouchableOpacity>
@@ -65,22 +64,6 @@ const {selectedLeads} =  useLead();
       <LeadMainStack.Screen
         name="LeadDetail"
         component={LeadsDetail}
-        // options={{
-        //   headerRight: () => (
-        //     <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        //       <Icon
-        //         style={{
-        //           width: 25,
-        //           height: 25,
-        //           marginRight: 20,
-        //           color: "#5764b8",
-        //         }}
-        //         fill="#5e72e4"
-        //         name="settings"
-        //       />
-        //     </TouchableOpacity>
-        //   ),
-        // }}
       />
 
       <LeadMainStack.Screen

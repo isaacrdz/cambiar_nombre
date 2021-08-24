@@ -47,11 +47,9 @@ const getPieStatusChart  = async (query) => {
     setLoading();
     try {
 
-    console.log('piechart');
     const res = await api.get(`/charts/pieStatusChart?${query}`, config);
     dispatch({ type: GET_PIE_STATUS_CHART, payload: res.data.data });
     } catch (err) {
-      console.log(err)
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
     }
   };
@@ -65,13 +63,9 @@ const getPieStatusChart  = async (query) => {
     };
     setLoading();
     try {
-      console.log(query);
-
       const res = await api.get(`/charts/substatusAgentChart?${query}`, config);
-      console.log('aqui',res.data.data);
       dispatch({ type: GET_SUBSTATUS_AGENT_CHART , payload: res.data.data });
     } catch (err) {
-      console.log(err)
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
     }
   };
@@ -85,12 +79,9 @@ const getPieStatusChart  = async (query) => {
     };
     setLoading();
     try {
-      console.log('leadsmonth');
       const res = await api.get(`/charts/leadsMonthlyChart?${query}`, config);
-      // console.log('leads',res.data);
       dispatch({ type: GET_LEADS_MONTHLY_CHART, payload: res.data.data });
     } catch (err) {
-      console.log(err)
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
     }
   };
@@ -139,7 +130,6 @@ const getPieStatusChart  = async (query) => {
     setLoading();
     try {
       const res = await api.get(`/charts/closureTopStores`, config);
-      console.log(res.data.data[0]);
       dispatch({ type: GET_CLOSURE_TOP_STORES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})

@@ -14,6 +14,7 @@ import ProfileStackScreen from "./navigation/ProfileStackScreen";
 import useAuth from "./hooks/useAuth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AppointmentStackScreen from "./navigation/AppointmentStackScreen";
+import TaskStackScreen from "./navigation/TaskStackScreen";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -41,7 +42,6 @@ const Routes = ({ token }) => {
       notificationListener.current =
         Notifications.addNotificationReceivedListener((notification) => {
           setNotification(notification);
-          console.log('here in listener receive')
           if(Platform.OS === 'ios'){
             Notifications.setBadgeNumberAsync(notificationAmount);
             notificationAmount++;
@@ -51,7 +51,6 @@ const Routes = ({ token }) => {
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current =
         Notifications.addNotificationResponseReceivedListener((response) => {
-          console.log('here in notification response listener receive')
 
         });
 
@@ -93,6 +92,8 @@ const Routes = ({ token }) => {
 
               if (route.name === "Home") {
                 iconName = focused ? "home-sharp" : "home-outline";
+              }else if(route.name === "Tareas"){
+                iconName = focused ? "book-sharp" : "book-outline";
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";
               } else if (route.name === "Citas") {
@@ -114,6 +115,7 @@ const Routes = ({ token }) => {
         >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
+          <Tabs.Screen name="Tareas" component={TaskStackScreen} />
           <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
           <Tabs.Screen name="Perfil" component={ProfileStackScreen} />
         </Tabs.Navigator>

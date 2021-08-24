@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import moment from "moment/min/moment-with-locales";
 import { Icon, ListItem, Layout, Text } from "@ui-kitten/components";
@@ -6,44 +6,41 @@ import {
   translateStatus,
   translateSubstatus,
 } from "../../utils/tranlsateSubstatus";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { setSubstatusColor } from "../../utils/colorsSubstatus";
 import { CheckBox } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
-const LeadIcon = (item) => {
-  const [checked, setChecked] = React.useState(false);
-  const {selectedLeads,handleSelectedLeads} =  useLead();
-
- useFocusEffect(
-    React.useCallback(() => {
-      console.log(selectedLeads);
-          }, [selectedLeads])
-  );
-
-  return (
-    <CheckBox
-      style={{ marginRight: 10, marginLeft: 10 }}
-      checked={checked}
-      onChange={(nextChecked) =>{
-      handleSelectedLeads(item._id);
-      setChecked(nextChecked)
-      }}
-    />
-  );
-};
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { rest } from "lodash";
+import { CapitalizeNames } from "../../utils/Capitalize";
+import useAuth from "../../hooks/useAuth";
 
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
   const navigation = useNavigation();
-  const createdAt = moment(item.createdAt).format("MMMM D, YYYY");
+  const { setSelectedLeads, selectedLeads, x } = useLead();
+  const [selected, setSelected] = useState([]);
+  const { user } = useAuth();
+
+  const handleSelectedLeads = (leadId, add) => {
+    if (add) {
+      let aux = selectedLeads;
+      aux.push(leadId)
+      setSelected(aux);
+    } else {
+      let aux = selectedLeads;
+      aux = aux.filter(id => id !== leadId)
+      setSelected(aux);
+    }
+  }
+
+  useEffect(()=>{
+    setSelectedLeads(selected)
+  },[selected]);
 
   return (
     <ListItem
       onPress={() => navigation.navigate("LeadTabs", { item: item })}
       title={(evaProps) => (
-        <Layout {...evaProps}>
+        <Layout {...evaProps} style={{position: 'relative'}}>
           <Text appearance="hint" style={styles.ItemText}>
             {translateStatus(item.status.name)}
           </Text>
@@ -54,11 +51,25 @@ const LeadCard = ({ item }) => {
           </Text>
         </Layout>
       )}
-      accessoryLeft={LeadIcon(item)}
+      accessoryLeft={() => (
+        <CheckBox
+          style={{ marginRight: 10, marginLeft: 10 }}
+          checked={selected.includes(item._id.toString())}
+          onChange={(nextChecked) =>{
+            handleSelectedLeads(item._id, nextChecked);
+          }}
+        />)}
       
       accessoryRight={() => (
+        <>
+        {
+          user && user.stores && user.stores.length > 1 &&
+          <Text appearance="hint" style={{position: 'absolute', right: 10, top: 5}}>
+            {CapitalizeNames(item.store.make.name)}{' '}{CapitalizeNames(item.store.name)}
+          </Text>
+        }
         <Layout
-          style={{ alignItems: "flex-end" }}
+          style={{ alignItems: "flex-end", position: 'relative' }}
           style={{
             ...styles.controlContainer,
             borderColor: setSubstatusColor(item.substatus.name),
@@ -73,6 +84,7 @@ const LeadCard = ({ item }) => {
             {translateSubstatus(item.substatus.name)}
           </Text>
         </Layout>
+        </>
       )}
     />
   );

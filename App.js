@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Routes from "./src/Routes";
 
 //UI Kitten
@@ -6,6 +6,7 @@ import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { FeatherIconsPack } from "./feather-icons";
 import { ThemeContext } from "./theme-context";
+import * as Contacts from 'expo-contacts';
 
 // Contexts
 import AuthState from "./src/contexts/auth/AuthState";
@@ -23,21 +24,10 @@ import SourceState from "./src/contexts/source/SourceState";
 import CompanyState from "./src/contexts/company/CompanyState";
 import ListState from "./src/contexts/list/ListState";
 import DocumentState from "./src/contexts/document/DocumentState";
+import UserState from "./src/contexts/user/UserState";
 
 import Toast from "react-native-toast-message";
 import MailState from "./src/contexts/mail/MailState";
-
-// import i18n from 'i18n-js';
-// import en from './src/lan/en';
-// import es from './src/lan/es';
-// import * as Localization from 'expo-localization';
-
-// i18n.translations = {
-//   en,
-//   es
-// };
-
-// i18n.locale = Localization.locale;
 
 const App = () => {
   const [theme, setTheme] = React.useState("light");
@@ -46,6 +36,13 @@ const App = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
   };
+
+  useEffect(() => {
+    (async () => {
+      await Contacts.requestPermissionsAsync();
+    })();
+  }, []);
+
 
   return (
     <>
@@ -66,12 +63,14 @@ const App = () => {
                                 <SubstatusState>
                                   <CommentState>
                                     <ChartState>
-                                      <AppointmentState>
-                                        <VisitState>
-                                          <Routes />
-                                          <Toast ref={(ref) => Toast.setRef(ref)} />
-                                        </VisitState>
-                                      </AppointmentState>
+                                      <UserState>
+                                        <AppointmentState>
+                                          <VisitState>
+                                            <Routes />
+                                            <Toast ref={(ref) => Toast.setRef(ref)} />
+                                          </VisitState>
+                                        </AppointmentState>
+                                      </UserState>
                                     </ChartState>
                                   </CommentState>
                                 </SubstatusState>
