@@ -67,7 +67,16 @@ const TaskItem = ({ item }) => {
             {item.lead.name}
           </Text>
         </Layout>
+        <Layout>
+          <Text
+            category="c1"
+            appearance="hint"
+            style={{ textTransform: "capitalize", marginBottom: 2 }}
+          >
+           {item && item.comment && item.comment.substring(0, 50)}{item && item.comment && item.comment.length > 50 && '...'}
 
+          </Text>
+        </Layout>
         <Layout>
           <Text
             category="c1"
