@@ -5,6 +5,7 @@ import { Icon, Input, Layout } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
 import useAuth from "../../hooks/useAuth";
 import { getMultiStoresIds } from "../../utils/storesUser";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const LeadSearch = ({
   query,
@@ -13,7 +14,12 @@ const LeadSearch = ({
   pageCurrent,
   currentSearch,
 }) => {
-  const renderInputIcon = (props) => <Icon {...props} name="search" />;
+  const renderInputIcon = (props) => 
+  <Ionicons
+    name="search-outline"
+    size={20}
+    style={{color: "#5764b8" }}
+  />;
 
   const { getLeads, loading, clearState, getLeadsByStore } = useLead();
   const { user } = useAuth()
