@@ -69,7 +69,6 @@ const Appointment = () => {
     React.useCallback(() => {
       if (user && user.role === 'user') {
         getCommentsByUser(user._id)
-        console.log(user._id)
       }else if(user && user.role === 'admin' && user.stores){
         getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
       }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){

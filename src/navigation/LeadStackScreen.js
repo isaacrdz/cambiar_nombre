@@ -47,15 +47,15 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
-              <Icon
+              <Ionicons
+                name="add-circle-outline"
+                size={25}
                 style={{
                   width: 25,
                   height: 25,
                   marginRight: 20,
                   color: "#5764b8",
                 }}
-                fill="#5e72e4"
-                name="plus-circle"
               />
             </TouchableOpacity>
           ),
@@ -69,15 +69,15 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
-              <Icon
+             <Ionicons
+                name="add-circle-outline"
+                size={25}
                 style={{
                   width: 25,
                   height: 25,
                   marginRight: 20,
                   color: "#5764b8",
                 }}
-                fill="#5e72e4"
-                name="plus-circle"
               />
             </TouchableOpacity>
           ),
@@ -86,7 +86,6 @@ const LeadMainStackScreen = ({ navigation }) => {
     </LeadMainStack.Navigator>
   );
 };
-
 const LeadStackScreen = () => (
   <LeadStack.Navigator mode="modal" headerMode="none">
     <LeadStack.Screen name="LeadMain" component={LeadMainStackScreen} />
