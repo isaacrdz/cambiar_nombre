@@ -14,12 +14,14 @@ import SendDocumentation from "../components/leads/documentation/SendDocumentati
 import Calling from "../components/leads/Calling";
 import { Ionicons } from "@expo/vector-icons";
 import useLead from "../hooks/useLead";
+import useAuth from "../hooks/useAuth";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
   const { selectedLeads } = useLead();
+  const { user } = useAuth();
   return (
     <LeadMainStack.Navigator>
       <LeadMainStack.Screen
@@ -28,21 +30,20 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("AssignLead");
-              }}
-              disabled={selectedLeads.length < 1}
+            onPress={() => { navigation.navigate("AssignLead") }}
+            disabled={selectedLeads.length < 1}
             >
               <Ionicons
                 name="person-add-outline"
                 size={25}
                 style={{
+                  display: user && user.role && user.role === 'admin' ? 'flex' : 'none',
                   width: 25,
                   height: 25,
                   marginLeft: 20,
                   color: selectedLeads.length === 0 ? "#bbb" : "#5764b8",
                 }}
-              />
+                />
             </TouchableOpacity>
           ),
           headerRight: () => (
