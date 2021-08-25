@@ -87,6 +87,40 @@ const TaskDetail = ({ route, navigation }) => {
     },
   ];
 
+  const onChangeAndroidHour = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      setHour(selectedTime);
+    }
+  };
+
+  const onChangeAndroid = (event, selectedDate) => {
+    setOpen(false);
+    if (selectedDate !== undefined) {
+      setDate(selectedDate);
+    }
+  };
+
+  const renderAndroidPicker = (state) => {
+    if (state === true) {
+      return (
+        <>
+          <DateTimePicker
+            value={hour}
+            mode="time"
+            display="spinner"
+            onChange={onChangeAndroidHour}
+          />
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="spinner"
+            onChange={onChangeAndroid}
+          />
+        </>
+      );
+    }
+  };
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
@@ -272,13 +306,14 @@ const TaskDetail = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    if (hour && currentComment.reschedule) {
-      let finalDate = currentComment.reschedule.toString().split(" ");
+    if (hour && date) {
+      let finalDate = date.toString().split(" ");
       let finalHour = hour.toString().split(" ");
+
       let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
       setFinalDate(postDate);
     }
-  }, [hour]);
+  }, [hour, date]);
 
   useEffect(() => {
     if (comment && comment._id) {
@@ -294,7 +329,7 @@ const TaskDetail = ({ route, navigation }) => {
           store: comment.lead.store,
           comments: comment.lead.comments,
         },
-        reschedule: new Date(comment.reschedule),
+        reschedule: comment.reschedule ? new Date(comment.reschedule) : new Date(),
       });
     }
   }, [comment]);
@@ -518,10 +553,11 @@ const TaskDetail = ({ route, navigation }) => {
                     category="s1"
                     style={{ marginBottom: 20 }}
                   >
+                  
                     {Platform.OS === "android"
                       ? `Fecha: ${
-                          finalDate &&
-                          moment(finalDate).format("DD MMMM YYYY - hh:mm a")
+                          finalDate !== '' && finalDate !== undefined ?
+                          moment(finalDate).format("DD MMMM YYYY - hh:mm a") : ''
                         }`
                       : `Fecha`}
                   </Text>
