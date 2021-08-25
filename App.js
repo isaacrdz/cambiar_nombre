@@ -4,9 +4,9 @@ import Routes from "./src/Routes";
 //UI Kitten
 import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
-import { FeatherIconsPack } from "./feather-icons";
+// import { FeatherIconsPack } from "./feather-icons";
 import { ThemeContext } from "./theme-context";
-import * as Contacts from 'expo-contacts';
+import * as Contacts from "expo-contacts";
 
 // Contexts
 import AuthState from "./src/contexts/auth/AuthState";
@@ -43,11 +43,10 @@ const App = () => {
     })();
   }, []);
 
-
   return (
     <>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <IconRegistry icons={FeatherIconsPack} />
+        {/* <IconRegistry icons={FeatherIconsPack} /> */}
         <ApplicationProvider {...eva} theme={eva[theme]}>
           <AuthState>
             <LeadState>
@@ -67,7 +66,9 @@ const App = () => {
                                         <AppointmentState>
                                           <VisitState>
                                             <Routes />
-                                            <Toast ref={(ref) => Toast.setRef(ref)} />
+                                            <Toast
+                                              ref={(ref) => Toast.setRef(ref)}
+                                            />
                                           </VisitState>
                                         </AppointmentState>
                                       </UserState>
@@ -89,30 +90,28 @@ const App = () => {
       </ThemeContext.Provider>
     </>
   );
-}
+};
 
-  // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
-  // async function sendPushNotification(expoPushToken) {
-  //   const message = {
-  //     to: expoPushToken,
-  //     sound: "default",
-  //     title: "Original Title",
-  //     body: "And here is the body!",
-  //     data: { someData: "goes here" },
-  //   };
+// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
+// async function sendPushNotification(expoPushToken) {
+//   const message = {
+//     to: expoPushToken,
+//     sound: "default",
+//     title: "Original Title",
+//     body: "And here is the body!",
+//     data: { someData: "goes here" },
+//   };
 
-  //   await fetch("https://exp.host/--/api/v2/push/send", {
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Accept-encoding": "gzip, deflate",
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(message),
-  //   });
-  // }
-
-
+//   await fetch("https://exp.host/--/api/v2/push/send", {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Accept-encoding": "gzip, deflate",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(message),
+//   });
+// }
 
 export default () => {
   return <App />;

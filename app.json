@@ -18,6 +18,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
+      "permissions": ["WRITE_CONTACTS", "READ_CONTACTS"],
       "package": "com.ellyonsoft.dpx",
       "versionCode": 1
     }

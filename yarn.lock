@@ -5937,6 +5937,13 @@ expo-constants@~9.3.3:
     fbjs "1.0.0"
     uuid "^3.3.2"
 
+expo-contacts@~8.6.0:
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/expo-contacts/-/expo-contacts-8.6.0.tgz#ec3e4379f02ac95212015ead4de8b44a01d61200"
+  integrity sha512-KbJb6R90bU2Cnp7o9zJ+SExtBbFJz9Jt4SmWsRPZh20WRX7XJOLBDT5x9FKX5CMw6nvHSVhpbCg51vxX9Td1hQ==
+  dependencies:
+    uuid "^3.4.0"
+
 expo-error-recovery@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-1.4.0.tgz#2a05c21b056fb7d68af2fc30032858d19747302a"
@@ -11241,6 +11248,11 @@ react-native-track-player@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-1.2.7.tgz#a721662fc32383cf2979a48b33db091140e88962"
   integrity sha512-U1kA25qm398/kY6BvTojGHt4S1tYuKrJNQpXW+dA+p0B+n4LlPyoidUXfu951YM7aoisg8EmQPsevUFmcXG+cg==
+
+react-native-twilio-voice-sdk@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-twilio-voice-sdk/-/react-native-twilio-voice-sdk-0.5.2.tgz#820c16f7b4f77e8ae040cebd195bf81e1cc7b70b"
+  integrity sha512-RcIv7qQl+A+E8AZ7xPLv/c6O15H5teUO6wioCHODzyu5lo3s9m1p4lDSvNOuHTiTYOjUgvYs3YG5ViAj1i7L7A==
 
 react-native-vector-icons@^8.1.0:
   version "8.1.0"

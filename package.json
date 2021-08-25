@@ -27,7 +27,7 @@
     "expo-av": "^9.1.2",
     "expo-cli": "^4.9.0",
     "expo-constants": "~9.3.3",
-    "expo-contacts": "^9.2.5",
+    "expo-contacts": "~8.6.0",
     "expo-localization": "^10.2.0",
     "expo-notifications": "^0.8.2",
     "expo-status-bar": "~1.0.3",
