@@ -89,7 +89,7 @@ const Routes = ({ token }) => {
               if (route.name === "Home") {
                 iconName = focused ? "home-sharp" : "home-outline";
               } else if (route.name === "Tareas") {
-                iconName = focused ? "book-sharp" : "book-outline";
+                iconName = focused ? "construct-sharp" : "construct-outline";
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";
               } else if (route.name === "Citas") {
