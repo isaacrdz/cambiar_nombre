@@ -11,7 +11,7 @@ import {
 } from "@ui-kitten/components";
 import Calendar from "../../components/SelectDate";
 import moment from "moment";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";

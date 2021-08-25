@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import Calendar from '../../components/SelectDate'
-import moment from 'moment'
-import Ionicons from "@expo/vector-icons/Ionicons";
-import useChart from '../../hooks/useChart';
-import useAuth from '../../hooks/useAuth';
+import Calendar from "../../components/SelectDate";
+import moment from "moment";
+import { Ionicons } from "@expo/vector-icons";
+import useChart from "../../hooks/useChart";
+import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
-import { Spinner } from '@ui-kitten/components';
+import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
 import { ScrollView } from "react-native-gesture-handler";
-const HomeUser = ({navigation}) => {
-
+const HomeUser = ({ navigation }) => {
   const { user } = useAuth();
 
   const {
@@ -22,158 +21,162 @@ const HomeUser = ({navigation}) => {
     pieStatus,
     clearCharts,
     getTotalsDashboard,
-    total, 
-    totalLeads, 
-    totalVisits, 
-    totalAppointments, 
-    totalSolds, 
+    total,
+    totalLeads,
+    totalVisits,
+    totalAppointments,
+    totalSolds,
     loadingCharts,
     getLeadsMonthlyChart,
-    leadsMonthlyChart
+    leadsMonthlyChart,
   } = useChart();
-  const [date, setDate] = useState(`&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`)
+  const [date, setDate] = useState(
+    `&createdAt[gte]=${moment()
+      .startOf("month")
+      .format()}&createdAt[lt]=${moment().endOf("month").format()}`
+  );
 
   const today = new Date();
   const curHr = today.getHours();
-  const [filter, setFilter] = useState('month');
-  const [custom, setCustom] = useState({date:`&createdAt[gte]=${moment().startOf('year').format()}&createdAt[lt]=${moment().endOf('month').format()}`,filter:'MMMM'});
+  const [filter, setFilter] = useState("month");
+  const [custom, setCustom] = useState({
+    date: `&createdAt[gte]=${moment()
+      .startOf("year")
+      .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
+    filter: "MMMM",
+  });
   let greeting;
 
   if (curHr < 12) {
-    greeting = 'Buenos Dias';
+    greeting = "Buenos Dias";
   } else if (curHr < 18) {
-    greeting = 'Buenas Tardes';
+    greeting = "Buenas Tardes";
   } else {
-    greeting = 'Buenas Noches';
+    greeting = "Buenas Noches";
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      if(user && user._id){
+      if (user && user._id) {
         getTotalsDashboard(`${date}&agent=${user._id}`);
-        getLeadsMonthlyChart(`${custom.date}&agent=${user._id}&filter=${custom.filter}`);
+        getLeadsMonthlyChart(
+          `${custom.date}&agent=${user._id}&filter=${custom.filter}`
+        );
         getPieStatusChart(`${date}&agent=${user._id}`);
       }
     }, [filter, date, user])
   );
 
-
   return (
     <ScrollView>
-    <Layout style={styles.container}>
-      <Layout style={styles.subContainer}>
-        <Calendar setDate={setDate}/>
-      </Layout>
-      {/* <Divider /> */}
-      <Layout style={styles.subContainerText}>
-        <Text category="label" style={{marginBottom: 10, fontSize: 17}}>{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
-        {
-          loadingCharts ? 
-          <Text category="p1" appearance="hint" >{`. . .`}</Text>
-          :
-          <Text category="p1" appearance="hint" >{`Tienes un total de ${total} leads acumulados`}</Text>
-        }
-      </Layout>
-      <Layout style={styles.subContainerCards}>
+      <Layout style={styles.container}>
+        <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} />
+        </Layout>
+        {/* <Divider /> */}
+        <Layout style={styles.subContainerText}>
+          <Text
+            category="label"
+            style={{ marginBottom: 10, fontSize: 17 }}
+          >{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
+          {loadingCharts ? (
+            <Text category="p1" appearance="hint">{`. . .`}</Text>
+          ) : (
+            <Text
+              category="p1"
+              appearance="hint"
+            >{`Tienes un total de ${total} leads acumulados`}</Text>
+          )}
+        </Layout>
+        <Layout style={styles.subContainerCards}>
+          <Layout style={styles.card}>
+            <Text category="p1" appearance="hint">
+              Leads
+            </Text>
+            <Layout style={styles.data}>
+              <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+              {loadingCharts ? (
+                <Layout style={{ paddingLeft: 10 }}>
+                  <Spinner size="small" />
+                </Layout>
+              ) : (
+                <Text category="p1" style={styles.text}>
+                  {totalLeads}
+                </Text>
+              )}
+            </Layout>
+          </Layout>
 
-      <Layout style={styles.card}>
-          <Text category="p1" appearance="hint" >Leads</Text>
-          <Layout style={styles.data}>
-            <Ionicons
-              name="person-outline"
-              size={25}
-              color={"#673ab7"}
-            />
-            {
-              loadingCharts ? 
-              <Layout style={{paddingLeft: 10}}>
-                <Spinner size='small'/> 
-              </Layout>
-                : 
-              <Text category="p1" style={styles.text}>{totalLeads}</Text>
-            }
+          <Layout style={styles.card}>
+            <Text category="p1" appearance="hint">
+              Citas
+            </Text>
+            <Layout style={styles.data}>
+              <Ionicons name="calendar-outline" size={25} color={"#33acee"} />
+              {loadingCharts ? (
+                <Layout style={{ paddingLeft: 10 }}>
+                  <Spinner size="small" />
+                </Layout>
+              ) : (
+                <Text category="p1" style={styles.text}>
+                  {totalAppointments}
+                </Text>
+              )}
+            </Layout>
           </Layout>
         </Layout>
 
-      <Layout style={styles.card}>
-        <Text category="p1" appearance="hint" >Citas</Text>
-        <Layout style={styles.data}>
-          <Ionicons
-            name="calendar-outline"
-            size={25}
-            color={"#33acee"}
-          />
-          {
-            loadingCharts ? 
-            <Layout style={{paddingLeft: 10}}>
-              <Spinner size='small'/> 
+        <Layout style={styles.subContainerCards}>
+          <Layout style={styles.card}>
+            <Text category="p1" appearance="hint">
+              Visitas
+            </Text>
+            <Layout style={styles.data}>
+              <Ionicons name="home-outline" size={25} color={"#d81b60"} />
+              {loadingCharts ? (
+                <Layout style={{ paddingLeft: 10 }}>
+                  <Spinner size="small" />
+                </Layout>
+              ) : (
+                <Text category="p1" style={styles.text}>
+                  {totalVisits}
+                </Text>
+              )}
             </Layout>
-              : 
-            <Text category="p1" style={styles.text}>{totalAppointments}</Text>
-          }
+          </Layout>
+
+          <Layout style={styles.card}>
+            <Text category="p1" appearance="hint">
+              Ventas
+            </Text>
+            <Layout style={styles.data}>
+              <Ionicons name="cash-outline" size={25} color={"#43a047"} />
+              {loadingCharts ? (
+                <Layout style={{ paddingLeft: 10 }}>
+                  <Spinner size="small" />
+                </Layout>
+              ) : (
+                <Text category="p1" style={styles.text}>
+                  {totalSolds}
+                </Text>
+              )}
+            </Layout>
+          </Layout>
         </Layout>
       </Layout>
 
+      <Layout style={styles.subContainerDivider}>
+        {!leadsMonthlyChart || !pieStatus ? (
+          <Layout style={styles.center}>
+            <Spinner size="giant" />
+          </Layout>
+        ) : (
+          <>
+            <Divider />
+            <ChartsUser leads={leadsMonthlyChart} status={pieStatus} />
+          </>
+        )}
       </Layout>
-
-      <Layout style={styles.subContainerCards}>
-
-      <Layout style={styles.card}>
-        <Text category="p1" appearance="hint" >Visitas</Text>
-        <Layout style={styles.data}>
-          <Ionicons
-            name="home-outline"
-            size={25}
-            color={"#d81b60"}
-          />
-          {
-            loadingCharts ? 
-            <Layout style={{paddingLeft: 10}}>
-              <Spinner size='small'/> 
-            </Layout>
-              : 
-            <Text category="p1" style={styles.text}>{totalVisits}</Text>
-          }
-        </Layout>
-      </Layout>
-
-      <Layout style={styles.card}>
-        <Text category="p1" appearance="hint" >Ventas</Text>
-        <Layout style={styles.data}>
-          <Ionicons
-            name="cash-outline"
-            size={25}
-            color={"#43a047"}
-          />
-          {
-            loadingCharts ? 
-            <Layout style={{paddingLeft: 10}}>
-              <Spinner size='small'/> 
-            </Layout>
-              : 
-            <Text category="p1" style={styles.text}>{totalSolds}</Text>
-          }
-        </Layout>
-      </Layout>
-
-      </Layout>
-
-
-    </Layout>
-
-        <Layout style={styles.subContainerDivider}>
-          {!leadsMonthlyChart || !pieStatus ? (
-            <Layout style={styles.center}>
-              <Spinner size="giant" />
-            </Layout>
-
-          ) : (
-            <>
-              <Divider />
-              <ChartsUser leads={leadsMonthlyChart} status={pieStatus} />
-            </>
-          )}
-        </Layout>
     </ScrollView>
   );
 };
@@ -182,18 +185,18 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "400",
-    marginLeft: 15
+    marginLeft: 15,
   },
   container: {
     marginBottom: 20,
-    flex: 1
+    flex: 1,
   },
   subContainer: {
     justifyContent: "space-between",
     flexDirection: "row",
     padding: 20,
   },
- subContainerDivider: {
+  subContainerDivider: {
     paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingRight: 20,
     paddingLeft: 25,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   subContainerCards: {
     justifyContent: "space-between",
@@ -211,24 +214,23 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   card: {
-    width: '50%',
+    width: "50%",
     borderWidth: 1,
     flex: 1,
     borderColor: "#d8d8d8",
     borderRadius: 5,
     padding: 10,
-    margin: 5
+    margin: 5,
   },
   select: {
     flex: 1,
     margin: 2,
   },
   data: {
-    display: 'flex',
-    flexDirection: 'row',
-    textAlignVertical: "center"
+    display: "flex",
+    flexDirection: "row",
+    textAlignVertical: "center",
   },
-  
 });
 
 export default HomeUser;

@@ -8,7 +8,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { translateStatus, translateSubstatus } from "../../../../utils/tranlsateSubstatus";
+import {
+  translateStatus,
+  translateSubstatus,
+} from "../../../../utils/tranlsateSubstatus";
 import {
   Layout,
   Divider,
@@ -20,9 +23,9 @@ import {
   Button,
   Calendar,
   Input,
-  Spinner
+  Spinner,
 } from "@ui-kitten/components";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import useSubstatus from "../../../../hooks/useSubstatus";
 import useLead from "../../../../hooks/useLead";
 import useAuth from "../../../../hooks/useAuth";
@@ -52,8 +55,8 @@ const contactedStatus = [
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
   const [hour, setHour] = useState(new Date());
-  const [finalDate, setFinalDate] = useState('')
-  const [open, setOpen] = useState(false)
+  const [finalDate, setFinalDate] = useState("");
+  const [open, setOpen] = useState(false);
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
   const { createComment, updateComment, loading } = useComment();
@@ -68,11 +71,11 @@ const AddTask = ({ navigation }) => {
 
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  moment.locale('es-mx')
+  moment.locale("es-mx");
 
   let paddingTop = 0;
 
-  if(Platform.OS === 'android'){
+  if (Platform.OS === "android") {
     paddingTop = 30;
   }
 
@@ -83,8 +86,7 @@ const AddTask = ({ navigation }) => {
   };
 
   const renderAndroidPicker = (state) => {
-
-    if(state === true){
+    if (state === true) {
       return (
         <>
           <DateTimePicker
@@ -100,26 +102,24 @@ const AddTask = ({ navigation }) => {
             onChange={onChangeAndroid}
           />
         </>
-      )
-    }
-  }
-
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-
-      setHour(selectedTime);
-     
+      );
     }
   };
 
-  useEffect(()=>{
-    if(hour && date){
-      let finalDate = date.toString().split(' ')
-      let finalHour = hour.toString().split(' ')
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
-      setFinalDate(postDate)
+  const onChangeAndroidHour = (event, selectedTime) => {
+    if (selectedTime !== undefined) {
+      setHour(selectedTime);
     }
-  },[hour])
+  };
+
+  useEffect(() => {
+    if (hour && date) {
+      let finalDate = date.toString().split(" ");
+      let finalHour = hour.toString().split(" ");
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
+      setFinalDate(postDate);
+    }
+  }, [hour]);
 
   const onChangeAndroid = (event, selectedDate) => {
     setOpen(false);
@@ -184,17 +184,16 @@ const AddTask = ({ navigation }) => {
         userId = user._id;
       }
 
-
       let BodyComment = {
         comment: text,
         user: userId,
         action: selectedActions,
       };
 
-      if(Platform.OS === 'ios'){
-        BodyComment.reschedule = moment(date).format()
-      }else{
-        BodyComment.reschedule = moment(finalDate).format()
+      if (Platform.OS === "ios") {
+        BodyComment.reschedule = moment(date).format();
+      } else {
+        BodyComment.reschedule = moment(finalDate).format();
       }
 
       if (author !== "") {
@@ -286,23 +285,28 @@ const AddTask = ({ navigation }) => {
       <HeaderTitle title="Agregar Tarea" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-            {
-             loading ? 
-              <Layout style={{ paddingHorizontal: 15, paddingVertical: '50%' }}>
-                <Layout style={{ paddingHorizontal: 30, marginBottom: 50, alignSelf: 'center' }}>
-                  <Spinner size='giant' />
-                </Layout> 
-                <Layout style={{ marginBottom: 30, alignSelf: 'center' }} level="1">
-                    <Text
-                      style={styles.text}
-                      category="h3"
-                    >
-                      Creando comentario...
-                    </Text>
-                </Layout>
+          {loading ? (
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: "50%" }}>
+              <Layout
+                style={{
+                  paddingHorizontal: 30,
+                  marginBottom: 50,
+                  alignSelf: "center",
+                }}
+              >
+                <Spinner size="giant" />
               </Layout>
-             : 
-             <>
+              <Layout
+                style={{ marginBottom: 30, alignSelf: "center" }}
+                level="1"
+              >
+                <Text style={styles.text} category="h3">
+                  Creando comentario...
+                </Text>
+              </Layout>
+            </Layout>
+          ) : (
+            <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
                   style={styles.text}
@@ -376,9 +380,15 @@ const AddTask = ({ navigation }) => {
                   <Select
                     size="large"
                     style={{ marginBottom: 10 }}
-                    value={lead && lead.status && translateStatus(lead.status.name)}
+                    value={
+                      lead && lead.status && translateStatus(lead.status.name)
+                    }
                   >
-                    <SelectItem title={lead && lead.status && translateStatus(lead.status.name)} />
+                    <SelectItem
+                      title={
+                        lead && lead.status && translateStatus(lead.status.name)
+                      }
+                    />
                   </Select>
                   <Select
                     size="large"
@@ -395,65 +405,67 @@ const AddTask = ({ navigation }) => {
                 </Layout>
               </Layout>
               <Layout>
-            <Text
-              style={styles.text}
-              category="s1"
-              style={{ marginBottom: 20 }}
-            >
-              4. Elige una Fecha
-            </Text>
-            <Layout
-              level="1"
-              style={{
-                minHeight: 256,
-              }}
-            >
-             
-                  <Text
+                <Text
                   style={styles.text}
                   category="s1"
                   style={{ marginBottom: 20 }}
                 >
-                  
-                  {
-                    Platform.OS === 'android' ? 
-                    `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - hh:mm a')}` :
-                    `Fecha`
-                  } 
+                  4. Elige una Fecha
                 </Text>
-               {
-                Platform.OS === 'ios' &&
-                <DateTimePicker
-                  value={date}
-                  mode="datetime"
-                  onChange={onChange}
-                  display="spinner"
-                />
-              }
-              {
-                Platform.OS === 'android' &&
-                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
-              }
-              {
-                Platform.OS === 'android' && open && renderAndroidPicker(open)
-              }
+                <Layout
+                  level="1"
+                  style={{
+                    minHeight: 256,
+                  }}
+                >
+                  <Text
+                    style={styles.text}
+                    category="s1"
+                    style={{ marginBottom: 20 }}
+                  >
+                    {Platform.OS === "android"
+                      ? `Fecha: ${
+                          finalDate &&
+                          moment(finalDate).format("DD MMMM YYYY - hh:mm a")
+                        }`
+                      : `Fecha`}
+                  </Text>
+                  {Platform.OS === "ios" && (
+                    <DateTimePicker
+                      value={date}
+                      mode="datetime"
+                      onChange={onChange}
+                      display="spinner"
+                    />
+                  )}
+                  {Platform.OS === "android" && (
+                    <Button
+                      style={{ marginBottom: 20, marginTop: 20 }}
+                      onPress={() => setOpen(true)}
+                    >
+                      Seleccionar Fecha
+                    </Button>
+                  )}
+                  {Platform.OS === "android" &&
+                    open &&
+                    renderAndroidPicker(open)}
 
-              {/* <DateTimePicker
+                  {/* <DateTimePicker
                 value={date}
                 mode={Platform.OS === "ios" ? "datetime" : "date"}
                 display="default"
                 onChange={onChange}
                 display="spinner"
               /> */}
-            <Layout>
-              <Button style={styles.button} onPress={handleSubmit}>
-                Crear Tarea
-              </Button>
-            </Layout>
-            </Layout>
-          </Layout>
+                  <Layout>
+                    <Button style={styles.button} onPress={handleSubmit}>
+                      Crear Tarea
+                    </Button>
+                  </Layout>
+                </Layout>
+              </Layout>
             </>
-          }
+          )}
         </Layout>
       </ScrollView>
     </SafeAreaView>

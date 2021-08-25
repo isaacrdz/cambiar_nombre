@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import Calendar from "../../components/SelectDate";
 import moment from "moment";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
@@ -72,9 +72,7 @@ const HomeAdmin = ({ navigation }) => {
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
     customFilter = "MMMM";
-    getLeadsMonthlyChart(
-      `${customDate}&filter=${customFilter}`
-    );
+    getLeadsMonthlyChart(`${customDate}&filter=${customFilter}`);
   }, []);
 
   const data = [];

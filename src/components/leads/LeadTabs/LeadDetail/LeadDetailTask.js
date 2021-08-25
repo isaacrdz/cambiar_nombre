@@ -10,8 +10,7 @@ import {
   ListItem,
   List,
 } from "@ui-kitten/components";
-
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
 import moment from "moment/min/moment-with-locales";
 
@@ -98,14 +97,13 @@ const LeadDetailTask = ({ tasks }) => {
             {item.comment}
           </Text>
         </Layout>
-        {
-          item.assignedBy &&
+        {item.assignedBy && (
           <Layout style={{ marginBottom: 5 }}>
             <Text category="c1" appearance="hint">
               Asignado por: {CapitalizeNames(item.assignedBy.name)}
             </Text>
           </Layout>
-        }
+        )}
         <Layout>
           <Text category="c1" appearance="hint">
             Siguiente tarea: <Ionicons name="time-outline" size={13} />{" "}

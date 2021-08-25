@@ -9,7 +9,7 @@ import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 import Header from "../header/Header";
 import { getMultiStoresIds } from "../../utils/storesUser";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 const LeadsList = ({
   user,

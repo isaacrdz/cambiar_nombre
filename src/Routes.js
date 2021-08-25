@@ -12,7 +12,7 @@ import LeadStackScreen from "./navigation/LeadStackScreen";
 import AuthStackScreen from "./navigation/AuthStackScreen";
 import ProfileStackScreen from "./navigation/ProfileStackScreen";
 import useAuth from "./hooks/useAuth";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import AppointmentStackScreen from "./navigation/AppointmentStackScreen";
 import TaskStackScreen from "./navigation/TaskStackScreen";
 
@@ -27,7 +27,7 @@ const Routes = ({ token }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [tok, setTok] = useState(null)
+  const [tok, setTok] = useState(null);
 
   React.useEffect(() => {
     if (user && user._id) {
@@ -42,7 +42,7 @@ const Routes = ({ token }) => {
       notificationListener.current =
         Notifications.addNotificationReceivedListener((notification) => {
           setNotification(notification);
-          if(Platform.OS === 'ios'){
+          if (Platform.OS === "ios") {
             Notifications.setBadgeNumberAsync(notificationAmount);
             notificationAmount++;
           }
@@ -50,9 +50,7 @@ const Routes = ({ token }) => {
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current =
-        Notifications.addNotificationResponseReceivedListener((response) => {
-
-        });
+        Notifications.addNotificationResponseReceivedListener((response) => {});
 
       return () => {
         Notifications.removeNotificationSubscription(
@@ -61,25 +59,23 @@ const Routes = ({ token }) => {
         Notifications.removeNotificationSubscription(responseListener.current);
       };
     }
-
   }, [user]);
 
-  const getToken = async() => {
-    let t = await AsyncStorage.getItem("token")
+  const getToken = async () => {
+    let t = await AsyncStorage.getItem("token");
 
-    setTok(t)
-  }
+    setTok(t);
+  };
 
   React.useEffect(() => {
-    if(tok){
+    if (tok) {
       loadUser();
     }
   }, [tok]);
 
   React.useEffect(() => {
-    getToken()
+    getToken();
     Notifications.setBadgeCountAsync(0);
-
   }, []);
 
   return (
@@ -92,7 +88,7 @@ const Routes = ({ token }) => {
 
               if (route.name === "Home") {
                 iconName = focused ? "home-sharp" : "home-outline";
-              }else if(route.name === "Tareas"){
+              } else if (route.name === "Tareas") {
                 iconName = focused ? "book-sharp" : "book-outline";
               } else if (route.name === "Leads") {
                 iconName = focused ? "layers-sharp" : "layers-outline";

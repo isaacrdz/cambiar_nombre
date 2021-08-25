@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment/min/moment-with-locales";
 import { useNavigation } from "@react-navigation/native";
-import { Badge } from 'react-native-paper';
+import { Badge } from "react-native-paper";
 
 import {
   StyleSheet,
@@ -21,9 +21,8 @@ import {
   List,
 } from "@ui-kitten/components";
 
-
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { translateSubstatus } from '../../utils/tranlsateSubstatus';
+import { Ionicons } from "@expo/vector-icons";
+import { translateSubstatus } from "../../utils/tranlsateSubstatus";
 
 const AppointmentItem = ({ item }) => {
   const navigation = useNavigation();
@@ -31,14 +30,18 @@ const AppointmentItem = ({ item }) => {
   const startDate = moment(item.startDate).format("DD MMMM YYYY");
   const time = moment(item.startDate).format("hh:mm a");
 
-  let color = '';
+  let color = "";
 
-  if(moment(item.startDate).format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')){
-    color = '#388e3c'
-  }else if( moment(item.startDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')) {
-    color = '#d32f2f'
+  if (
+    moment(item.startDate).format("YYYY-MM-DD") > moment().format("YYYY-MM-DD")
+  ) {
+    color = "#388e3c";
+  } else if (
+    moment(item.startDate).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")
+  ) {
+    color = "#d32f2f";
   } else {
-    color = '#f9a825'
+    color = "#f9a825";
   }
 
   return (
@@ -54,20 +57,19 @@ const AppointmentItem = ({ item }) => {
           borderColor: "#d8d8d8",
           margin: 5,
           borderRadius: 10,
-          position: 'relative',
+          position: "relative",
         }}
       >
-            <Layout
-              style={{
-                position: 'absolute',
-                right: 10,
-                top: 10,
-                zIndex: 2
-              }}
-            >
-            
-              <Badge size={15} style={{backgroundColor: color}}/>
-            </Layout>
+        <Layout
+          style={{
+            position: "absolute",
+            right: 10,
+            top: 10,
+            zIndex: 2,
+          }}
+        >
+          <Badge size={15} style={{ backgroundColor: color }} />
+        </Layout>
         <Layout>
           <Text
             category="c1"
@@ -88,7 +90,11 @@ const AppointmentItem = ({ item }) => {
             appearance="hint"
             style={{ textTransform: "capitalize", marginBottom: 2 }}
           >
-            {item && item.lead && item.lead.substatus && translateSubstatus(item.lead.substatus.name)} - {item.title}
+            {item &&
+              item.lead &&
+              item.lead.substatus &&
+              translateSubstatus(item.lead.substatus.name)}{" "}
+            - {item.title}
           </Text>
         </Layout>
 
