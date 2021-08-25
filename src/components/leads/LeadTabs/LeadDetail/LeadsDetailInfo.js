@@ -3,20 +3,20 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 
 import { Layout, Divider, Text, Button, Icon } from "@ui-kitten/components";
-import numeral from 'numeral';
-import Ionicons from "@expo/vector-icons/Ionicons";
+import numeral from "numeral";
+import { Ionicons } from "@expo/vector-icons";
 
 import moment from "moment/min/moment-with-locales";
 
 import useLead from "../../../../hooks/useLead";
 import { translateTemperature } from "../../../../utils/tranlsateSubstatus";
 import useAuth from "../../../../hooks/useAuth";
-import { CapitalizeNames } from '../../../../utils/Capitalize';
+import { CapitalizeNames } from "../../../../utils/Capitalize";
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
   moment.locale("es-mx");
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   useEffect(() => {
     getLead(itemId);
@@ -95,7 +95,9 @@ const LeadDetailInfo = ({ itemId }) => {
           <Text category="p1" appearance="hint">
             Enganche
           </Text>
-          <Text style={styles.mr}>${numeral(lead.downPayment).format('0,0')}</Text>
+          <Text style={styles.mr}>
+            ${numeral(lead.downPayment).format("0,0")}
+          </Text>
         </Layout>
         <Divider />
         <Layout style={styles.ContainerDetail}>
@@ -155,22 +157,26 @@ const LeadDetailInfo = ({ itemId }) => {
           </Text>
         </Layout>
       </Layout>
-                
-      { /* Lead Agent */}
-      {
-        user && (user.role === 'admin' || user.role === 'super admin' || user.role === 'rockstar') &&
-        <Layout style={{ marginBottom: 300 }}>
-          <Layout style={styles.ContainerDetail}>
-            <Text category="p1" appearance="hint">
-              Agente
-            </Text>
-            <Text style={[styles.mr]}>
-              {lead && lead.agent ? CapitalizeNames(lead.agent.name) : 'Sin Asignar'}
-            </Text>
+
+      {/* Lead Agent */}
+      {user &&
+        (user.role === "admin" ||
+          user.role === "super admin" ||
+          user.role === "rockstar") && (
+          <Layout style={{ marginBottom: 300 }}>
+            <Layout style={styles.ContainerDetail}>
+              <Text category="p1" appearance="hint">
+                Agente
+              </Text>
+              <Text style={[styles.mr]}>
+                {lead && lead.agent
+                  ? CapitalizeNames(lead.agent.name)
+                  : "Sin Asignar"}
+              </Text>
+            </Layout>
+            <Divider />
           </Layout>
-          <Divider />
-        </Layout>
-      }
+        )}
     </ScrollView>
   );
 };

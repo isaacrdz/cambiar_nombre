@@ -5,7 +5,7 @@ import { Icon, Input, Layout } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
 import useAuth from "../../hooks/useAuth";
 import { getMultiStoresIds } from "../../utils/storesUser";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 const LeadSearch = ({
   query,

@@ -12,25 +12,25 @@ import AddLead from "../components/leads/AddLead";
 import AssignLead from "../components/leads/AssignLead";
 import SendDocumentation from "../components/leads/documentation/SendDocumentation";
 import Calling from "../components/leads/Calling";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import useLead from '../hooks/useLead';
+import { Ionicons } from "@expo/vector-icons";
+import useLead from "../hooks/useLead";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-  
-  const { selectedLeads } = useLead()
+  const { selectedLeads } = useLead();
   return (
     <LeadMainStack.Navigator>
-
       <LeadMainStack.Screen
         name="Leads"
         component={Lead}
         options={{
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => { navigation.navigate("AssignLead")}}
+              onPress={() => {
+                navigation.navigate("AssignLead");
+              }}
               disabled={selectedLeads.length < 1}
             >
               <Ionicons
@@ -61,10 +61,7 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
         }}
       />
-      <LeadMainStack.Screen
-        name="LeadDetail"
-        component={LeadsDetail}
-      />
+      <LeadMainStack.Screen name="LeadDetail" component={LeadsDetail} />
 
       <LeadMainStack.Screen
         name="LeadTabs"
@@ -72,15 +69,15 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
-              <Icon
+             <Ionicons
+                name="add-circle-outline"
+                size={25}
                 style={{
                   width: 25,
                   height: 25,
                   marginRight: 20,
                   color: "#5764b8",
                 }}
-                fill="#5e72e4"
-                name="plus-circle"
               />
             </TouchableOpacity>
           ),

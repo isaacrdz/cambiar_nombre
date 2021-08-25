@@ -1,19 +1,12 @@
 import React from "react";
 import moment from "moment/min/moment-with-locales";
 import { useNavigation } from "@react-navigation/native";
-import { Badge } from 'react-native-paper';
+import { Badge } from "react-native-paper";
 
-import {
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import {
-  Layout,
-  Text,
-} from "@ui-kitten/components";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Layout, Text } from "@ui-kitten/components";
 
-
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 const TaskItem = ({ item }) => {
   const navigation = useNavigation();
@@ -21,14 +14,18 @@ const TaskItem = ({ item }) => {
   const startDate = moment(item.reschedule).format("DD MMMM YYYY");
   const time = moment(item.reschedule).format("hh:mm a");
 
-  let color = '';
+  let color = "";
 
-  if(moment(item.reschedule).format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')){
-    color = '#388e3c'
-  }else if( moment(item.reschedule).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')) {
-    color = '#d32f2f'
+  if (
+    moment(item.reschedule).format("YYYY-MM-DD") > moment().format("YYYY-MM-DD")
+  ) {
+    color = "#388e3c";
+  } else if (
+    moment(item.reschedule).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")
+  ) {
+    color = "#d32f2f";
   } else {
-    color = '#f9a825'
+    color = "#f9a825";
   }
 
   return (
@@ -44,20 +41,19 @@ const TaskItem = ({ item }) => {
           borderColor: "#d8d8d8",
           margin: 5,
           borderRadius: 10,
-          position: 'relative',
+          position: "relative",
         }}
       >
-            <Layout
-              style={{
-                position: 'absolute',
-                right: 10,
-                top: 10,
-                zIndex: 2
-              }}
-            >
-            
-              <Badge size={15} style={{backgroundColor: color}}/>
-            </Layout>
+        <Layout
+          style={{
+            position: "absolute",
+            right: 10,
+            top: 10,
+            zIndex: 2,
+          }}
+        >
+          <Badge size={15} style={{ backgroundColor: color }} />
+        </Layout>
         <Layout>
           <Text
             category="c1"

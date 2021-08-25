@@ -19,12 +19,15 @@ import {
   IndexPath,
   SelectItem,
   CheckBox,
-  Spinner
+  Spinner,
 } from "@ui-kitten/components";
 import moment from "moment/min/moment-with-locales";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import { translateStatus, translateSubstatus } from "../../utils/tranlsateSubstatus";
+import {
+  translateStatus,
+  translateSubstatus,
+} from "../../utils/tranlsateSubstatus";
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -47,19 +50,20 @@ const contactedStatus = [
 const TaskDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { user } = useAuth();
-  const { updateComment, createComment, getComment, comment, loading } = useComment();
+  const { updateComment, createComment, getComment, comment, loading } =
+    useComment();
   const [currentComment, setCurrentComment] = useState({
-    startDate: new Date()
+    startDate: new Date(),
   });
-  const [substatusComment, setSubstatusComment] = useState([])  
-  const [substatusVisit, setSubstatusVisit] = useState([])  
+  const [substatusComment, setSubstatusComment] = useState([]);
+  const [substatusVisit, setSubstatusVisit] = useState([]);
 
   ////////
-  
+
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
   const [hour, setHour] = useState(new Date());
-  const [finalDate, setFinalDate] = useState('')
-  const [open, setOpen] = useState(false)
+  const [finalDate, setFinalDate] = useState("");
+  const [open, setOpen] = useState(false);
   const [date, setDate] = React.useState(new Date());
   const { substatuses, getSubstatuses } = useSubstatus();
   const { lead, updateLead, getLead } = useLead();
@@ -72,7 +76,7 @@ const TaskDetail = ({ route, navigation }) => {
 
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  moment.locale('es-mx')
+  moment.locale("es-mx");
 
   const actions = [
     { value: "whatsapp", icon: <Ionicons name="logo-whatsapp" size={20} /> },
@@ -88,7 +92,6 @@ const TaskDetail = ({ route, navigation }) => {
     setShow(Platform.OS === "ios");
     setDate(currentDate);
   };
-
 
   const handleSubmit = async () => {
     if (text === "") {
@@ -134,17 +137,16 @@ const TaskDetail = ({ route, navigation }) => {
         userId = user._id;
       }
 
-
       let BodyComment = {
         comment: text,
         user: userId,
         action: selectedActions,
       };
 
-      if(Platform.OS === 'ios'){
-        BodyComment.reschedule = moment(date).format()
-      }else{
-        BodyComment.reschedule = moment(finalDate).format()
+      if (Platform.OS === "ios") {
+        BodyComment.reschedule = moment(date).format();
+      } else {
+        BodyComment.reschedule = moment(finalDate).format();
       }
 
       if (author !== "") {
@@ -181,11 +183,11 @@ const TaskDetail = ({ route, navigation }) => {
     }
   };
 
-  useEffect(()=>{
-    if(comment && comment.lead){
-      getLead(comment.lead._id)
+  useEffect(() => {
+    if (comment && comment.lead) {
+      getLead(comment.lead._id);
     }
-  },[comment])
+  }, [comment]);
 
   const handleSetAction = (item) => {
     if (selectedActions.includes(item)) {
@@ -201,7 +203,6 @@ const TaskDetail = ({ route, navigation }) => {
     }
   };
 
-  
   useEffect(() => {
     if (substatuses && comment && comment.lead) {
       let aux = [];
@@ -211,8 +212,8 @@ const TaskDetail = ({ route, navigation }) => {
           item.status === comment.lead.status &&
           item.name !== "new" &&
           item.name !== "rejected" &&
-          item.name !== "visit_rejected" && 
-          item.name !== "rsi" 
+          item.name !== "visit_rejected" &&
+          item.name !== "rsi"
         ) {
           aux.push(translateSubstatus(item.name));
           auxIds.push(item._id);
@@ -235,7 +236,7 @@ const TaskDetail = ({ route, navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      getSubstatuses()
+      getSubstatuses();
     }, [])
   );
 
@@ -247,39 +248,41 @@ const TaskDetail = ({ route, navigation }) => {
 
         let cA = 0;
         let cV = 0;
-        substatuses.map(item => {
-          if(item.status === '604f80222b372e0cb11966dc'){
+        substatuses.map((item) => {
+          if (item.status === "604f80222b372e0cb11966dc") {
             sA.push(item);
-            if(item._id.toString() === currentComment.substatus){
-              setSubtatusCommentIndex(new IndexPath(cA))
+            if (item._id.toString() === currentComment.substatus) {
+              setSubtatusCommentIndex(new IndexPath(cA));
             }
-            cA ++;
+            cA++;
           }
 
-          if(item.status === '6064f8065b21e51052eed547' && item.name !== 'frontdesk'){
+          if (
+            item.status === "6064f8065b21e51052eed547" &&
+            item.name !== "frontdesk"
+          ) {
             sV.push(item);
-            cV ++;
+            cV++;
           }
-        })
+        });
         setSubstatusComment(sA);
         setSubstatusVisit(sV);
       }
     }, [substatuses, currentComment])
   );
 
-
-  useEffect(()=>{
-    if(hour && currentComment.reschedule){
-      let finalDate = currentComment.reschedule.toString().split(' ')
-      let finalHour = hour.toString().split(' ')
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
-      setFinalDate(postDate)
+  useEffect(() => {
+    if (hour && currentComment.reschedule) {
+      let finalDate = currentComment.reschedule.toString().split(" ");
+      let finalHour = hour.toString().split(" ");
+      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
+      setFinalDate(postDate);
     }
-  },[hour])
+  }, [hour]);
 
   useEffect(() => {
-    if(comment && comment._id){
-      setCurrentComment({ 
+    if (comment && comment._id) {
+      setCurrentComment({
         substatus: comment.substatus,
         status: comment.lead.status,
         lead: {
@@ -289,23 +292,23 @@ const TaskDetail = ({ route, navigation }) => {
           email: comment.lead.email,
           phone: comment.lead.phone,
           store: comment.lead.store,
-          comments: comment.lead.comments
+          comments: comment.lead.comments,
         },
-        reschedule: new Date(comment.reschedule)
-      })
+        reschedule: new Date(comment.reschedule),
+      });
     }
-  }, [comment])
+  }, [comment]);
 
   moment.locale("es-mx");
   let paddingTop = 0;
 
-  if(Platform.OS === 'android'){
+  if (Platform.OS === "android") {
     paddingTop = 30;
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
-      <HeaderTitle title="Detalle de la Tarea" /> 
+      <HeaderTitle title="Detalle de la Tarea" />
 
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
@@ -363,28 +366,37 @@ const TaskDetail = ({ route, navigation }) => {
         </Layout>
         <Text
           category="h6"
-          style={{ textAlign: "center", marginBottom: 20, marginTop: 20, paddingTop: 20 }}
+          style={{
+            textAlign: "center",
+            marginBottom: 20,
+            marginTop: 20,
+            paddingTop: 20,
+          }}
         >
           Crear Nueva Tarea
         </Text>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-
-        { 
-          loading ? 
-              <Layout style={{ paddingHorizontal: 15, paddingVertical: '50%' }}>
-                <Layout style={{ paddingHorizontal: 30, marginBottom: 50, alignSelf: 'center' }}>
-                  <Spinner size='giant' />
-                </Layout> 
-                <Layout style={{ marginBottom: 30, alignSelf: 'center' }} level="1">
-                    <Text
-                      style={styles.text}
-                      category="h3"
-                    >
-                      Creando comentario...
-                    </Text>
-                </Layout>
+          {loading ? (
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: "50%" }}>
+              <Layout
+                style={{
+                  paddingHorizontal: 30,
+                  marginBottom: 50,
+                  alignSelf: "center",
+                }}
+              >
+                <Spinner size="giant" />
               </Layout>
-             : 
+              <Layout
+                style={{ marginBottom: 30, alignSelf: "center" }}
+                level="1"
+              >
+                <Text style={styles.text} category="h3">
+                  Creando comentario...
+                </Text>
+              </Layout>
+            </Layout>
+          ) : (
             <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
@@ -471,65 +483,67 @@ const TaskDetail = ({ route, navigation }) => {
                 </Layout>
               </Layout>
               <Layout>
-            <Text
-              style={styles.text}
-              category="s1"
-              style={{ marginBottom: 20 }}
-            >
-              4. Elige una Fecha
-            </Text>
-            <Layout
-              level="1"
-              style={{
-                minHeight: 256,
-              }}
-            >
-             
-                  <Text
+                <Text
                   style={styles.text}
                   category="s1"
                   style={{ marginBottom: 20 }}
                 >
-                  
-                  {
-                    Platform.OS === 'android' ? 
-                    `Fecha: ${finalDate && moment(finalDate).format('DD MMMM YYYY - hh:mm a')}` :
-                    `Fecha`
-                  } 
+                  4. Elige una Fecha
                 </Text>
-               {
-                Platform.OS === 'ios' &&
-                <DateTimePicker
-                  value={date}
-                  mode="datetime"
-                  onChange={onChange}
-                  display="spinner"
-                />
-              }
-              {
-                Platform.OS === 'android' &&
-                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
-              }
-              {
-                Platform.OS === 'android' && open && renderAndroidPicker(open)
-              }
+                <Layout
+                  level="1"
+                  style={{
+                    minHeight: 256,
+                  }}
+                >
+                  <Text
+                    style={styles.text}
+                    category="s1"
+                    style={{ marginBottom: 20 }}
+                  >
+                    {Platform.OS === "android"
+                      ? `Fecha: ${
+                          finalDate &&
+                          moment(finalDate).format("DD MMMM YYYY - hh:mm a")
+                        }`
+                      : `Fecha`}
+                  </Text>
+                  {Platform.OS === "ios" && (
+                    <DateTimePicker
+                      value={date}
+                      mode="datetime"
+                      onChange={onChange}
+                      display="spinner"
+                    />
+                  )}
+                  {Platform.OS === "android" && (
+                    <Button
+                      style={{ marginBottom: 20, marginTop: 20 }}
+                      onPress={() => setOpen(true)}
+                    >
+                      Seleccionar Fecha
+                    </Button>
+                  )}
+                  {Platform.OS === "android" &&
+                    open &&
+                    renderAndroidPicker(open)}
 
-              {/* <DateTimePicker
+                  {/* <DateTimePicker
                 value={date}
                 mode={Platform.OS === "ios" ? "datetime" : "date"}
                 display="default"
                 onChange={onChange}
                 display="spinner"
               /> */}
-            <Layout>
-              <Button style={styles.button} onPress={handleSubmit}>
-                Crear Tarea
-              </Button>
-            </Layout>
-            </Layout>
-          </Layout>
-          </>
-          } 
+                  <Layout>
+                    <Button style={styles.button} onPress={handleSubmit}>
+                      Crear Tarea
+                    </Button>
+                  </Layout>
+                </Layout>
+              </Layout>
+            </>
+          )}
         </Layout>
       </ScrollView>
     </SafeAreaView>

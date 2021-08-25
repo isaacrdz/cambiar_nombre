@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Layout, Divider, Text } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 const HeaderTitle = ({ title }) => {
   const navigation = useNavigation();
 

@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Toast from "react-native-toast-message";
-import {
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   Layout,
@@ -15,9 +11,9 @@ import {
   SelectItem,
   Button,
   Input,
-  Spinner
+  Spinner,
 } from "@ui-kitten/components";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import useLead from "../../hooks/useLead";
 import useUser from "../../hooks/useUser";
@@ -27,18 +23,17 @@ import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { getMultiStoresIds } from "../../utils/storesUser";
 
-
 const AddAgent = ({ navigation }) => {
   const { agents, getAgents } = useUser();
   const { user } = useAuth();
-  const [agentes, setAgentes] = useState([])
+  const [agentes, setAgentes] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(new IndexPath(0));
   const displayValue = agentes[selectedAgent.row];
   const { selectedLeads, tab, assignAgents } = useLead();
 
   let paddingTop = 0;
 
-  if(Platform.OS === 'android'){
+  if (Platform.OS === "android") {
     paddingTop = 30;
   }
 
@@ -62,15 +57,15 @@ const AddAgent = ({ navigation }) => {
   }, [agents]);
 
   const handleAssingAgent = () => {
-    assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab)
-  }
+    assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
       <HeaderTitle title="Asignar Agente" />
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-        <Layout>
+          <Layout>
             <Layout
               style={{
                 paddingHorizontal: 20,
@@ -81,12 +76,23 @@ const AddAgent = ({ navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 Agente
               </Text>
-              <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setSelectedAgent(index)} value="Selecciona" value={displayValue}>
+              <Select
+                size="large"
+                style={{ marginBottom: 10 }}
+                onSelect={(index) => setSelectedAgent(index)}
+                value="Selecciona"
+                value={displayValue}
+              >
                 {agentes.map((action, i) => (
-                  <SelectItem title={action} key={i}  />
+                  <SelectItem title={action} key={i} />
                 ))}
               </Select>
-              <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={handleAssingAgent}>Asignar Agente</Button>
+              <Button
+                style={{ marginBottom: 20, marginTop: 20 }}
+                onPress={handleAssingAgent}
+              >
+                Asignar Agente
+              </Button>
             </Layout>
           </Layout>
         </Layout>
