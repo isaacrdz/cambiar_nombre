@@ -363,6 +363,23 @@ const TaskDetail = ({ route, navigation }) => {
             </Text>
           </Layout>
           <Divider />
+          <Layout
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+            }}
+            level="1"
+          >
+            <Text category="s1" style={{}}>
+              Descripcion
+            </Text>
+            <Text style={{ flexShrink: 1, marginLeft: 55 }} category="s1">
+              {item.comment && item.comment}
+            </Text>
+          </Layout>
         </Layout>
         <Text
           category="h6"
