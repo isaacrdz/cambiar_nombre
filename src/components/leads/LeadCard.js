@@ -53,12 +53,12 @@ const LeadCard = ({ item }) => {
       )}
       accessoryLeft={() => (
         <CheckBox
-          style={{ marginRight: 10, marginLeft: 10 }}
+          style={{ marginRight: 10, marginLeft: 10, display: user && user.role && user.role !== 'user' ? 'flex' : 'none' }}
           checked={selected.includes(item._id.toString())}
           onChange={(nextChecked) =>{
             handleSelectedLeads(item._id, nextChecked);
           }}
-        />)}
+        />) }
       
       accessoryRight={() => (
         <>
