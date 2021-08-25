@@ -147,7 +147,7 @@ const CommentState = props => {
   const getCommentsByUser = async (userId) => {
     setLoading();
     try {
-      const res = await api.get(`users/${userId}/comments?pending=true`);
+      const res = await api.get(`comments?user=${userId}&pending=true`);
       dispatch({ type: GET_COMMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
