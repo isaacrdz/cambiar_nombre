@@ -2,7 +2,7 @@
   "expo": {
     "name": "Dealer Pro X",
     "slug": "dpx",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "notification": {
       "icon": "./assets/logo.png"
     },
@@ -15,12 +15,15 @@
     },
     "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.1",
+      "infoPlist": {
+        "NSContactsUsageDescription": "This app allows to save contacts in device."
+      }
     },
     "android": {
       "permissions": ["WRITE_CONTACTS", "READ_CONTACTS"],
       "package": "com.ellyonsoft.dpx",
-      "versionCode": 2
+      "versionCode": 10
     }
   }
 }
