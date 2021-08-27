@@ -15,10 +15,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "1.0.1",
-      "infoPlist": {
-        "NSContactsUsageDescription": "This app allows to save contacts in device."
-      }
+      "buildNumber": "1.0.1"
     },
     "android": {
       "permissions": ["WRITE_CONTACTS", "READ_CONTACTS"],
