@@ -6,7 +6,6 @@ import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 // import { FeatherIconsPack } from "./feather-icons";
 import { ThemeContext } from "./theme-context";
-import * as Contacts from "expo-contacts";
 
 // Contexts
 import AuthState from "./src/contexts/auth/AuthState";
@@ -36,12 +35,6 @@ const App = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
   };
-
-  useEffect(() => {
-    (async () => {
-      await Contacts.requestPermissionsAsync();
-    })();
-  }, []);
 
   return (
     <>
