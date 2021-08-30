@@ -20,12 +20,14 @@ import useUser from "../../hooks/useUser";
 import _ from "lodash";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import useAuth from "../../hooks/useAuth";
+import useNotification from "../../hooks/useNotification"
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { getMultiStoresIds } from "../../utils/storesUser";
 
 const AddAgent = ({ navigation }) => {
   const { agents, getAgents } = useUser();
   const { user } = useAuth();
+  const { createNotification } = useNotification();
   const [agentes, setAgentes] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(new IndexPath(0));
   const displayValue = agentes[selectedAgent.row];
@@ -71,6 +73,10 @@ const AddAgent = ({ navigation }) => {
         type: "success",
         position: "bottom",
       });
+
+      for(let i = 0; i < selectedLeads.length; i++){
+        await createNotification({ to: agents[selectedAgent.row]._id, type: 'assign', client: selectedLeads[i], message: `${CapitalizeNames(user.name)} has assigned you a client`})
+      }
 
       navigation.navigate('LeadMain')
     }
