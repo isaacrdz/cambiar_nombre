@@ -29,7 +29,7 @@ const AddAgent = ({ navigation }) => {
   const [agentes, setAgentes] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(new IndexPath(0));
   const displayValue = agentes[selectedAgent.row];
-  const { selectedLeads, tab, assignAgents } = useLead();
+  const { selectedLeads, tab, assignAgents, error } = useLead();
 
   let paddingTop = 0;
 
@@ -56,8 +56,24 @@ const AddAgent = ({ navigation }) => {
     //eslint-disable-next-line
   }, [agents]);
 
-  const handleAssingAgent = () => {
-    assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab);
+  const handleAssingAgent = async() => {
+    await assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab);
+
+    if(error){
+      Toast.show({
+          text1: error,
+          type: "error",
+          position: "bottom",
+        });
+    }else{
+      Toast.show({
+        text1: "Leads asignados con exito",
+        type: "success",
+        position: "bottom",
+      });
+
+      navigation.navigate('LeadMain')
+    }
   };
 
   return (
