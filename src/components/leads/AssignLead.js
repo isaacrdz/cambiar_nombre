@@ -20,16 +20,18 @@ import useUser from "../../hooks/useUser";
 import _ from "lodash";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import useAuth from "../../hooks/useAuth";
+import useNotification from "../../hooks/useNotification"
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { getMultiStoresIds } from "../../utils/storesUser";
 
 const AddAgent = ({ navigation }) => {
   const { agents, getAgents } = useUser();
   const { user } = useAuth();
+  const { createNotification } = useNotification();
   const [agentes, setAgentes] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(new IndexPath(0));
   const displayValue = agentes[selectedAgent.row];
-  const { selectedLeads, tab, assignAgents } = useLead();
+  const { selectedLeads, tab, assignAgents, error } = useLead();
 
   let paddingTop = 0;
 
@@ -56,8 +58,28 @@ const AddAgent = ({ navigation }) => {
     //eslint-disable-next-line
   }, [agents]);
 
-  const handleAssingAgent = () => {
-    assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab);
+  const handleAssingAgent = async() => {
+    await assignAgents(selectedLeads, agents[selectedAgent.row]._id, tab);
+
+    if(error){
+      Toast.show({
+          text1: error,
+          type: "error",
+          position: "bottom",
+        });
+    }else{
+      Toast.show({
+        text1: "Leads asignados con exito",
+        type: "success",
+        position: "bottom",
+      });
+
+      for(let i = 0; i < selectedLeads.length; i++){
+        await createNotification({ to: agents[selectedAgent.row]._id, type: 'assign', client: selectedLeads[i], message: `${CapitalizeNames(user.name)} has assigned you a client`})
+      }
+
+      navigation.navigate('LeadMain')
+    }
   };
 
   return (

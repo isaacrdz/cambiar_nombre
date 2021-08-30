@@ -24,6 +24,7 @@ import CompanyState from "./src/contexts/company/CompanyState";
 import ListState from "./src/contexts/list/ListState";
 import DocumentState from "./src/contexts/document/DocumentState";
 import UserState from "./src/contexts/user/UserState";
+import NotificationState from "./src/contexts/notification/NotificationState";
 
 import Toast from "react-native-toast-message";
 import MailState from "./src/contexts/mail/MailState";
@@ -58,10 +59,12 @@ const App = () => {
                                       <UserState>
                                         <AppointmentState>
                                           <VisitState>
-                                            <Routes />
-                                            <Toast
-                                              ref={(ref) => Toast.setRef(ref)}
-                                            />
+                                            <NotificationState>
+                                              <Routes />
+                                              <Toast
+                                                ref={(ref) => Toast.setRef(ref)}
+                                              />
+                                            </NotificationState>
                                           </VisitState>
                                         </AppointmentState>
                                       </UserState>
