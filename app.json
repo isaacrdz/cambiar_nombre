@@ -20,7 +20,8 @@
     "android": {
       "permissions": ["WRITE_CONTACTS", "READ_CONTACTS"],
       "package": "com.ellyonsoft.dpx",
-      "versionCode": 1
+      "versionCode": 1,
+      "useNextNotificationsApi": true
     }
   }
 }

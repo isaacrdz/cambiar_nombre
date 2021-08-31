@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useAuth from "../../hooks/useAuth";
 import DashboardUser from "../../components/Dashboards/DashboardUser";
 import DashboardAdmin from "../../components/Dashboards/DashboardAdmin";
@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text, Layout } from "@ui-kitten/components";
 import { CapitalizeNames } from "../../utils/Capitalize";
+import useLead from "../../hooks/useLead";
 
 const Home = ({ navigation }) => {
   const { user } = useAuth();

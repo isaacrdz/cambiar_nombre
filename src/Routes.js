@@ -2,8 +2,6 @@ import React, { useState, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { registerForPushNotificationsAsync } from "/utils/ExpoPushNotifications";
-import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-community/async-storage";
 
 // Stacks
@@ -19,48 +17,12 @@ import TaskStackScreen from "./navigation/TaskStackScreen";
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-let notificationAmount = 0;
 
-const Routes = ({ token }) => {
-  const { isAuthenticated, loadUser, user, updateProfile } = useAuth();
-  // const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-  const [tok, setTok] = useState(null);
+const Routes = ({ token, ...rest }) => {
+  const { isAuthenticated, loadUser } = useAuth();
 
-  React.useEffect(() => {
-    if (user && user._id) {
-      registerForPushNotificationsAsync().then(
-        (token) => {
-          updateProfile({ pushNotificationToken: token });
-        }
-        // setExpoPushToken(token)}
-      );
-
-      // This listener is fired whenever a notification is received while the app is foregrounded
-      notificationListener.current =
-        Notifications.addNotificationReceivedListener((notification) => {
-          setNotification(notification);
-          if (Platform.OS === "ios") {
-            Notifications.setBadgeNumberAsync(notificationAmount);
-            notificationAmount++;
-          }
-        });
-
-      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-      responseListener.current =
-        Notifications.addNotificationResponseReceivedListener((response) => {});
-
-      return () => {
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-        Notifications.removeNotificationSubscription(responseListener.current);
-      };
-    }
-  }, [user]);
-
+  const [tok, setTok] = useState(null);  
+ 
   const getToken = async () => {
     let t = await AsyncStorage.getItem("token");
 
@@ -75,7 +37,6 @@ const Routes = ({ token }) => {
 
   React.useEffect(() => {
     getToken();
-    Notifications.setBadgeCountAsync(0);
   }, []);
 
   return (
