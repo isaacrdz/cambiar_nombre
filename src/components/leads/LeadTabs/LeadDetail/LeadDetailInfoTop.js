@@ -8,45 +8,45 @@ import { Ionicons } from "@expo/vector-icons";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
 import { useNavigation } from "@react-navigation/native";
 import useLead from "../../../../hooks/useLead";
-import * as Contacts from "expo-contacts";
+// import * as Contacts from "expo-contacts";
 
 const LeadDetailInfoTop = ({ item, loading }) => {
   const navigation = useNavigation();
   const { createActivity } = useActivity();
   const { user } = useAuth();
 
-  const AddContact = async (name, phone) => {
-    const { data } = await Contacts.getContactsAsync({
-      fields: [Contacts.Fields.PhoneNumbers],
-    });
+  // const AddContact = async (name, phone) => {
+  //   const { data } = await Contacts.getContactsAsync({
+  //     fields: [Contacts.Fields.PhoneNumbers],
+  //   });
 
-    const contact = {
-      [Contacts.Fields.FirstName]: name,
-      [Contacts.Fields.PhoneNumbers]: [
-        {
-          number: phone,
-          isPrimary: true,
-          digits: phone.replace("+", ""),
-          countryCode: "mx",
-          label: "main",
-        },
-      ],
-    };
+  //   const contact = {
+  //     [Contacts.Fields.FirstName]: name,
+  //     [Contacts.Fields.PhoneNumbers]: [
+  //       {
+  //         number: phone,
+  //         isPrimary: true,
+  //         digits: phone.replace("+", ""),
+  //         countryCode: "mx",
+  //         label: "main",
+  //       },
+  //     ],
+  //   };
 
-    let exists = false;
-    data.map((item) => {
-      item.phoneNumbers &&
-        item.phoneNumbers.map((phoneContact) => {
-          if (phoneContact.number === phone) {
-            exists = true;
-          }
-        });
-    });
+  //   let exists = false;
+  //   data.map((item) => {
+  //     item.phoneNumbers &&
+  //       item.phoneNumbers.map((phoneContact) => {
+  //         if (phoneContact.number === phone) {
+  //           exists = true;
+  //         }
+  //       });
+  //   });
 
-    if (!exists) {
-      await Contacts.addContactAsync(contact);
-    }
-  };
+  //   if (!exists) {
+  //     await Contacts.addContactAsync(contact);
+  //   }
+  // };
 
   return (
     <>
@@ -77,7 +77,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
               lead: item._id,
             });
 
-            AddContact(CapitalizeNames(item.name), item.phone);
+            // AddContact(CapitalizeNames(item.name), item.phone);
 
             Linking.openURL(`http://api.whatsapp.com/send?phone=${item.phone}`);
           }}
