@@ -8,10 +8,11 @@ import Header from "../../components/header/Header";
 import { useFocusEffect } from '@react-navigation/native';
 
 const Lead = ({ navigation }) => {
-  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const [pageCurrent, setpageCurrent] = useState(1);
   const [currentSearch, setCurrentSearch] = useState({});
+ 
+
 
   useFocusEffect(
     React.useCallback(() => {
