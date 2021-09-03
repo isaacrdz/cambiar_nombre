@@ -11,7 +11,7 @@ const Lead = ({ navigation }) => {
   const [query, setQuery] = useState("");
   const [pageCurrent, setpageCurrent] = useState(1);
   const [currentSearch, setCurrentSearch] = useState({});
- 
+  const { user } = useAuth()
 
 
   useFocusEffect(
