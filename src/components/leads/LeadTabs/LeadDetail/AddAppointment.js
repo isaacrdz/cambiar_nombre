@@ -17,13 +17,14 @@ import {
   Button,
   Calendar,
   Input,
+  Spinner
 } from "@ui-kitten/components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import useLead from "../../../../hooks/useLead";
 import { translateActions } from "../../../../utils/tranlsateSubstatus";
 
 const AddAppointment = ({ navigation }) => {
-  const { createAppointment } = useAppointment();
+  const { createAppointment, loading } = useAppointment();
   const { createComment, updateComment } = useComment();
   const { lead, updateLead } = useLead();
   const { user } = useAuth();
@@ -40,6 +41,7 @@ const AddAppointment = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const [statusButton, setStatusButton] = useState(false)
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -47,7 +49,11 @@ const AddAppointment = ({ navigation }) => {
 
   moment.locale("es-mx");
   const handleSubmit = async () => {
+
+    setStatusButton(true)
     if (values.description === "" || values.title === "") {
+      setStatusButton(false)
+
       return Toast.show({
         text1: "Completa todos los campos",
         type: "error",
@@ -56,6 +62,8 @@ const AddAppointment = ({ navigation }) => {
     }
 
     if (!lead.agent) {
+      setStatusButton(false)
+
       return Toast.show({
         text1: "Primero asigna un agente",
         type: "error",
@@ -124,6 +132,7 @@ const AddAppointment = ({ navigation }) => {
     }
 
     await updateLead(updateLeadBody, lead._id);
+    setStatusButton(false)
 
     Toast.show({
       text1: "Cita Creada",
@@ -131,7 +140,7 @@ const AddAppointment = ({ navigation }) => {
       position: "bottom",
     });
 
-    navigation.navigate("LeadTabs");
+    navigation.navigate("LeadTabs", {item: lead});
   };
 
   React.useEffect(() => {
@@ -197,6 +206,29 @@ const AddAppointment = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
       <HeaderTitle title="Agregar Cita" />
       <ScrollView>
+      {
+        loading ? (
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: "50%" }}>
+              <Layout
+                style={{
+                  paddingHorizontal: 30,
+                  marginBottom: 50,
+                  alignSelf: "center",
+                }}
+              >
+                <Spinner size="giant" />
+              </Layout>
+              <Layout
+                style={{ marginBottom: 30, alignSelf: "center" }}
+                level="1"
+              >
+                <Text style={styles.text} category="h3">
+                  Creando cita...
+                </Text>
+              </Layout>
+            </Layout>
+          ) : (
+      <>
         <Layout
           style={{
             paddingHorizontal: 15,
@@ -322,11 +354,14 @@ const AddAppointment = ({ navigation }) => {
           </Select>
         </Layout>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Button style={styles.button} onPress={handleSubmit}>
+          <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
             Crear Cita
           </Button>
         </Layout>
-      </ScrollView>
+        </>
+      )
+    }
+    </ScrollView>
     </SafeAreaView>
   );
 };

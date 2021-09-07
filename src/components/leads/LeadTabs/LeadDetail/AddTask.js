@@ -67,6 +67,7 @@ const AddTask = ({ navigation }) => {
   const [selectedActions, setSelectedActions] = useState([]);
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
+  const [statusButton, setStatusButton] = useState(false);
   const [text, setText] = useState("");
 
   const [mode, setMode] = useState("date");
@@ -141,6 +142,7 @@ const AddTask = ({ navigation }) => {
   );
 
   const handleSubmit = async () => {
+    setStatusButton(true)
     if (text === "") {
       return Toast.show({
         text1: "Por favor deja un comentario",
@@ -225,9 +227,10 @@ const AddTask = ({ navigation }) => {
         await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
         await getLead(lead._id);
-        navigation.navigate("LeadTabs");
+        navigation.navigate("LeadTabs", { item: lead});
       }
     }
+    setStatusButton(false)
   };
 
   const handleSetAction = (item) => {
@@ -458,7 +461,7 @@ const AddTask = ({ navigation }) => {
                 display="spinner"
               /> */}
                   <Layout>
-                    <Button style={styles.button} onPress={handleSubmit}>
+                    <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
                       Crear Tarea
                     </Button>
                   </Layout>

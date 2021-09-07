@@ -50,14 +50,11 @@ const contactedStatus = [
 const TaskDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { user } = useAuth();
-  const { updateComment, createComment, getComment, comment, loading } =
-    useComment();
-  const [currentComment, setCurrentComment] = useState({
-    startDate: new Date(),
-  });
+  const { updateComment, createComment, getComment, comment, loading } = useComment();
+  const [currentComment, setCurrentComment] = useState({startDate: new Date()});
   const [substatusComment, setSubstatusComment] = useState([]);
   const [substatusVisit, setSubstatusVisit] = useState([]);
-
+  const [statusButton, setStatusButton] = useState(false)
   ////////
 
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
@@ -128,19 +125,26 @@ const TaskDetail = ({ route, navigation }) => {
   };
 
   const handleSubmit = async () => {
+    setStatusButton(true)
     if (text === "") {
+    setStatusButton(false)
+
       return Toast.show({
         text1: "Por favor deja un comentario",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length === 0) {
+    setStatusButton(false)
+
       return Toast.show({
         text1: "Selecciona al menos una accion",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length > 3) {
+    setStatusButton(false)
+
       return Toast.show({
         text1: "Selecciona máximo 3 acciones",
         type: "error",
@@ -212,6 +216,8 @@ const TaskDetail = ({ route, navigation }) => {
         await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
         await getLead(lead._id);
+        setStatusButton(false)
+
         navigation.navigate("TaskMain");
       }
     }
@@ -589,7 +595,7 @@ const TaskDetail = ({ route, navigation }) => {
                 display="spinner"
               /> */}
                   <Layout>
-                    <Button style={styles.button} onPress={handleSubmit}>
+                    <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
                       Crear Tarea
                     </Button>
                   </Layout>
