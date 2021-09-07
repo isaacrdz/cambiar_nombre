@@ -70,14 +70,12 @@ const HomeUser = ({ navigation }) => {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-        <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} />
-        </Layout>
+       
         {/* <Divider /> */}
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
-            style={{ marginBottom: 10, fontSize: 17 }}
+            style={{ fontSize: 28, marginTop: 15 }}
           >{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
           {loadingCharts ? (
             <Text category="p1" appearance="hint">{`. . .`}</Text>
@@ -88,19 +86,24 @@ const HomeUser = ({ navigation }) => {
             >{`Tienes un total de ${total} leads acumulados`}</Text>
           )}
         </Layout>
+        <Divider />
+        <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} />
+        </Layout>
+
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
             <Text category="p1" appearance="hint">
               Leads
             </Text>
             <Layout style={styles.data}>
-              <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+              {/* <Ionicons name="person-outline" size={25} color={"#673ab7"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
-                  <Spinner size="small" />
+                  <Spinner size="large" />
                 </Layout>
               ) : (
-                <Text category="p1" style={styles.text}>
+                <Text category="h5" style={{ fontSize: 40 }}>
                   {totalLeads}
                 </Text>
               )}
@@ -112,13 +115,13 @@ const HomeUser = ({ navigation }) => {
               Citas
             </Text>
             <Layout style={styles.data}>
-              <Ionicons name="calendar-outline" size={25} color={"#33acee"} />
+              {/* <Ionicons name="calendar-outline" size={25} color={"#33acee"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
-                  <Spinner size="small" />
+                  <Spinner size="large" />
                 </Layout>
               ) : (
-                <Text category="p1" style={styles.text}>
+                <Text category="h5" style={{ fontSize: 40 }}>
                   {totalAppointments}
                 </Text>
               )}
@@ -132,13 +135,13 @@ const HomeUser = ({ navigation }) => {
               Visitas
             </Text>
             <Layout style={styles.data}>
-              <Ionicons name="home-outline" size={25} color={"#d81b60"} />
+              {/* <Ionicons name="home-outline" size={25} color={"#d81b60"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
-                  <Spinner size="small" />
+                  <Spinner size="large" />
                 </Layout>
               ) : (
-                <Text category="p1" style={styles.text}>
+                  <Text category="h5" style={{ fontSize: 40 }}>
                   {totalVisits}
                 </Text>
               )}
@@ -150,13 +153,13 @@ const HomeUser = ({ navigation }) => {
               Ventas
             </Text>
             <Layout style={styles.data}>
-              <Ionicons name="cash-outline" size={25} color={"#43a047"} />
+              {/* <Ionicons name="cash-outline" size={25} color={"#43a047"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
-                  <Spinner size="small" />
+                  <Spinner size="large" />
                 </Layout>
               ) : (
-                <Text category="p1" style={styles.text}>
+                  <Text category="h5" style={{ fontSize: 40 }}>
                   {totalSolds}
                 </Text>
               )}
