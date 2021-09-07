@@ -14,6 +14,7 @@ import {
   Button,
   Divider,
 } from "@ui-kitten/components";
+import { Ionicons } from "@expo/vector-icons";
 
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
@@ -95,14 +96,17 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {
-            user && user.role && (user.role === 'rockstar' || user.role === 'super admin') ?
-              "Global" :
-            user && user.stores && user.stores.length > 1 ?
-              "Multiagencia" : 
-            user && user.stores &&
-              CapitalizeNames(user.stores[0].make.name) + ' ' + CapitalizeNames(user.stores[0].name)
-          }
+          {user &&
+          user.role &&
+          (user.role === "rockstar" || user.role === "super admin")
+            ? "Global"
+            : user && user.stores && user.stores.length > 1
+            ? "Multiagencia"
+            : user &&
+              user.stores &&
+              CapitalizeNames(user.stores[0].make.name) +
+                " " +
+                CapitalizeNames(user.stores[0].name)}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
@@ -117,6 +121,16 @@ const ProfileTop = ({ navigation }) => {
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />
+      <Text style={{ fontWeight: "600", marginBottom: 5, textAlign: "center" }}>
+        Code with <Ionicons name="heart" size={15} color="#f50357" /> by a
+        human.
+      </Text>
+      <Text style={{ marginBottom: 5, textAlign: "center" }}>
+        Ellyonsoft, Inc.
+      </Text>
+      <Text style={{ marginBottom: 5, textAlign: "center" }}>
+        Version 1.0.5
+      </Text>
     </Layout>
   );
 

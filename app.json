@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Dealer Pro X",
+    "name": "DPX",
     "slug": "dpx",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "notification": {
       "icon": "./assets/logo.png"
     },
@@ -15,12 +15,11 @@
     },
     "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.1"
     },
     "android": {
-      "permissions": ["WRITE_CONTACTS", "READ_CONTACTS"],
       "package": "com.ellyonsoft.dpx",
-      "versionCode": 10
+      "versionCode": 12
     }
   }
 }
