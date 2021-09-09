@@ -43,9 +43,16 @@ const LeadsList = ({
           { type: "all", value: "all" },
           ""
         );
-      } else if (
+      } else if(user.role === 'super admin'){
+        getLeadsByStore(
+          1,
+          `&multiStores=${getMultiStoresIds(user.group.stores)}`,
+          { type: "all", value: "all" },
+          ""
+        );
+      }else if (
         user &&
-        (user.role === "rockstar" || user.role === "super admin")
+        (user.role === "rockstar")
       ) {
         getLeadsRockstar(1, { type: "all", value: "all" }, "");
       }
@@ -63,9 +70,16 @@ const LeadsList = ({
           currentSearch,
           query
         );
+      }else if (user && user.role === "super admin") {
+        getLeadsByStore(
+          pageCurrent,
+          `&multiStores=${getMultiStoresIds(user.group.stores)}`,
+          currentSearch,
+          query
+        );
       } else if (
         user &&
-        (user.role === "rockstar" || user.role === "super admin")
+        (user.role === "rockstar")
       ) {
         getLeadsRockstar(pageCurrent, currentSearch, query);
       }

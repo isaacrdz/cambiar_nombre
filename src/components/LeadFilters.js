@@ -44,7 +44,7 @@ const filters = [
 ];
 
 const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-  const { clearState, getLeads, getLeadsByStore, setTab } = useLead();
+  const { clearState, getLeads, getLeadsByStore, getLeadsRockstar, setTab } = useLead();
   const { user } = useAuth();
 
   const handleSearch = async (item) => {
@@ -53,6 +53,18 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
       await getLeads(1, user._id, item, query);
     }else if(user && user.role === 'admin'){
       await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, item, query)
+    }else if (user && user.role === "super admin") {
+      getLeadsByStore(
+        1,
+        `&multiStores=${getMultiStoresIds(user.group.stores)}`,
+        item,
+        query
+      );
+    } else if (
+      user &&
+      (user.role === "rockstar")
+    ) {
+      getLeadsRockstar(1, item, query);
     }
   };
 

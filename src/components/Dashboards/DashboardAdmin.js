@@ -40,13 +40,13 @@ const HomeAdmin = ({ navigation }) => {
     getClosureTopUsers,
     closureTopUsers,
   } = useChart();
-  // const [custom, setCustom] = useState("D MMMM");
+  // const [custom, setCustom] = useState("D MMM");
 
   const [custom, setCustom] = useState({
     date: `&createdAt[gte]=${moment()
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
-    filter: "MMMM",
+    filter: "MMM",
   });
   const [date, setDate] = useState(
     `&createdAt[gte]=${moment()
@@ -87,7 +87,7 @@ const HomeAdmin = ({ navigation }) => {
     let customDate = `&createdAt[gte]=${moment()
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
-    let customFilter = "MMMM";
+    let customFilter = "MMM";
     getLeadsMonthlyChart(
       `${customDate}&store[in]=${getMultiStoresIds(
         user.stores
