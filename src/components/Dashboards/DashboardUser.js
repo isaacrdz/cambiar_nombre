@@ -43,7 +43,7 @@ const HomeUser = ({ navigation }) => {
     date: `&createdAt[gte]=${moment()
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
-    filter: "MMMM",
+    filter: "MMM",
   });
   let greeting;
 

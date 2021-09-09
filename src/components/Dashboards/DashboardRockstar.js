@@ -71,7 +71,7 @@ const HomeAdmin = ({ navigation }) => {
     customDate = `&createdAt[gte]=${moment()
       .startOf("year")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
-    customFilter = "MMMM";
+    customFilter = "MMM";
     getLeadsMonthlyChart(`${customDate}&filter=${customFilter}`);
   }, []);
 

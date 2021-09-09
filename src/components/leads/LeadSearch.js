@@ -21,7 +21,7 @@ const LeadSearch = ({
     style={{color: "#5764b8" }}
   />;
 
-  const { getLeads, loading, clearState, getLeadsByStore } = useLead();
+  const { getLeads, loading, clearState, getLeadsByStore, getLeadsRockstar } = useLead();
   const { user } = useAuth()
 
   const handleSubmit = async(e) => {
@@ -31,6 +31,18 @@ const LeadSearch = ({
       await getLeads(1, user._id, currentSearch, query);
     }else if(user && user.role === 'admin'){
       await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query);
+    }else if (user && user.role === "super admin") {
+      getLeadsByStore(
+        pageCurrent,
+        `&multiStores=${getMultiStoresIds(user.group.stores)}`,
+        currentSearch,
+        query
+      );
+    } else if (
+      user &&
+      (user.role === "rockstar")
+    ) {
+      getLeadsRockstar(pageCurrent, currentSearch, query);
     }
   };
 
