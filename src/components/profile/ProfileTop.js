@@ -129,7 +129,7 @@ const ProfileTop = ({ navigation }) => {
         Ellyonsoft, Inc.
       </Text>
       <Text style={{ marginBottom: 5, textAlign: "center" }}>
-        Version 1.0.5
+        Version 1.0.6
       </Text>
     </Layout>
   );
