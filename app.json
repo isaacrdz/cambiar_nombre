@@ -2,7 +2,7 @@
   "expo": {
     "name": "DPX",
     "slug": "dpx",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "notification": {
       "icon": "./assets/logo.png"
     },
@@ -19,7 +19,7 @@
     },
     "android": {
       "package": "com.ellyonsoft.dpx",
-      "versionCode": 14
+      "versionCode": 15
     }
   }
 }
