@@ -22,6 +22,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import useLead from "../../../../hooks/useLead";
 import { translateActions } from "../../../../utils/tranlsateSubstatus";
+import { isAdmin, isRockstar, isSuper } from "../../../../utils/Authroles";
 
 const AddAppointment = ({ navigation }) => {
   const { createAppointment, loading } = useAppointment();
@@ -87,7 +88,7 @@ const AddAppointment = ({ navigation }) => {
       user: lead.agent._id
     };
 
-    if(user && (user.role === 'admin' || user.role === 'super admin' || user.role === 'rockstar')){
+    if(user && user.tier && (isAdmin(user.tier._id) || isSuper(user.tier._id) || isRockstar(user.tier._id))){
       BodyComment.assignedBy = user._id
     }
 

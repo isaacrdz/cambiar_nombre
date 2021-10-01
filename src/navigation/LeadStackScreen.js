@@ -15,6 +15,7 @@ import Calling from "../components/leads/Calling";
 import { Ionicons } from "@expo/vector-icons";
 import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
+import { isAdmin } from "../utils/Authroles";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
@@ -37,7 +38,7 @@ const LeadMainStackScreen = ({ navigation }) => {
                 name="person-add-outline"
                 size={25}
                 style={{
-                  display: user && user.role && user.role === 'admin' ? 'flex' : 'none',
+                  display: user && user.tier && isAdmin(user.tier._id) ? 'flex' : 'none',
                   width: 25,
                   height: 25,
                   marginLeft: 20,

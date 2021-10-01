@@ -30,6 +30,7 @@ import useSource from "../../hooks/useSource";
 import useCompany from "../../hooks/useCompany";
 import useList from "../../hooks/useList";
 import useLead from "../../hooks/useLead";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const AddLead = ({ navigation }) => {
 
@@ -149,17 +150,17 @@ const AddLead = ({ navigation }) => {
             source: sources[fuentesSelect.row]._id,
         }
 
-        if(user && (user.role === 'user' || user.role === 'admin')){
+        if(user && user.tier && (isUser(user.tier._id) || isAdmin(user.tier._id))){
             data.store = user.stores[storeSelect.row]._id
         }
 
-        if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+        if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
             data.store = stores[storeSelect.row]._id
         }
 
         let timeFrame = new Date();
 
-        if(user && user.role === 'user'){
+        if(user && user.tier && isUser(user.tier._id)){
             data.agent = user._id
         }
         if(timeframeSelect.row === 0){
@@ -213,21 +214,14 @@ const AddLead = ({ navigation }) => {
 
     }
 
-    //Esto servira si metemos rockstar
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //       if (user && user.role && (user.role === 'rockstar' || user.role === 'super admin')) getStores();
-    //     }, [])
-    // );
-
     useFocusEffect(
         React.useCallback(() => {
-            if (user && user.role && (user.role === 'admin' || user.role === 'user') && user.stores ){
+            if (user && user.tier && (isAdmin(user.tier._id) || isUser(user.tier._id)) && user.stores ){
                 getVehiclesByMake(user.stores[0].make._id);
                 getListsByStore(user.stores[0]._id)
             }
 
-            if (user && user.role && (user.role === 'rockstar' || user.role === 'super admin')){
+            if (user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
                 getStores();
             }
 
@@ -238,11 +232,11 @@ const AddLead = ({ navigation }) => {
 
 
     useEffect(()=>{
-        if(user.role === 'user'){
+        if(user.tier && isUser(user.tier._id)){
             setDisableButton(true)
         }
 
-        if(user.role === 'admin' && user.stores && user.stores.length <= 1 ){
+        if(user.tier && isAdmin(user.tier._id) && user.stores && user.stores.length <= 1 ){
             setDisableButton(true)
         }
 
@@ -250,7 +244,7 @@ const AddLead = ({ navigation }) => {
     },[user])
 
     useEffect(()=>{
-        if(user.stores && user.role !== 'rockstar' && user.role !== 'super admin'){
+        if(user.stores && user.tier && !isRockstar(user.tier._id) && !isSuper(user.tier._id)){
             let aux = [];
             user.stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)))
             setTiendas(aux);
@@ -258,7 +252,7 @@ const AddLead = ({ navigation }) => {
     },[user])
 
     useEffect(()=>{
-        if(stores && (user.role === 'rockstar' || user.role === 'super admin')){
+        if(stores && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
             let aux = [];
             stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)))
             setTiendas(aux);
@@ -391,7 +385,7 @@ const AddLead = ({ navigation }) => {
                         disabled={disableButton}
                         onSelect={(index)=>{
                             setStoreSelect(index);
-                            if(user && user.role && (user.role === 'super admin' || user.role === 'rockstar')){
+                            if(user && user.tier && (isSuper(user.tier._id) || isRockstar(user.tier._id))){
                                 getVehiclesByMake(stores[index].make._id)
                             }
                         }}

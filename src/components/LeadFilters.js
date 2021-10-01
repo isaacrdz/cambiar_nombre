@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 import { getMultiStoresIds } from "../utils/storesUser";
+import { isAdmin, isRockstar, isSuper, isUser } from "../utils/Authroles";
 
 const filters = [
   {
@@ -49,21 +50,18 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
 
   const handleSearch = async (item) => {
     await clearState();
-    if(user && user.role === 'user'){
+    if(user && user.tier && isUser(user.tier._id)){
       await getLeads(1, user._id, item, query);
-    }else if(user && user.role === 'admin'){
+    }else if(user && user.tier && isAdmin(user.tier._id)){
       await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, item, query)
-    }else if (user && user.role === "super admin") {
+    }else if (user && user.tier && isSuper(user.tier._id)) {
       getLeadsByStore(
         1,
         `&multiStores=${getMultiStoresIds(user.group.stores)}`,
         item,
         query
       );
-    } else if (
-      user &&
-      (user.role === "rockstar")
-    ) {
+    } else if (user && user.tier && isRockstar(user.tier._id)) {
       getLeadsRockstar(1, item, query);
     }
   };

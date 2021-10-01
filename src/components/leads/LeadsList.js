@@ -10,6 +10,7 @@ import LeadCard from "./LeadCard";
 import Header from "../header/Header";
 import { getMultiStoresIds } from "../../utils/storesUser";
 import { Ionicons } from "@expo/vector-icons";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const LeadsList = ({
   user,
@@ -34,26 +35,23 @@ const LeadsList = ({
   useFocusEffect(
     React.useCallback(() => {
       clearState();
-      if (user && user.role === "user") {
+      if (user && user.tier && isUser(user.tier._id)) {
         getLeads(1, user._id, { type: "all", value: "all" }, "");
-      } else if (user && user.role === "admin") {
+      } else if (user && user.tier && isAdmin(user.tier._id)) {
         getLeadsByStore(
           1,
           `&multiStores=${getMultiStoresIds(user.stores)}`,
           { type: "all", value: "all" },
           ""
         );
-      } else if(user.role === 'super admin'){
+      } else if(user.tier && isSuper(user.tier._id)){
         getLeadsByStore(
           1,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
           { type: "all", value: "all" },
           ""
         );
-      }else if (
-        user &&
-        (user.role === "rockstar")
-      ) {
+      }else if (user && user.tier && isRockstar(user.tier._id)) {
         getLeadsRockstar(1, { type: "all", value: "all" }, "");
       }
     }, [])
@@ -61,26 +59,23 @@ const LeadsList = ({
 
   React.useEffect(() => {
     if (size !== 0 && pageCurrent !== 1) {
-      if (user && user.role === "user") {
+      if (user && user.tier && isUser(user.tier._id)) {
         getLeads(pageCurrent, user._id, currentSearch, query);
-      } else if (user && user.role === "admin") {
+      } else if (user && user.tier && isAdmin(user.tier._id)) {
         getLeadsByStore(
           pageCurrent,
           `&multiStores=${getMultiStoresIds(user.stores)}`,
           currentSearch,
           query
         );
-      }else if (user && user.role === "super admin") {
+      }else if (user && user.tier && isSuper(user.tier._id)) {
         getLeadsByStore(
           pageCurrent,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
           currentSearch,
           query
         );
-      } else if (
-        user &&
-        (user.role === "rockstar")
-      ) {
+      } else if (user && user.tier && isRockstar(user.tier._id)) {
         getLeadsRockstar(pageCurrent, currentSearch, query);
       }
     }

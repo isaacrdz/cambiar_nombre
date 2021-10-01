@@ -23,6 +23,7 @@ import {
 import moment from "moment/min/moment-with-locales";
 import { useFocusEffect } from "@react-navigation/native";
 import { translateSubstatus } from "../../utils/tranlsateSubstatus";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const AppointmentDetail = ({ route, navigation }) => {
   const { item } = route.params;
@@ -69,12 +70,12 @@ const AppointmentDetail = ({ route, navigation }) => {
 
     let author = '';
     let userId = '';
-    if(user && user.role && (user.role === 'rockstar' || user.role === 'admin' || user.role === 'super admin') && currentAppointment.lead.agent && currentAppointment.lead.agent._id){
+    if(user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && currentAppointment.lead.agent && currentAppointment.lead.agent._id){
         userId = currentAppointment.lead.agent._id;
         author = user._id;
     }
 
-    if(user && user.role && user.role === 'user'){
+    if(user && user.tier && isUser(user.tier._id)){
       userId = user._id;
     }
 
