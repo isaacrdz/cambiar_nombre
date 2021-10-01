@@ -6,6 +6,7 @@ import useLead from "../../hooks/useLead";
 import useAuth from "../../hooks/useAuth";
 import { getMultiStoresIds } from "../../utils/storesUser";
 import { Ionicons } from "@expo/vector-icons";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const LeadSearch = ({
   query,
@@ -27,21 +28,18 @@ const LeadSearch = ({
   const handleSubmit = async(e) => {
     setpageCurrent(1)
     await clearState();
-    if(user && user.role === 'user'){
+    if(user && user.tier && isUser(user.tier._id)){
       await getLeads(1, user._id, currentSearch, query);
-    }else if(user && user.role === 'admin'){
+    }else if(user && user.tier && isAdmin(user.tier._id)){
       await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, currentSearch, query);
-    }else if (user && user.role === "super admin") {
+    }else if (user && user.tier && isSuper(user.tier._id)) {
       getLeadsByStore(
         pageCurrent,
         `&multiStores=${getMultiStoresIds(user.group.stores)}`,
         currentSearch,
         query
       );
-    } else if (
-      user &&
-      (user.role === "rockstar")
-    ) {
+    } else if (user && user.tier && isRockstar(user.tier._id)) {
       getLeadsRockstar(pageCurrent, currentSearch, query);
     }
   };

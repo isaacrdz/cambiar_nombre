@@ -12,6 +12,7 @@ import { CheckBox } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import useAuth from "../../hooks/useAuth";
+import { isUser } from "../../utils/Authroles";
 
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
@@ -53,7 +54,7 @@ const LeadCard = ({ item }) => {
       )}
       accessoryLeft={() => (
         <CheckBox
-          style={{ marginRight: 10, marginLeft: 10, display: user && user.role && user.role !== 'user' ? 'flex' : 'none' }}
+          style={{ marginRight: 10, marginLeft: 10, display: user && user.tier && !isUser(user.tier._id) ? 'flex' : 'none' }}
           checked={selected.includes(item._id.toString())}
           onChange={(nextChecked) =>{
             handleSelectedLeads(item._id, nextChecked);

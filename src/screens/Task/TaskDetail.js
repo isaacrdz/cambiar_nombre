@@ -28,6 +28,7 @@ import {
   translateStatus,
   translateSubstatus,
 } from "../../utils/tranlsateSubstatus";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -158,20 +159,12 @@ const TaskDetail = ({ route, navigation }) => {
       let userId = "";
       let author = "";
 
-      if (
-        user &&
-        user.role &&
-        (user.role === "rockstar" ||
-          user.role === "admin" ||
-          user.role === "super admin") &&
-        lead.agent &&
-        lead.agent._id
-      ) {
+      if (user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && lead.agent && lead.agent._id) {
         userId = lead.agent._id;
         author = user._id;
       }
 
-      if (user && user.role && user.role === "user") {
+      if (user && user.tier && isUser(user.tier._id)) {
         userId = user._id;
       }
 

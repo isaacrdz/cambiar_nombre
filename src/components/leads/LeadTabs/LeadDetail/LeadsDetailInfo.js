@@ -12,6 +12,7 @@ import useLead from "../../../../hooks/useLead";
 import { translateTemperature } from "../../../../utils/tranlsateSubstatus";
 import useAuth from "../../../../hooks/useAuth";
 import { CapitalizeNames } from "../../../../utils/Capitalize";
+import { isAdmin, isRockstar, isSuper } from "../../../../utils/Authroles";
 
 const LeadDetailInfo = ({ itemId }) => {
   const { getLead, lead, loading, clearCurrentLead } = useLead();
@@ -159,10 +160,8 @@ const LeadDetailInfo = ({ itemId }) => {
       </Layout>
 
       {/* Lead Agent */}
-      {user &&
-        (user.role === "admin" ||
-          user.role === "super admin" ||
-          user.role === "rockstar") && (
+      {
+        user && user.tier && (isAdmin(user.tier._id) || isSuper(user.tier._id) || isRockstar(user.tier._id)) && (
           <Layout style={{ marginBottom: 300 }}>
             <Layout style={styles.ContainerDetail}>
               <Text category="p1" appearance="hint">

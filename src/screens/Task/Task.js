@@ -7,6 +7,7 @@ import useComment from "../../hooks/useComment";
 import useAuth from "../../hooks/useAuth";
 import { useFocusEffect } from "@react-navigation/native";
 import { getMultiStoresIds } from "../../utils/storesUser";
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const Appointment = () => {
   const [items, setItems] = React.useState({});
@@ -67,11 +68,11 @@ const Appointment = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user.role === 'user') {
+      if (user && user.tier && isUser(user.tier._id)) {
         getCommentsByUser(user._id)
-      }else if(user && user.role === 'admin' && user.stores){
+      }else if(user && user.tier && isAdmin(user.tier._id) && user.stores){
         getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
-      }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+      }else if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
         getComments();
       }
     }, [user])
@@ -86,11 +87,11 @@ const Appointment = () => {
   };
 
   const handleRefresh = () => {
-    if (user && user.role === 'user') {
+    if (user && user.tier && isUser(user.tier._id)) {
       getCommentsByUser(user._id)
-    }else if(user && user.role === 'admin' && user.stores){
+    }else if(user && user.tier && isAdmin(user.tier._id) && user.stores){
       getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
-    }else if(user && (user.role === 'rockstar' || user.role === 'super admin')){
+    }else if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
       getComments();
     }
   };

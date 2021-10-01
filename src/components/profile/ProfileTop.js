@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
+import { isRockstar, isSuper } from "../../utils/Authroles";
 
 const ProfileTop = ({ navigation }) => {
   const { user, logout } = useAuth();
@@ -96,9 +97,8 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {user &&
-          user.role &&
-          (user.role === "rockstar" || user.role === "super admin")
+          {
+            user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))
             ? "Global"
             : user && user.stores && user.stores.length > 1
             ? "Multiagencia"
@@ -117,7 +117,7 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {user && user.role}
+          {user && user.tier && CapitalizeNames(user.tier.name)}
         </Text>
       </Layout>
       <Divider style={{ marginBottom: 25 }} />

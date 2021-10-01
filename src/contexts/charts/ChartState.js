@@ -80,6 +80,7 @@ const getPieStatusChart  = async (query) => {
     setLoading();
     try {
       const res = await api.get(`/charts/leadsMonthlyChart?${query}`, config);
+
       dispatch({ type: GET_LEADS_MONTHLY_CHART, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
@@ -94,6 +95,7 @@ const getPieStatusChart  = async (query) => {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
       }
     };
+    // console.log(`/charts/getTotalsDashboard?${query}`)
     setLoading();
     try {
       const res = await api.get(`/charts/getTotalsDashboard?${query}`, config);

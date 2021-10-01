@@ -6,6 +6,7 @@ import useLead from "../../hooks/useLead";
 import useAuth from "../../hooks/useAuth";
 import useComment from "../../hooks/useComment";
 import { CapitalizeNames } from "../../utils/Capitalize"
+import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const Calling = ({ route, navigation }) => {
 
@@ -55,20 +56,12 @@ const Calling = ({ route, navigation }) => {
 
     let author = "";
     let userId = "";
-    if (
-      user &&
-      user.role &&
-      (user.role === "rockstar" ||
-        user.role === "admin" ||
-        user.role === "super admin") &&
-      lead.agent &&
-      lead.agent._id
-    ) {
+    if (user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && lead.agent && lead.agent._id) {
       userId = lead.agent._id;
       author = user._id;
     }
 
-    if (user && user.role && user.role === "user") {
+    if (user && user.tier && isUser(user.tier._id)) {
       userId = user._id;
     }
 

@@ -115,28 +115,6 @@ const UserState = props => {
     }
   };
 
-  //Update User
-  const updateUserRole = async (user) => {
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`
-      }
-    };
-    clearUserState();
-    setLoading();
-    try{
-
-      const res = await api.put(`/users/${user.id}`,{ role: user.role }, config);
-      dispatch({ type: UPDATE_USER, payload: res.data.data });
-      
-    } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
-    }
-  };
-
   //Delete User
   const deleteUser = async (userId) => {
     const config =  {
@@ -159,10 +137,6 @@ const UserState = props => {
   //Create User
   const createUser = async (user) => {
 
-    if(user.role === null){
-      delete user.role;
-    }
-    
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -217,7 +191,6 @@ const UserState = props => {
         getUsers,
         getAgents,
         getUser,
-        updateUserRole,
         deleteUser,
         createUser,
         updateUser,
