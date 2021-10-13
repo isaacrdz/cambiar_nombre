@@ -76,7 +76,7 @@ const HomeAdmin = ({ navigation }) => {
         getPieStatusChart(
           `${date}&store[in]=${getMultiStoresIds(user.stores)}`
         );
-        getClosureTopUsers(`${date}&store[in]=${getMultiStoresIds(user.stores)}`);
+        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}`);
       }
     }, [date, user])
   );
