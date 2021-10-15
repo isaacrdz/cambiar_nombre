@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import moment from "moment/min/moment-with-locales";
 import { Icon, ListItem, Layout, Text } from "@ui-kitten/components";
+import { Ionicons } from "@expo/vector-icons";
+
 import {
   translateStatus,
   translateSubstatus,
@@ -24,29 +26,29 @@ const LeadCard = ({ item }) => {
   const handleSelectedLeads = (leadId, add) => {
     if (add) {
       let aux = selectedLeads;
-      aux.push(leadId)
+      aux.push(leadId);
       setSelected(aux);
     } else {
       let aux = selectedLeads;
-      aux = aux.filter(id => id !== leadId)
+      aux = aux.filter((id) => id !== leadId);
       setSelected(aux);
     }
-  }
+  };
 
-  useEffect(()=>{
-    setSelectedLeads(selected)
-  },[selected]);
+  useEffect(() => {
+    setSelectedLeads(selected);
+  }, [selected]);
 
   return (
     <ListItem
       onPress={() => navigation.navigate("LeadTabs", { item: item })}
       title={(evaProps) => (
-        <Layout {...evaProps} style={{position: 'relative'}}>
+        <Layout {...evaProps} style={{ position: "relative" }}>
           <Text appearance="hint" style={styles.ItemText}>
             {translateStatus(item.status.name)}
           </Text>
-          <Text style={styles.ItemTextName}>{item.name} </Text>
 
+          <Text style={styles.ItemTextName}>{item.name} </Text>
           <Text appearance="hint" style={styles.ItemText}>
             {moment(item.createdAt).format("MMMM D, YYYY")}
           </Text>
@@ -54,37 +56,48 @@ const LeadCard = ({ item }) => {
       )}
       accessoryLeft={() => (
         <CheckBox
-          style={{ marginRight: 10, marginLeft: 10, display: user && user.tier && !isUser(user.tier._id) ? 'flex' : 'none' }}
+          style={{
+            marginRight: 10,
+            marginLeft: 10,
+            display:
+              user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
+          }}
           checked={selected.includes(item._id.toString())}
-          onChange={(nextChecked) =>{
+          onChange={(nextChecked) => {
             handleSelectedLeads(item._id, nextChecked);
           }}
-        />) }
-      
+        />
+      )}
       accessoryRight={() => (
         <>
-        {
-          user && user.stores && user.stores.length > 1 &&
-          <Text appearance="hint" style={{position: 'absolute', right: 10, top: 5}}>
-            {CapitalizeNames(item.store.make.name)}{' '}{CapitalizeNames(item.store.name)}
-          </Text>
-        }
-        <Layout
-          style={{ alignItems: "flex-end", position: 'relative' }}
-          style={{
-            ...styles.controlContainer,
-            borderColor: setSubstatusColor(item.substatus.name),
-          }}
-        >
-          <Text
-            style={styles.ItemText}
+          {user && user.stores && user.stores.length > 1 && (
+            <>
+              <Text
+                appearance="hint"
+                style={{ position: "absolute", right: 10, top: 5 }}
+              >
+                {CapitalizeNames(item.store.make.name)}{" "}
+                {CapitalizeNames(item.store.name)}
+              </Text>
+            </>
+          )}
+
+          <Layout
+            style={{ alignItems: "flex-end", position: "relative" }}
             style={{
-              color: setSubstatusColor(item.substatus.name),
+              ...styles.controlContainer,
+              borderColor: setSubstatusColor(item.substatus.name),
             }}
           >
-            {translateSubstatus(item.substatus.name)}
-          </Text>
-        </Layout>
+            <Text
+              style={styles.ItemText}
+              style={{
+                color: setSubstatusColor(item.substatus.name),
+              }}
+            >
+              {translateSubstatus(item.substatus.name)}
+            </Text>
+          </Layout>
         </>
       )}
     />
