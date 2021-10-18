@@ -44,14 +44,14 @@ const LeadsList = ({
           { type: "all", value: "all" },
           ""
         );
-      } else if(user.tier && isSuper(user.tier._id)){
+      } else if (user.tier && isSuper(user.tier._id)) {
         getLeadsByStore(
           1,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
           { type: "all", value: "all" },
           ""
         );
-      }else if (user && user.tier && isRockstar(user.tier._id)) {
+      } else if (user && user.tier && isRockstar(user.tier._id)) {
         getLeadsRockstar(1, { type: "all", value: "all" }, "");
       }
     }, [])
@@ -68,7 +68,7 @@ const LeadsList = ({
           currentSearch,
           query
         );
-      }else if (user && user.tier && isSuper(user.tier._id)) {
+      } else if (user && user.tier && isSuper(user.tier._id)) {
         getLeadsByStore(
           pageCurrent,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
