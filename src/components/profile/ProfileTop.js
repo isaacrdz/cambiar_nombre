@@ -97,8 +97,9 @@ const ProfileTop = ({ navigation }) => {
           appearance="hint"
           style={{ marginBottom: 10, textTransform: "capitalize" }}
         >
-          {
-            user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))
+          {user &&
+          user.tier &&
+          (isRockstar(user.tier._id) || isSuper(user.tier._id))
             ? "Global"
             : user && user.stores && user.stores.length > 1
             ? "Multiagencia"
@@ -129,7 +130,7 @@ const ProfileTop = ({ navigation }) => {
         Ellyonsoft, Inc.
       </Text>
       <Text style={{ marginBottom: 5, textAlign: "center" }}>
-        Version 1.0.5
+        Version 1.0.8
       </Text>
     </Layout>
   );

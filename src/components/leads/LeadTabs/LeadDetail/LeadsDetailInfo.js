@@ -69,6 +69,14 @@ const LeadDetailInfo = ({ itemId }) => {
           </Text>
         </Layout>
         <Divider />
+        <Layout style={styles.ContainerDetail}>
+          <Text category="p1" appearance="hint">
+            Tipo
+          </Text>
+          <Text style={[styles.mr, styles.textCapitalize]}>
+            {lead.carType && lead.carType}
+          </Text>
+        </Layout>
       </Layout>
 
       {/* Bottom Info */}
@@ -160,8 +168,11 @@ const LeadDetailInfo = ({ itemId }) => {
       </Layout>
 
       {/* Lead Agent */}
-      {
-        user && user.tier && (isAdmin(user.tier._id) || isSuper(user.tier._id) || isRockstar(user.tier._id)) && (
+      {user &&
+        user.tier &&
+        (isAdmin(user.tier._id) ||
+          isSuper(user.tier._id) ||
+          isRockstar(user.tier._id)) && (
           <Layout style={{ marginBottom: 300 }}>
             <Layout style={styles.ContainerDetail}>
               <Text category="p1" appearance="hint">

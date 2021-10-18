@@ -51,7 +51,7 @@ const LeadsList = ({
           { type: "all", value: "all" },
           ""
         );
-      }else if (user && user.tier && isRockstar(user.tier._id)) {
+      } else if (user && user.tier && isRockstar(user.tier._id)) {
         getLeadsRockstar(1, { type: "all", value: "all" }, "");
       }
     }, [])
