@@ -27,6 +27,7 @@ const LeadTabs = ({ route }) => {
     useLead();
 
   React.useEffect(() => {
+    console.log('lead okas');
     getLead(item._id);
   }, []);
 
