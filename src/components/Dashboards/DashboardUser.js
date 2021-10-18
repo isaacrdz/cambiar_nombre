@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import Calendar from "../../components/SelectDate";
+import SelectCarType from "../SelectCarType";
 import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
@@ -35,7 +36,7 @@ const HomeUser = ({ navigation }) => {
       .startOf("month")
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`
   );
-
+  const [carType, setCarType] = useState(false);
   const today = new Date();
   const curHr = today.getHours();
   const [filter, setFilter] = useState("month");
@@ -47,6 +48,7 @@ const HomeUser = ({ navigation }) => {
   });
   let greeting;
 
+
   if (curHr < 12) {
     greeting = "Buenos Dias";
   } else if (curHr < 18) {
@@ -57,14 +59,14 @@ const HomeUser = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id) {
-        getTotalsDashboard(`${date}&agent=${user._id}`);
+      if (user && user._id && carType) {
+        getTotalsDashboard(`${date}&agent=${user._id}&carType=${carType}`);
         getLeadsMonthlyChart(
-          `${custom.date}&agent=${user._id}&filter=${custom.filter}`
+          `${custom.date}&agent=${user._id}&filter=${custom.filter}&carType=${carType}`
         );
-        getPieStatusChart(`${date}&agent=${user._id}`);
+        getPieStatusChart(`${date}&agent=${user._id}&carType=${carType}`);
       }
-    }, [filter, date, user])
+    }, [filter, date, user, carType])
   );
 
   return (
@@ -89,6 +91,7 @@ const HomeUser = ({ navigation }) => {
         <Divider />
         <Layout style={styles.subContainer}>
           <Calendar setDate={setDate} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
 
         <Layout style={styles.subContainerCards}>

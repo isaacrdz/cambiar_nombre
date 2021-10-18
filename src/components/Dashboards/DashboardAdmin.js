@@ -10,6 +10,7 @@ import {
   Button,
 } from "@ui-kitten/components";
 import Calendar from "../../components/SelectDate";
+import SelectCarType from "../SelectCarType";
 import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
@@ -54,6 +55,8 @@ const HomeAdmin = ({ navigation }) => {
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`
   );
 
+  const [carType, setCarType] = useState(false);
+
   const today = new Date();
   const curHr = today.getHours();
 
@@ -69,30 +72,24 @@ const HomeAdmin = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id) {
+      if (user && user._id && carType) {
         getTotalsDashboard(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}`
+          `${date}&store[in]=${getMultiStoresIds(user.stores)}&carType=${carType}`
         );
         getPieStatusChart(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}`
+          `${date}&store[in]=${getMultiStoresIds(user.stores)}&carType=${carType}`
         );
-        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}`);
+        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}&carType=${carType}`);
+
+        let customDate = `&createdAt[gte]=${moment().startOf("year").format()}&createdAt[lt]=${moment().endOf("month").format()}&carType=${carType}`;
+        let customFilter = "MMM";
+        getLeadsMonthlyChart(`${customDate}&store[in]=${getMultiStoresIds(user.stores)}&filter=${customFilter}&carType=${carType}`);
       }
-    }, [date, user])
+    }, [date, user, carType])
   );
 
   React.useEffect(() => {
     clearCharts();
-
-    let customDate = `&createdAt[gte]=${moment()
-      .startOf("year")
-      .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
-    let customFilter = "MMM";
-    getLeadsMonthlyChart(
-      `${customDate}&store[in]=${getMultiStoresIds(
-        user.stores
-      )}&filter=${customFilter}`
-    );
   }, []);
   const data = [];
 
@@ -116,6 +113,7 @@ const HomeAdmin = ({ navigation }) => {
         <Divider />
         <Layout style={styles.subContainer}>
           <Calendar setDate={setDate} getFilter={setCustom} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
 
         <Layout style={styles.subContainerCards}>
@@ -207,7 +205,7 @@ const HomeAdmin = ({ navigation }) => {
           )}
         </Layout>
       </Layout>
-      {!closureTopUsers ? (
+      {(!closureTopUsers || closureTopUsers.length <=0) ? (
         <></>
       ) : (
         <TopList
