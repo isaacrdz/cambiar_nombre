@@ -15,6 +15,7 @@ import AppointmentStackScreen from "./navigation/AppointmentStackScreen";
 import TaskStackScreen from "./navigation/TaskStackScreen";
 import * as Notifications from "expo-notifications";
 import { registerForPushNotificationsAsync } from "./utils/ExpoPushNotifications";
+import { isAdmin, isRockstar, isUser } from "./utils/Authroles";
 let notificationAmount = 0;
 
 const Tabs = createBottomTabNavigator();
@@ -118,8 +119,14 @@ const Routes = ({ token, ...rest }) => {
         >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
-          <Tabs.Screen name="Tareas" component={TaskStackScreen} />
-          <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
+          {
+            user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isUser(user.tier._id)) &&
+            <Tabs.Screen name="Tareas" component={TaskStackScreen} />
+          }
+          {
+            user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isUser(user.tier._id)) &&
+            <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
+          }
           <Tabs.Screen name="Perfil" component={ProfileStackScreen} />
         </Tabs.Navigator>
       ) : (

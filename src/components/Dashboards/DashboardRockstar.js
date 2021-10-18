@@ -13,6 +13,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import { get } from "lodash";
 import ChartsUser from "../Charts/ChartsUser";
+import numeral from 'numeral';
+
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -92,7 +94,7 @@ const HomeAdmin = ({ navigation }) => {
             <Text
               category="p1"
               appearance="hint"
-            >{`Tienes un total de ${total} leads acumulados`}</Text>
+            >{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
           )}
         </Layout>
         <Divider />
@@ -113,7 +115,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalLeads}
+                  {numeral(totalLeads).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -131,7 +133,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                {totalAppointments}
+                  {numeral(totalAppointments).format('0,0')}
               </Text>
               )}
             </Layout>
@@ -151,7 +153,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalVisits}
+                  {numeral(totalVisits).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -169,7 +171,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalSolds}
+                  {numeral(totalSolds).format('0,0')}
                 </Text>
               )}
             </Layout>

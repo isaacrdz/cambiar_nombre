@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 import { getMultiStoresIds } from "../utils/storesUser";
-import { isAdmin, isRockstar, isSuper, isUser } from "../utils/Authroles";
+import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "../utils/Authroles";
 
 const filters = [
   {
@@ -54,7 +54,7 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
       await getLeads(1, user._id, item, query);
     }else if(user && user.tier && isAdmin(user.tier._id)){
       await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, item, query)
-    }else if (user && user.tier && isSuper(user.tier._id)) {
+    }else if (user && user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))) {
       getLeadsByStore(
         1,
         `&multiStores=${getMultiStoresIds(user.group.stores)}`,

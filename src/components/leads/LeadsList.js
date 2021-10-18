@@ -10,7 +10,7 @@ import LeadCard from "./LeadCard";
 import Header from "../header/Header";
 import { getMultiStoresIds } from "../../utils/storesUser";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
+import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const LeadsList = ({
   user,
@@ -44,7 +44,7 @@ const LeadsList = ({
           { type: "all", value: "all" },
           ""
         );
-      } else if(user.tier && isSuper(user.tier._id)){
+      } else if(user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))){
         getLeadsByStore(
           1,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
@@ -68,7 +68,7 @@ const LeadsList = ({
           currentSearch,
           query
         );
-      }else if (user && user.tier && isSuper(user.tier._id)) {
+      }else if (user && user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))) {
         getLeadsByStore(
           pageCurrent,
           `&multiStores=${getMultiStoresIds(user.group.stores)}`,
