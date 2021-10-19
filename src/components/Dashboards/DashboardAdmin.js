@@ -72,12 +72,12 @@ const HomeAdmin = ({ navigation }) => {
     React.useCallback(() => {
       if (user && user._id) {
         getTotalsDashboard(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}`
+          `${date}&store[in]=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`
         );
         getPieStatusChart(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}`
+          `${date}&store[in]=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`
         );
-        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}`);
+        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`);
       }
     }, [date, user])
   );
