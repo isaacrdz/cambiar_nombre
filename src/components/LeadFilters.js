@@ -53,7 +53,7 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
     if(user && user.tier && isUser(user.tier._id)){
       await getLeads(1, user._id, item, query);
     }else if(user && user.tier && isAdmin(user.tier._id)){
-      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}`, item, query)
+      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`, item, query)
     }else if (user && user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))) {
       getLeadsByStore(
         1,

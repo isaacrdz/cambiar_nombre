@@ -40,7 +40,7 @@ const LeadsList = ({
       } else if (user && user.tier && isAdmin(user.tier._id)) {
         getLeadsByStore(
           1,
-          `&multiStores=${getMultiStoresIds(user.stores)}`,
+          `&multiStores=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`,
           { type: "all", value: "all" },
           ""
         );
@@ -64,7 +64,7 @@ const LeadsList = ({
       } else if (user && user.tier && isAdmin(user.tier._id)) {
         getLeadsByStore(
           pageCurrent,
-          `&multiStores=${getMultiStoresIds(user.stores)}`,
+          `&multiStores=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`,
           currentSearch,
           query
         );

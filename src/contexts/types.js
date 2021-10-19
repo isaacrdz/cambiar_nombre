@@ -26,6 +26,8 @@ export const CREATE_LEAD = "CREATE_LEAD";
 export const CALL_USER = "CALL_USER";
 export const ASSIGN_AGENTS = "ASSIGN_AGENTS";
 export const SELECTED_LEADS = "SELECTED_LEADS";
+export const SELECTED_STORES = "SELECTED_STORES";
+export const SELECTED_CARTYPES = "SELECTED_CARTYPES";
 export const SET_TAB = 'SET_TAB'
 
 //User

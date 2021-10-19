@@ -10,6 +10,8 @@ import {
   CALL_USER,
   ASSIGN_AGENTS,
   SELECTED_LEADS,
+  SELECTED_STORES,
+  SELECTED_CARTYPES,
   SET_TAB
 } from "../types";
 import _ from "lodash";
@@ -29,6 +31,22 @@ export default (state, action) => {
         loading: false,
         error: null,
       };
+
+    case SELECTED_STORES:
+      return{
+        ...state,
+        selectedStores: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case SELECTED_CARTYPES:
+      return{
+        ...state,
+        selectedCarTypes: action.payload,
+        loading: false,
+        error: null,
+        };
     case CLEAR_CURRENT_LEAD:
       return{
         ...state,
