@@ -19,25 +19,60 @@ import { isUser } from "../../utils/Authroles";
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
   const navigation = useNavigation();
-  const { setSelectedLeads, selectedLeads, x } = useLead();
+  const { 
+    setSelectedLeads, 
+    setSelectedStores, 
+    setSelectedCarTypes, 
+    selectedLeads, 
+    selectedStores, 
+    selectedCarTypes, 
+    x 
+  } = useLead();
   const [selected, setSelected] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [carTypes, setCarTypes] = useState([]);
   const { user } = useAuth();
 
-  const handleSelectedLeads = (leadId, add) => {
+  const handleSelectedLeads = (leadId, add, store, carType) => {
+
     if (add) {
       let aux = selectedLeads;
       aux.push(leadId);
       setSelected(aux);
+
+      let aux2 = selectedStores;
+      aux2.push(store);
+      setStores(aux2);
+
+      let aux3 = selectedCarTypes;
+      aux3.push(carType);
+      setCarTypes(aux3);
     } else {
       let aux = selectedLeads;
       aux = aux.filter((id) => id !== leadId);
       setSelected(aux);
+
+      let aux2 = selectedStores;
+      aux2 = aux2.filter((id) => id !== store);
+      setStores(aux2);
+
+      let aux3 = selectedCarTypes;
+      aux3 = aux3.filter((id) => id !== carType);
+      setCarTypes(aux3);
     }
   };
 
   useEffect(() => {
     setSelectedLeads(selected);
   }, [selected]);
+
+  useEffect(() => {
+    setSelectedStores(stores);
+  }, [stores]);
+
+  useEffect(() => {
+    setSelectedCarTypes(carTypes);
+  }, [carTypes]);
 
   return (
     <ListItem
@@ -64,7 +99,7 @@ const LeadCard = ({ item }) => {
           }}
           checked={selected.includes(item._id.toString())}
           onChange={(nextChecked) => {
-            handleSelectedLeads(item._id, nextChecked);
+            handleSelectedLeads(item._id, nextChecked, `${item._id}/${item.store._id}`, `${item._id}/${item.carType}`);
           }}
         />
       )}

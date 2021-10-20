@@ -31,7 +31,7 @@ const AddAgent = ({ navigation }) => {
   const [agentes, setAgentes] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(new IndexPath(0));
   const displayValue = agentes[selectedAgent.row];
-  const { selectedLeads, tab, assignAgents, error } = useLead();
+  const { selectedLeads, tab, assignAgents, error, selectedStores, selectedCarTypes } = useLead();
 
   let paddingTop = 0;
 
@@ -42,7 +42,7 @@ const AddAgent = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       if (user && user.stores) {
-        getAgents(`&stores[in]=${getMultiStoresIds(user.stores)}`);
+        getAgents(`&stores[in]=${selectedStores[0].split('/')[1]}&carType=${selectedCarTypes[0].split('/')[1]}`);
       }
     }, [user])
   );
