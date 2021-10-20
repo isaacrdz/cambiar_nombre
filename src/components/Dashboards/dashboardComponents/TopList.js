@@ -20,21 +20,35 @@ const TopList = ({ data, title }) => {
       <Divider style={{ marginTop: 10 }} />
 
       {data.map((item, i) => (
-        <Layout key={i}>
+        <Layout
+          key={i}
+          style={{
+            flexDirection: "row",
+
+            alignItems: "center",
+          }}
+        >
           <Layout
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: 20,
+              marginBottom: 10,
               marginTop: 20,
             }}
           >
             <Text category="s1" style={styles.marginleft}>
               {`${i + 1}. `} {CapitalizeNames(item.info[0].name)}
             </Text>
-            <Text category="p1" style={styles.marginRight}>
-              {`${item.sales} `}
+            <Text
+              category="c1"
+              style={{
+                marginLeft: 40,
+              }}
+            >
+              Chevrolet Las Torres
             </Text>
+          </Layout>
+
+          <Layout>
+            <Text>10</Text>
           </Layout>
           <Divider />
         </Layout>
