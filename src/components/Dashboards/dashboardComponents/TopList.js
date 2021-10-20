@@ -24,7 +24,6 @@ const TopList = ({ data, title }) => {
           key={i}
           style={{
             flexDirection: "row",
-
             alignItems: "center",
           }}
         >
@@ -43,13 +42,10 @@ const TopList = ({ data, title }) => {
                 marginLeft: 40,
               }}
             >
-              Chevrolet Las Torres
+              Chevrolet Las Torres - {`${item.sales} `} ventas
             </Text>
           </Layout>
 
-          <Layout>
-            <Text>10</Text>
-          </Layout>
           <Divider />
         </Layout>
       ))}
