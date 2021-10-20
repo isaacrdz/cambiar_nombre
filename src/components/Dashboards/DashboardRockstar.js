@@ -14,8 +14,14 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import { get } from "lodash";
 import ChartsUser from "../Charts/ChartsUser";
-import numeral from 'numeral';
-
+import numeral from "numeral";
+import {
+  Icon,
+  MenuItem,
+  OverflowMenu,
+  TopNavigation,
+  TopNavigationAction,
+} from "@ui-kitten/components";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -71,7 +77,9 @@ const HomeAdmin = ({ navigation }) => {
           .startOf("year")
           .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
         customFilter = "MMM";
-        getLeadsMonthlyChart(`${customDate}&filter=${customFilter}&carType=${carType}`);
+        getLeadsMonthlyChart(
+          `${customDate}&filter=${customFilter}&carType=${carType}`
+        );
       }
     }, [date, user, carType])
   );
@@ -80,12 +88,39 @@ const HomeAdmin = ({ navigation }) => {
     clearCharts();
   }, []);
 
+  const BackIcon = (props) => (
+    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+  );
+
+  const EditIcon = (props) => (
+    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+  );
+
+  const MenuIcon = (props) => <Ionicons name="calendar-outline" size={25} />;
+
+  const InfoIcon = (props) => (
+    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+  );
+
+  const LogoutIcon = (props) => (
+    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
+  );
+
   const data = [];
+
+  const [menuVisible, setMenuVisible] = React.useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
 
   return (
     <ScrollView>
       <Layout style={styles.container}>
-       
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
@@ -97,12 +132,25 @@ const HomeAdmin = ({ navigation }) => {
             <Text
               category="p1"
               appearance="hint"
-            >{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
+            >{`Tienes un total de ${numeral(total).format(
+              "0,0"
+            )} leads acumulados`}</Text>
           )}
         </Layout>
         <Divider />
 
         <Layout style={styles.subContainer}>
+          {/* OverFlow menu */}
+          <OverflowMenu
+            anchor={renderMenuAction}
+            visible={menuVisible}
+            onBackdropPress={toggleMenu}
+          >
+            <MenuItem title="Hoy" />
+            <MenuItem title="Ayer" />
+            <MenuItem title="Este Mes" />
+          </OverflowMenu>
+          {/* End overflow menu */}
           <Calendar setDate={setDate} getFilter={setCustom} />
           <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
@@ -119,7 +167,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalLeads).format('0,0')}
+                  {numeral(totalLeads).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -137,8 +185,8 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalAppointments).format('0,0')}
-              </Text>
+                  {numeral(totalAppointments).format("0,0")}
+                </Text>
               )}
             </Layout>
           </Layout>
@@ -157,7 +205,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalVisits).format('0,0')}
+                  {numeral(totalVisits).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -175,7 +223,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalSolds).format('0,0')}
+                  {numeral(totalSolds).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -196,7 +244,7 @@ const HomeAdmin = ({ navigation }) => {
         </Layout>
       </Layout>
 
-      {(!closureTopUsers || closureTopUsers.length <=0) ? (
+      {!closureTopUsers || closureTopUsers.length <= 0 ? (
         <></>
       ) : (
         <TopList
