@@ -15,13 +15,6 @@ import TopList from "./dashboardComponents/TopList";
 import { get } from "lodash";
 import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
-import {
-  Icon,
-  MenuItem,
-  OverflowMenu,
-  TopNavigation,
-  TopNavigationAction,
-} from "@ui-kitten/components";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -96,8 +89,6 @@ const HomeAdmin = ({ navigation }) => {
     <Ionicons name="person-outline" size={25} color={"#673ab7"} />
   );
 
-  const MenuIcon = (props) => <Ionicons name="calendar-outline" size={25} />;
-
   const InfoIcon = (props) => (
     <Ionicons name="person-outline" size={25} color={"#673ab7"} />
   );
@@ -110,13 +101,6 @@ const HomeAdmin = ({ navigation }) => {
 
   const [menuVisible, setMenuVisible] = React.useState(false);
 
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
-  };
-
-  const renderMenuAction = () => (
-    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
-  );
 
   return (
     <ScrollView>
@@ -140,17 +124,6 @@ const HomeAdmin = ({ navigation }) => {
         <Divider />
 
         <Layout style={styles.subContainer}>
-          {/* OverFlow menu */}
-          <OverflowMenu
-            anchor={renderMenuAction}
-            visible={menuVisible}
-            onBackdropPress={toggleMenu}
-          >
-            <MenuItem title="Hoy" />
-            <MenuItem title="Ayer" />
-            <MenuItem title="Este Mes" />
-          </OverflowMenu>
-          {/* End overflow menu */}
           <Calendar setDate={setDate} getFilter={setCustom} />
           <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
