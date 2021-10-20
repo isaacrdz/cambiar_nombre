@@ -22,6 +22,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
 import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
+import numeral from 'numeral';
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -70,7 +71,7 @@ const HomeAdmin = ({ navigation }) => {
     greeting = "Buenas Noches";
   }
 
-  useFocusEffect(
+useFocusEffect(
     React.useCallback(() => {
       if (user && user._id && carType) {
         getTotalsDashboard(
@@ -107,7 +108,7 @@ const HomeAdmin = ({ navigation }) => {
               appearance="hint"
             >{`Estamos contando los leads`}</Text>
           ) : (
-            <Text category="p1">{`Tienes un total de ${total} leads acumulados`}</Text>
+            <Text category="p1">{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
           )}
         </Layout>
         <Divider />
@@ -129,7 +130,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalLeads}
+                  {numeral(totalLeads).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -147,7 +148,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalAppointments}
+                  {numeral(totalAppointments).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -167,7 +168,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalVisits}
+                  {numeral(totalVisits).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -185,7 +186,7 @@ const HomeAdmin = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalSolds}
+                  {numeral(totalSolds).format('0,0')}
                 </Text>
               )}
             </Layout>

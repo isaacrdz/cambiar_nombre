@@ -11,7 +11,9 @@ import { CapitalizeNames } from "../../utils/Capitalize";
 import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
+import numeral from 'numeral';
 import { ScrollView } from "react-native-gesture-handler";
+
 const HomeUser = ({ navigation }) => {
   const { user } = useAuth();
 
@@ -85,7 +87,7 @@ const HomeUser = ({ navigation }) => {
             <Text
               category="p1"
               appearance="hint"
-            >{`Tienes un total de ${total} leads acumulados`}</Text>
+            >{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
           )}
         </Layout>
         <Divider />
@@ -107,7 +109,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalLeads}
+                  {numeral(totalLeads).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -125,7 +127,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalAppointments}
+                  {numeral(totalAppointments).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -145,7 +147,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                   <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalVisits}
+                  {numeral(totalVisits).format('0,0')}
                 </Text>
               )}
             </Layout>
@@ -163,7 +165,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                   <Text category="h5" style={{ fontSize: 40 }}>
-                  {totalSolds}
+                  {numeral(totalSolds).format('0,0')}
                 </Text>
               )}
             </Layout>

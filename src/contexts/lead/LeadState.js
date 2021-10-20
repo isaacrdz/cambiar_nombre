@@ -14,6 +14,8 @@ import {
   UPDATE_LEAD,
   CREATE_LEAD,
   SELECTED_LEADS,
+  SELECTED_STORES,
+  SELECTED_CARTYPES,
   SET_TAB,
   ASSIGN_AGENTS
 } from "../types";
@@ -27,6 +29,8 @@ const LeadState = (props) => {
     leadsSize: -1,
     callToken: null,
     selectedLeads: [],
+    selectedStores: [],
+    selectedCarTypes: [],
     tab: 'all',
     agent:false
   };
@@ -242,6 +246,24 @@ const LeadState = (props) => {
       }
   };
 
+  const setSelectedStores = async (stores)=>{
+  try {
+        stores = _.uniqBy(stores)
+        dispatch({ type: SELECTED_STORES, payload: stores, });
+      } catch (err) {
+        dispatch({ type: SET_ERROR, payload: err.response.data });
+      }
+  };
+
+  const setSelectedCarTypes = async (carTypes)=>{
+  try {
+        carTypes = _.uniqBy(carTypes)
+        dispatch({ type: SELECTED_CARTYPES, payload: carTypes, });
+      } catch (err) {
+        dispatch({ type: SET_ERROR, payload: err.response.data });
+      }
+  };
+
   //Set Tab
   const setTab = (tab) => dispatch({ type: SET_TAB, payload: tab });
 
@@ -261,9 +283,13 @@ const LeadState = (props) => {
         loading: state.loading,
         error: state.error,
         selectedLeads: state.selectedLeads,
+        selectedStores: state.selectedStores,
+        selectedCarTypes: state.selectedCarTypes,
         agent: state.agent,
         tab: state.tab,
         setSelectedLeads,
+        setSelectedStores,
+        setSelectedCarTypes,
         clearState,
         setLoading,
         getLeads,

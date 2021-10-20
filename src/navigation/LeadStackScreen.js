@@ -6,6 +6,7 @@ import Lead from "../screens/Lead/Lead";
 import LeadsDetail from "../components/leads/LeadTabs/LeadDetail/LeadsDetailInfo";
 import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
 import { Icon } from "@ui-kitten/components";
+import Toast from "react-native-toast-message";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
 import AddLead from "../components/leads/AddLead";
@@ -16,12 +17,13 @@ import { Ionicons } from "@expo/vector-icons";
 import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
 import { isAdmin } from "../utils/Authroles";
+import _ from 'lodash';
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-  const { selectedLeads } = useLead();
+  const { selectedLeads, selectedStores, selectedCarTypes } = useLead();
   const { user } = useAuth();
   return (
     <LeadMainStack.Navigator>
@@ -31,7 +33,35 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerLeft: () => (
             <TouchableOpacity
-            onPress={() => { navigation.navigate("AssignLead") }}
+            onPress={() => { 
+              
+              let aux = [];
+              selectedStores.map(item => aux.push(item.split('/')[1]))
+
+              let aux2 = [];
+              selectedCarTypes.map(item => aux2.push(item.split('/')[1]))
+              
+
+              aux = _.uniqBy(aux);
+              aux2 = _.uniqBy(aux2);
+              if(aux.length > 1){
+                Toast.show({
+                  text1: "Los leads deben ser de la misma agencia",
+                  type: "error",
+                  position: "bottom",
+                });
+              }else if(aux2.length > 1){
+                Toast.show({
+                  text1: "Solo nuevos o seminuevos",
+                  type: "error",
+                  position: "bottom",
+                });
+              }else{
+                navigation.navigate("AssignLead") 
+              }
+            
+            
+            }}
             disabled={selectedLeads.length < 1}
             >
               <Ionicons
