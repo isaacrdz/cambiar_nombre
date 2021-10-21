@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import Lead from "../screens/Lead/Lead";
 import LeadsDetail from "../components/leads/LeadTabs/LeadDetail/LeadsDetailInfo";
 import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
-import { Icon } from "@ui-kitten/components";
+import { Icon, Layout } from "@ui-kitten/components";
 import Toast from "react-native-toast-message";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
@@ -23,7 +23,7 @@ const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-  const { selectedLeads, selectedStores, selectedCarTypes } = useLead();
+  const { selectedLeads, selectedStores, selectedCarTypes, setCheckBox, checkBox } = useLead();
   const { user } = useAuth();
   return (
     <LeadMainStack.Navigator>
@@ -78,7 +78,19 @@ const LeadMainStackScreen = ({ navigation }) => {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
+            <Layout style={{display:'flex',flexDirection:'row'}}><TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
+            <Ionicons
+              name="create-outline"
+              size={25}
+              style={{
+                width: 25,
+                height: 25,
+                marginRight: 10,
+                color: "#5764b8",
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
               <Ionicons
                 name="add-circle-outline"
                 size={25}
@@ -89,7 +101,7 @@ const LeadMainStackScreen = ({ navigation }) => {
                   color: "#5764b8",
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity></Layout>
           ),
         }}
       />

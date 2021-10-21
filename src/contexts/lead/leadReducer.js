@@ -12,7 +12,8 @@ import {
   SELECTED_LEADS,
   SELECTED_STORES,
   SELECTED_CARTYPES,
-  SET_TAB
+  SET_TAB,
+  SET_CHECKBOX
 } from "../types";
 import _ from "lodash";
 
@@ -22,6 +23,11 @@ export default (state, action) => {
       return {
         ...state,
         tab: action.payload
+      };
+      case SET_CHECKBOX:
+      return {
+        ...state,
+        checkBox: action.payload
       }
     case SELECTED_LEADS:
       return{

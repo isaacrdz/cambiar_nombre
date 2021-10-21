@@ -12,9 +12,7 @@ import { StyleSheet, ScrollView } from "react-native";
 import { CapitalizeNames } from "../../../utils/Capitalize";
 
 const TopList = ({ data, title }) => {
-  React.useEffect(() => {
-    if (data) console.log("top", data.length);
-  }, [data]);
+
   return (
     <Layout>
       <Text category="h5" style={{ textAlign: "center" }}>
@@ -22,7 +20,7 @@ const TopList = ({ data, title }) => {
       </Text>
       <Divider style={{ marginTop: 10 }} />
 
-      {data.map((item, i) => (
+      {(data.length>=1)?data.map((item, i) => (
         <Layout
           key={i}
           style={{
@@ -69,7 +67,11 @@ const TopList = ({ data, title }) => {
 
           <Divider />
         </Layout>
-      ))}
+      )):<Layout style={styles.noSales}>
+            <Text category="h6" style={{ textAlign: "center" }}>
+            sin ventas
+            </Text>
+        </Layout>}
     </Layout>
   );
 };
@@ -84,6 +86,9 @@ const styles = StyleSheet.create({
               display: "flex",
               width: "100%",
               
+  },
+  noSales:{
+    margin:15
   },
   number:{
   marginRight:10

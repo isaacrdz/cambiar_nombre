@@ -29,6 +29,7 @@ export const SELECTED_LEADS = "SELECTED_LEADS";
 export const SELECTED_STORES = "SELECTED_STORES";
 export const SELECTED_CARTYPES = "SELECTED_CARTYPES";
 export const SET_TAB = 'SET_TAB'
+export const SET_CHECKBOX = 'SET_CHECKBOX'
 
 //User
 export const GET_USERS = 'GET_USERS' 

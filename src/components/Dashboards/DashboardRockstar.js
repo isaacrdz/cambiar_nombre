@@ -109,6 +109,10 @@ React.useEffect(()=>{
   return (
     <ScrollView>
       <Layout style={styles.container}>
+      <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} getFilter={setCustom} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
+        </Layout>
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
@@ -127,10 +131,6 @@ React.useEffect(()=>{
         </Layout>
         <Divider />
 
-        <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} getFilter={setCustom} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
-        </Layout>
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
             <Text category="p1" appearance="hint">
@@ -221,14 +221,12 @@ React.useEffect(()=>{
         </Layout>
       </Layout>
 
-      {!closureTopUsers || closureTopUsers.length <= 0 ? (
-        <></>
-      ) : (
+      
         <TopList
-          data={closureTopUsers ? closureTopUsers : data}
+          data={closureTopUsers}
           title="Top 10 Ventas"
         />
-      )}
+    
       {/* <TopList data={(closureTopStores)?closureTopStores:data} title="Top 10 Ventas por agencia" /> */}
     </ScrollView>
   );
@@ -247,9 +245,10 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "flex-end",
     flexDirection: "row",
-    padding: 20,
+    paddingRight:10,
     width:'98%',
-    margin:'auto'
+    margin:'auto',
+    marginTop:15
   },
   subContainerDivider: {
     paddingTop: 20,
