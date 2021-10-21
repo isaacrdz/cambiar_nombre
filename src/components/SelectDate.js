@@ -16,6 +16,13 @@ const SelectDate = ({ setDate, getFilter }) => {
   const renderMenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
   );
+
+  const onItemSelect = (index) => {
+    setSelectedIndex(index);
+    toggleMenu();
+  };
+
+
   const MenuIcon = (props) => <Ionicons name="calendar-outline" size={25} />;
 
   useEffect(()=>{
@@ -44,10 +51,11 @@ const SelectDate = ({ setDate, getFilter }) => {
         anchor={renderMenuAction}
         visible={menuVisible}
         onBackdropPress={toggleMenu}
+        onSelect={onItemSelect}
       >
-        <MenuItem title="Hoy" />
-        <MenuItem title="Ayer" />
-        <MenuItem title="Este Mes" />
+        {data.map((title, i) => (
+                                 <MenuItem title={title} key={i}  />
+                                ))}
       </OverflowMenu>
   );
 };
