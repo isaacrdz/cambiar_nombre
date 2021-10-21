@@ -74,23 +74,27 @@ const HomeUser = ({ navigation }) => {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-      <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
-        </Layout>
-        <Layout style={styles.subContainerText}>
+      <Layout style={styles.subContainerText}>
+          <Layout style={styles.subContainerLeft}>
           <Text
             category="label"
             style={{ fontSize: 28, marginTop: 15 }}
-          >{`${greeting} ${user && CapitalizeNames(user.name)}`}</Text>
+          >{`${user && CapitalizeNames(user.name)}`}</Text>
           {loadingCharts ? (
             <Text category="p1" appearance="hint">{`. . .`}</Text>
           ) : (
             <Text
               category="p1"
               appearance="hint"
-            >{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
+            >{`Tienes ${numeral(total).format(
+              "0,0"
+            )} leads acumulados`}</Text>
           )}
+          </Layout>
+          <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} getFilter={setCustom} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
+        </Layout>
         </Layout>
         <Divider />
 
@@ -200,21 +204,31 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "flex-end",
     flexDirection: "row",
-    paddingRight:10,
-    width:'98%',
-    margin:'auto',
+    alignItems:'flex-start',
+    // paddingRight:10,
+    // backgroundColor:'blue',
+    // width:'98%',
+    // margin:'auto',
     marginTop:15
+  },
+  subContainerLeft: {
+    flexDirection: "column",
+    alignItems:'flex-start',
+    // backgroundColor:'red',
+  },
+  subContainerText: {
+    display:'flex',
+    flexDirection:'row',
+    // backgroundColor:'yellow',
+    justifyContent: "space-between",
+    paddingRight: 20,
+    paddingLeft: 25,
+    paddingBottom: 20,
   },
   subContainerDivider: {
     paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
-  },
-  subContainerText: {
-    justifyContent: "space-between",
-    paddingRight: 20,
-    paddingLeft: 25,
-    paddingBottom: 10,
   },
   subContainerCards: {
     justifyContent: "space-between",

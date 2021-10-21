@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import Lead from "../screens/Lead/Lead";
 import LeadsDetail from "../components/leads/LeadTabs/LeadDetail/LeadsDetailInfo";
 import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
-import { Icon, Layout ,Text} from "@ui-kitten/components";
+import { Icon, Layout ,Text, TopNavigationAction, OverflowMenu, MenuItem} from "@ui-kitten/components";
 import Toast from "react-native-toast-message";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
@@ -25,6 +25,27 @@ const LeadMainStack = createStackNavigator();
 const LeadMainStackScreen = ({ navigation }) => {
   const { selectedLeads, selectedStores, selectedCarTypes, setCheckBox, checkBox } = useLead();
   const { user } = useAuth();
+  const [menuVisible, setMenuVisible] = React.useState(false);
+  const MenuIcon = (props) => <Ionicons style={{
+    width: 25,
+    height: 25,
+    marginRight: 10,
+    color: "#5764b8",
+  }} name="ellipsis-vertical" size={25} />;
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
+  const data = [
+    'Crear Lead'
+   ];
+
+  const onItemSelect = (index) => {
+    navigation.navigate("AddLead")
+    toggleMenu();
+  };
   return (
     <LeadMainStack.Navigator>
       <LeadMainStack.Screen
@@ -90,18 +111,17 @@ const LeadMainStackScreen = ({ navigation }) => {
               }}
             />:<Text appearance="hint" style={{paddingRight:10, marginTop:3}}>Cancelar</Text>}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("AddLead")}>
-              <Ionicons
-                name="add-circle-outline"
-                size={25}
-                style={{
-                  width: 25,
-                  height: 25,
-                  marginRight: 20,
-                  color: "#5764b8",
-                }}
-              />
-            </TouchableOpacity></Layout>
+          <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}
+        onSelect={onItemSelect}
+      >
+{data.map((title, i) => (
+                                 <MenuItem title={title} key={i}  />
+                                ))}
+      </OverflowMenu>
+      </Layout>
           ),
         }}
       />
