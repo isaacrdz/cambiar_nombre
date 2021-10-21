@@ -19,15 +19,15 @@ import { isUser } from "../../utils/Authroles";
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
   const navigation = useNavigation();
-  const { 
-    setSelectedLeads, 
-    setSelectedStores, 
-    setSelectedCarTypes, 
-    selectedLeads, 
-    selectedStores, 
-    selectedCarTypes, 
+  const {
+    setSelectedLeads,
+    setSelectedStores,
+    setSelectedCarTypes,
+    selectedLeads,
+    selectedStores,
+    selectedCarTypes,
     checkBox,
-    x 
+    x,
   } = useLead();
   const [selected, setSelected] = useState([]);
   const [stores, setStores] = useState([]);
@@ -35,7 +35,6 @@ const LeadCard = ({ item }) => {
   const { user } = useAuth();
 
   const handleSelectedLeads = (leadId, add, store, carType) => {
-
     if (add) {
       let aux = selectedLeads;
       aux.push(leadId);
@@ -79,7 +78,7 @@ const LeadCard = ({ item }) => {
     <ListItem
       onPress={() => navigation.navigate("LeadTabs", { item: item })}
       title={(evaProps) => (
-        <Layout {...evaProps} style={{ position: "relative" }}>
+        <Layout {...evaProps} style={{ position: "relative", marginLeft: 5 }}>
           <Text appearance="hint" style={styles.ItemText}>
             {translateStatus(item.status.name)}
           </Text>
@@ -90,20 +89,29 @@ const LeadCard = ({ item }) => {
           </Text>
         </Layout>
       )}
-      accessoryLeft={() => (
-        (checkBox)? <CheckBox
-        style={{
-          marginRight: 10,
-          marginLeft: 10,
-          display:
-            user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
-        }}
-        checked={selected.includes(item._id.toString())}
-        onChange={(nextChecked) => {
-          handleSelectedLeads(item._id, nextChecked, `${item._id}/${item.store._id}`, `${item._id}/${item.carType}`);
-        }}
-      />:<></>
-      )}
+      accessoryLeft={() =>
+        checkBox ? (
+          <CheckBox
+            style={{
+              marginRight: 10,
+              marginLeft: 10,
+              display:
+                user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
+            }}
+            checked={selected.includes(item._id.toString())}
+            onChange={(nextChecked) => {
+              handleSelectedLeads(
+                item._id,
+                nextChecked,
+                `${item._id}/${item.store._id}`,
+                `${item._id}/${item.carType}`
+              );
+            }}
+          />
+        ) : (
+          <></>
+        )
+      }
       accessoryRight={() => (
         <>
           {user && user.stores && user.stores.length > 1 && (
