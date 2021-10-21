@@ -6,9 +6,9 @@ import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
 import { isAdmin, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
 const data = [
- 'all',
-  'nuevo', 
-  'seminuevo'
+ 'Todos',
+  'Nuevos', 
+  'Seminuevos'
 ];
 
 const SelectCarType = ({ carType, setCarType, }) => {
@@ -31,7 +31,7 @@ const SelectCarType = ({ carType, setCarType, }) => {
   };
 
 
-  const MenuIcon = (props) => <Ionicons name="car-outline" size={25} />;
+  const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="car-outline" size={25} />;
 
   useEffect(() => {
     if(user && user.tier){

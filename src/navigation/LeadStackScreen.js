@@ -54,74 +54,84 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerLeft: () => (
             <TouchableOpacity
-            onPress={() => { 
-              
-              let aux = [];
-              selectedStores.map(item => aux.push(item.split('/')[1]))
+              onPress={() => {
+                let aux = [];
+                selectedStores.map((item) => aux.push(item.split("/")[1]));
 
-              let aux2 = [];
-              selectedCarTypes.map(item => aux2.push(item.split('/')[1]))
-              
+                let aux2 = [];
+                selectedCarTypes.map((item) => aux2.push(item.split("/")[1]));
 
-              aux = _.uniqBy(aux);
-              aux2 = _.uniqBy(aux2);
-              if(aux.length > 1){
-                Toast.show({
-                  text1: "Los leads deben ser de la misma agencia",
-                  type: "error",
-                  position: "bottom",
-                });
-              }else if(aux2.length > 1){
-                Toast.show({
-                  text1: "Solo nuevos o seminuevos",
-                  type: "error",
-                  position: "bottom",
-                });
-              }else{
-                navigation.navigate("AssignLead") 
-              }
-            
-            
-            }}
-            disabled={selectedLeads.length < 1}
+                aux = _.uniqBy(aux);
+                aux2 = _.uniqBy(aux2);
+                if (aux.length > 1) {
+                  Toast.show({
+                    text1: "Los leads deben ser de la misma agencia",
+                    type: "error",
+                    position: "bottom",
+                  });
+                } else if (aux2.length > 1) {
+                  Toast.show({
+                    text1: "Solo nuevos o seminuevos",
+                    type: "error",
+                    position: "bottom",
+                  });
+                } else {
+                  navigation.navigate("AssignLead");
+                }
+              }}
+              disabled={(selectedLeads.length === 0) || (!checkBox)}
             >
               <Ionicons
                 name="person-add-outline"
                 size={25}
                 style={{
-                  display: user && user.tier && isAdmin(user.tier._id) ? 'flex' : 'none',
+                  display:
+                    user && user.tier && isAdmin(user.tier._id)
+                      ? "flex"
+                      : "none",
                   width: 25,
                   height: 25,
                   marginLeft: 20,
-                  color: selectedLeads.length === 0 ? "#bbb" : "#5764b8",
+                  color: (selectedLeads.length === 0) || (!checkBox) ? "#bbb" : "#5764b8",
                 }}
-                />
+              />
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <Layout style={{display:'flex',flexDirection:'row'}}><TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
-            {(!checkBox)?<Ionicons
-              name="create-outline"
-              size={25}
-              style={{
-                width: 25,
-                height: 25,
-                marginRight: 10,
-                color: "#5764b8",
-              }}
-            />:<Text appearance="hint" style={{paddingRight:10, marginTop:3}}>Cancelar</Text>}
-          </TouchableOpacity>
-          <OverflowMenu
-        anchor={renderMenuAction}
-        visible={menuVisible}
-        onBackdropPress={toggleMenu}
-        onSelect={onItemSelect}
-      >
-{data.map((title, i) => (
-                                 <MenuItem title={title} key={i}  />
-                                ))}
-      </OverflowMenu>
-      </Layout>
+            <Layout style={{ display: "flex", flexDirection: "row" }}>
+             {isAdmin(user.tier._id) &&
+              <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
+              {!checkBox ? (
+                <Ionicons
+                  name="create-outline"
+                  size={25}
+                  style={{
+                    width: 25,
+                    height: 25,
+                    marginRight: 10,
+                    color: "#5764b8",
+                  }}
+                />
+              ) : (
+                <Text
+                  appearance="hint"
+                  style={{ paddingRight: 10, marginTop: 3 }}
+                >
+                  Cancelar
+                </Text>
+              )}
+            </TouchableOpacity>}
+              <OverflowMenu
+                anchor={renderMenuAction}
+                visible={menuVisible}
+                onBackdropPress={toggleMenu}
+                onSelect={onItemSelect}
+              >
+                {data.map((title, i) => (
+                  <MenuItem title={title} key={i} />
+                ))}
+              </OverflowMenu>
+            </Layout>
           ),
         }}
       />
@@ -133,7 +143,7 @@ const LeadMainStackScreen = ({ navigation }) => {
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
-             <Ionicons
+              <Ionicons
                 name="add-circle-outline"
                 size={25}
                 style={{
