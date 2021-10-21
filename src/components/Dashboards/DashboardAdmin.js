@@ -22,7 +22,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
 import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
-import numeral from 'numeral';
+import numeral from "numeral";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -71,20 +71,34 @@ const HomeAdmin = ({ navigation }) => {
     greeting = "Buenas Noches";
   }
 
-useFocusEffect(
+  useFocusEffect(
     React.useCallback(() => {
       if (user && user._id && carType) {
         getTotalsDashboard(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}&carType=${carType}`
+          `${date}&store[in]=${getMultiStoresIds(
+            user.stores
+          )}&carType=${carType}`
         );
         getPieStatusChart(
-          `${date}&store[in]=${getMultiStoresIds(user.stores)}&carType=${carType}`
+          `${date}&store[in]=${getMultiStoresIds(
+            user.stores
+          )}&carType=${carType}`
         );
-        getClosureTopUsers(`${date}&store=${getMultiStoresIds(user.stores)}&carType=${carType}`);
+        getClosureTopUsers(
+          `${date}&store=${getMultiStoresIds(user.stores)}&carType=${carType}`
+        );
 
-        let customDate = `&createdAt[gte]=${moment().startOf("year").format()}&createdAt[lt]=${moment().endOf("month").format()}&carType=${carType}`;
+        let customDate = `&createdAt[gte]=${moment()
+          .startOf("year")
+          .format()}&createdAt[lt]=${moment()
+          .endOf("month")
+          .format()}&carType=${carType}`;
         let customFilter = "MMM";
-        getLeadsMonthlyChart(`${customDate}&store[in]=${getMultiStoresIds(user.stores)}&filter=${customFilter}&carType=${carType}`);
+        getLeadsMonthlyChart(
+          `${customDate}&store[in]=${getMultiStoresIds(
+            user.stores
+          )}&filter=${customFilter}&carType=${carType}`
+        );
       }
     }, [date, user, carType])
   );
@@ -97,10 +111,11 @@ useFocusEffect(
   return (
     <ScrollView>
       <Layout style={styles.container}>
-      <Layout style={styles.subContainer}>
+        <Layout style={styles.subContainer}>
           <Calendar setDate={setDate} getFilter={setCustom} />
           <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
+
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
@@ -112,11 +127,12 @@ useFocusEffect(
               appearance="hint"
             >{`Estamos contando los leads`}</Text>
           ) : (
-            <Text category="p1">{`Tienes un total de ${numeral(total).format('0,0')} leads acumulados`}</Text>
+            <Text category="p1">{`Tienes un total de ${numeral(total).format(
+              "0,0"
+            )} leads acumulados`}</Text>
           )}
         </Layout>
         <Divider />
-        
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -131,7 +147,7 @@ useFocusEffect(
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalLeads).format('0,0')}
+                  {numeral(totalLeads).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -149,7 +165,7 @@ useFocusEffect(
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalAppointments).format('0,0')}
+                  {numeral(totalAppointments).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -169,7 +185,7 @@ useFocusEffect(
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalVisits).format('0,0')}
+                  {numeral(totalVisits).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -187,7 +203,7 @@ useFocusEffect(
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalSolds).format('0,0')}
+                  {numeral(totalSolds).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -208,9 +224,9 @@ useFocusEffect(
         </Layout>
       </Layout>
       <TopList
-          data={closureTopUsers?closureTopUsers:data}
-          title="Top 10 Ventas"
-        />
+        data={closureTopUsers ? closureTopUsers : data}
+        title="Top 10 Ventas"
+      />
     </ScrollView>
   );
 };
@@ -228,10 +244,11 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "flex-end",
     flexDirection: "row",
-    paddingRight:10,
-    width:'98%',
-    margin:'auto',
-    marginTop:15
+    paddingRight: 10,
+    width: "98%",
+    margin: "auto",
+    marginTop: 15,
+    marginBottom: 15,
   },
   subContainerText: {
     justifyContent: "space-between",
