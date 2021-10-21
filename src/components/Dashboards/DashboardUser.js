@@ -200,9 +200,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   subContainer: {
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     flexDirection: "row",
     padding: 20,
+    width:'98%',
+    margin:'auto'
   },
   subContainerDivider: {
     paddingTop: 20,

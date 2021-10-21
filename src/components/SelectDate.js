@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
+import { IndexPath, Select, SelectItem, TopNavigationAction, OverflowMenu, MenuItem } from "@ui-kitten/components";
 import moment from 'moment'
+import { Ionicons } from "@expo/vector-icons";
 const data = ["Hoy", "Ayer", "Este Mes", "Mes Anterior"];
 
 const SelectDate = ({ setDate, getFilter }) => {
 
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(2));
   const displayValue = data[selectedIndex.row];
+  const [menuVisible, setMenuVisible] = React.useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
+
+  const onItemSelect = (index) => {
+    setSelectedIndex(index);
+    toggleMenu();
+  };
+
+
+  const MenuIcon = (props) => <Ionicons name="calendar-outline" size={25} />;
 
   useEffect(()=>{
       switch(selectedIndex.row){
@@ -30,17 +46,17 @@ const SelectDate = ({ setDate, getFilter }) => {
   },[selectedIndex])
 
   return (
-        <Select
-          style={styles.select}
-          placeholder="Default"
-          value={displayValue}
-          selectedIndex={selectedIndex}
-          onSelect={(index) => setSelectedIndex(index)}
-        >
-          {data.map((title, i) => (
-            <SelectItem title={title} key={i} />
-          ))}
-        </Select>
+       
+        <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}
+        onSelect={onItemSelect}
+      >
+        {data.map((title, i) => (
+                                 <MenuItem title={title} key={i}  />
+                                ))}
+      </OverflowMenu>
   );
 };
 

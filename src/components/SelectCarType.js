@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
+import { IndexPath, Select, SelectItem, TopNavigationAction, OverflowMenu, MenuItem } from "@ui-kitten/components";
 import moment from 'moment';
 import useAuth from "../hooks/useAuth";
+import { Ionicons } from "@expo/vector-icons";
 import { isAdmin, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
 const data = [
  'all',
@@ -15,6 +16,22 @@ const SelectCarType = ({ carType, setCarType, }) => {
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(1));
   const displayValue = data[selectedIndex.row];
   const { user } = useAuth();
+
+  const [menuVisible, setMenuVisible] = React.useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
+
+  const onItemSelect = (index) => {
+    setSelectedIndex(index);
+    toggleMenu();
+  };
+
+
+  const MenuIcon = (props) => <Ionicons name="car-outline" size={25} />;
 
   useEffect(() => {
     if(user && user.tier){
@@ -63,17 +80,16 @@ const SelectCarType = ({ carType, setCarType, }) => {
                 user.carType === 'ambos'
             )
         ) && 
-        <Select
-          style={styles.select}
-          placeholder="Default"
-          value={displayValue}
-          selectedIndex={selectedIndex}
-          onSelect={(index) => setSelectedIndex(index)}
-        >
-          {data.map((title, i) => (
-            <SelectItem title={title} key={i} />
-          ))}
-        </Select>
+         <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}
+        onSelect={onItemSelect}
+      >
+        {data.map((title, i) => (
+                                 <MenuItem title={title} key={i}  />
+                                ))}
+      </OverflowMenu>
     }
     </>
 
