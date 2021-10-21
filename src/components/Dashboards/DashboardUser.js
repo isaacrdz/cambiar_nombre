@@ -74,8 +74,10 @@ const HomeUser = ({ navigation }) => {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-       
-        {/* <Divider /> */}
+      <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
+        </Layout>
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
@@ -91,10 +93,6 @@ const HomeUser = ({ navigation }) => {
           )}
         </Layout>
         <Divider />
-        <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
-        </Layout>
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -202,9 +200,10 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "flex-end",
     flexDirection: "row",
-    padding: 20,
+    paddingRight:10,
     width:'98%',
-    margin:'auto'
+    margin:'auto',
+    marginTop:15
   },
   subContainerDivider: {
     paddingTop: 20,

@@ -17,7 +17,8 @@ import {
   SELECTED_STORES,
   SELECTED_CARTYPES,
   SET_TAB,
-  ASSIGN_AGENTS
+  ASSIGN_AGENTS,
+  SET_CHECKBOX
 } from "../types";
 
 const LeadState = (props) => {
@@ -32,6 +33,7 @@ const LeadState = (props) => {
     selectedStores: [],
     selectedCarTypes: [],
     tab: 'all',
+    checkBox: false,
     agent:false
   };
 
@@ -266,6 +268,9 @@ const LeadState = (props) => {
 
   //Set Tab
   const setTab = (tab) => dispatch({ type: SET_TAB, payload: tab });
+  const setCheckBox = (checkBox) => {
+    dispatch({ type: SET_CHECKBOX, payload: checkBox })
+  };
 
   //Clear State
   const clearState = () => dispatch({ type: CLEAR_STATE });
@@ -287,6 +292,7 @@ const LeadState = (props) => {
         selectedCarTypes: state.selectedCarTypes,
         agent: state.agent,
         tab: state.tab,
+        checkBox: state.checkBox,
         setSelectedLeads,
         setSelectedStores,
         setSelectedCarTypes,
@@ -302,7 +308,8 @@ const LeadState = (props) => {
         getLeadsRockstar,
         call,
         assignAgents,
-        setTab
+        setTab,
+        setCheckBox
       }}
     >
       {props.children}

@@ -26,6 +26,7 @@ const LeadCard = ({ item }) => {
     selectedLeads, 
     selectedStores, 
     selectedCarTypes, 
+    checkBox,
     x 
   } = useLead();
   const [selected, setSelected] = useState([]);
@@ -90,18 +91,18 @@ const LeadCard = ({ item }) => {
         </Layout>
       )}
       accessoryLeft={() => (
-        <CheckBox
-          style={{
-            marginRight: 10,
-            marginLeft: 10,
-            display:
-              user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
-          }}
-          checked={selected.includes(item._id.toString())}
-          onChange={(nextChecked) => {
-            handleSelectedLeads(item._id, nextChecked, `${item._id}/${item.store._id}`, `${item._id}/${item.carType}`);
-          }}
-        />
+        (checkBox)? <CheckBox
+        style={{
+          marginRight: 10,
+          marginLeft: 10,
+          display:
+            user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
+        }}
+        checked={selected.includes(item._id.toString())}
+        onChange={(nextChecked) => {
+          handleSelectedLeads(item._id, nextChecked, `${item._id}/${item.store._id}`, `${item._id}/${item.carType}`);
+        }}
+      />:<></>
       )}
       accessoryRight={() => (
         <>

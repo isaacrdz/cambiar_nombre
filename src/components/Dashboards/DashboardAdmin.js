@@ -97,10 +97,14 @@ useFocusEffect(
   return (
     <ScrollView>
       <Layout style={styles.container}>
+      <Layout style={styles.subContainer}>
+          <Calendar setDate={setDate} getFilter={setCustom} />
+          <SelectCarType carType={carType} setCarType={setCarType} />
+        </Layout>
         <Layout style={styles.subContainerText}>
           <Text
             category="label"
-            style={{ fontSize: 28, marginTop: 15 }}
+            style={{ fontSize: 28, marginTop: 0 }}
           >{`${greeting}, ${user && CapitalizeNames(user.name)}`}</Text>
           {loadingCharts ? (
             <Text
@@ -112,10 +116,7 @@ useFocusEffect(
           )}
         </Layout>
         <Divider />
-        <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} getFilter={setCustom} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
-        </Layout>
+        
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -206,14 +207,10 @@ useFocusEffect(
           )}
         </Layout>
       </Layout>
-      {(!closureTopUsers || closureTopUsers.length <=0) ? (
-        <></>
-      ) : (
-        <TopList
-          data={closureTopUsers ? closureTopUsers : data}
+      <TopList
+          data={closureTopUsers?closureTopUsers:data}
           title="Top 10 Ventas"
         />
-      )}
     </ScrollView>
   );
 };
@@ -231,14 +228,10 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "flex-end",
     flexDirection: "row",
-    padding: 20,
+    paddingRight:10,
     width:'98%',
-    margin:'auto'
-  },
-  subContainerDivider: {
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
+    margin:'auto',
+    marginTop:15
   },
   subContainerText: {
     justifyContent: "space-between",
@@ -246,6 +239,12 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingBottom: 10,
   },
+  subContainerDivider: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+
   subContainerCards: {
     justifyContent: "space-between",
     flexDirection: "row",
