@@ -14,7 +14,7 @@ const SelectDate = ({ setDate, getFilter }) => {
     setMenuVisible(!menuVisible);
   };
   const renderMenuAction = () => (
-    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+    <TopNavigationAction  icon={MenuIcon} onPress={toggleMenu} />
   );
 
   const onItemSelect = (index) => {
@@ -23,7 +23,7 @@ const SelectDate = ({ setDate, getFilter }) => {
   };
 
 
-  const MenuIcon = (props) => <Ionicons name="calendar-outline" size={25} />;
+  const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="calendar-outline" size={25} />;
 
   useEffect(()=>{
       switch(selectedIndex.row){
