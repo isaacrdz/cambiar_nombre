@@ -79,7 +79,7 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
           headerRight: () => (
             <Layout style={{display:'flex',flexDirection:'row'}}><TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
-            {(checkBox)?<Ionicons
+            {(!checkBox)?<Ionicons
               name="create-outline"
               size={25}
               style={{
