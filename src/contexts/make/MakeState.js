@@ -27,6 +27,7 @@ const MakeState = props => {
   const getMakes = async () => {
     setLoading();
     try {
+      console.log('okas');
       const res = await api.get(`/makes?sort=name`);
       dispatch({ type: GET_MAKES, payload: res.data.data });
     } catch (err) {

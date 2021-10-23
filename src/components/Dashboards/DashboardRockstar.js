@@ -15,6 +15,8 @@ import TopList from "./dashboardComponents/TopList";
 import { get } from "lodash";
 import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
+import SelectStore from "../SelectStore";
+import SelectMake from "../SelectMake";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -125,6 +127,8 @@ const HomeAdmin = ({ navigation }) => {
           )}
           </Layout>
           <Layout style={styles.subContainer}>
+          <SelectStore></SelectStore>
+          <SelectMake></SelectMake>
           <Calendar setDate={setDate} getFilter={setCustom} />
           <SelectCarType carType={carType} setCarType={setCarType} />
         </Layout>
