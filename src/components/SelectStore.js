@@ -99,7 +99,7 @@ const SelectStore = ({ selectedStores, setSelectedStores}) => {
   return (
     <>
     {
-      user && user.tier && (stores.length >=2) && false &&(
+      user && user.tier && (stores.length >=2) &&(
         isRockstar(user.tier._id) || 
         isSuper(user.tier._id) || 
         isMarketing(user.tier._id) ||
