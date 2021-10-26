@@ -17,6 +17,8 @@ import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
 import SelectStore from "../SelectStore";
 import SelectMake from "../SelectMake";
+import Filters from '../Filters';
+
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -39,6 +41,7 @@ const HomeAdmin = ({ navigation }) => {
     pieStatus,
   } = useChart();
   const [custom, setCustom] = useState("D MMMM");
+  const [query, setQuery] = useState(false);
 
   const [date, setDate] = useState(
     `&createdAt[gte]=${moment()
@@ -63,21 +66,19 @@ const HomeAdmin = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id && carType) {
-        getTotalsDashboard(`${date}&carType=${carType}`);
-        getClosureTopUsers(`${date}&carType=${carType}`);
-        getClosureTopStores(`&carType=${carType}`);
-        getPieStatusChart(`${date}&carType=${carType}`);
-        customDate = `&createdAt[gte]=${moment()
-          .startOf("year")
-          .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
-        customFilter = "MMM";
-        getLeadsMonthlyChart(
-          `${customDate}&filter=${customFilter}&carType=${carType}`
-        );
+      if (user && user._id && query) {
+        getTotalsDashboard(`${query}`);
+        getClosureTopUsers(`${query}`);
+        getClosureTopStores(`${query}`);
+        getPieStatusChart(`${query}`);
+        // customDate = `&createdAt[gte]=${moment()
+        //   .startOf("year")
+        //   .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
+        let customFilter = "MMM";
+        getLeadsMonthlyChart(`${query}&filter=${customFilter}`);
 
       }
-    }, [date, user, carType])
+    }, [query,user])
   );
 
   React.useEffect(() => {
@@ -127,10 +128,7 @@ const HomeAdmin = ({ navigation }) => {
           )}
           </Layout>
           <Layout style={styles.subContainer}>
-          <SelectStore></SelectStore>
-          <SelectMake></SelectMake>
-          <Calendar setDate={setDate} getFilter={setCustom} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
+          <Filters filters={['date','carType','stores']} setQuery={setQuery}></Filters>
         </Layout>
         </Layout>
         <Divider />

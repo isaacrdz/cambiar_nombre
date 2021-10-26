@@ -27,9 +27,16 @@ const DocumentState = props => {
 
   //Get Documents
   const getDocuments = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+
+      }
+    };
     setLoading();
     try {
-      const res = await api.get(`/documents?sort=title`);
+      const res = await api.get(`/documents?sort=title`,config);
       dispatch({ type: GET_DOCUMENTS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -39,10 +46,17 @@ const DocumentState = props => {
 
    //Get Document
    const getDocument = async (documentId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+
+      }
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/documents/${documentId}`);
+      const res = await api.get(`/documents/${documentId}`,config);
       dispatch({ type: GET_DOCUMENT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -50,10 +64,17 @@ const DocumentState = props => {
   };
 
   const getDocumentsByMultiStore = async (query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+
+      }
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/documents/multiStores?${query}`);
+      const res = await api.get(`/documents/multiStores?${query}`,config);
       dispatch({ type: GET_DOCUMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -62,10 +83,17 @@ const DocumentState = props => {
 
   //Get Document
   const getDocumentsByStore = async (storeId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+
+      }
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/stores/${storeId}/documents`);
+      const res = await api.get(`/stores/${storeId}/documents`,config);
       dispatch({ type: GET_DOCUMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -86,7 +114,7 @@ const DocumentState = props => {
     try {
       const uploadConfig = await api.post("/uploads/image", { type: file.type, fileName: file.name }, config);
 
-      await api.put(uploadConfig.data.url, file,
+      await api.put(uploadConfig.data.url, fil,confige,
         {
           headers: { "Content-Type": file ? file.type : null }
         }
@@ -140,7 +168,8 @@ const DocumentState = props => {
 
       await api.put(uploadConfig.data.url, file, {
         headers: {
-          headers: { "Content-Type": file ? file.type : null }
+          headers: { "Content-Type": file ? file.type : null },
+          Authorization:config.headers.Authorization
         }
       });
 

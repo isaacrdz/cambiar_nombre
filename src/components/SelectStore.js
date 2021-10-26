@@ -4,18 +4,19 @@ import { IndexPath, Select, SelectItem, TopNavigationAction, OverflowMenu, MenuI
 import moment from 'moment';
 import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
+import { isAdmin, isMarketing, isRockstar, isSuper, isUser, isDigitalMkt, isGeneralManager } from './../utils/Authroles';
 import useStore from '../hooks/useStore';
 import { CapitalizeNames } from "../utils/Capitalize";
+import { getMultiStoresIds } from "../utils/storesUser";
 
 
 
-const SelectStore = ({ carType, setCarType, }) => {
+const SelectStore = ({ selectedStores, setSelectedStores}) => {
 
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(1));
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
 //   const displayValue = data[selectedIndex.row];
   const { user } = useAuth();
-  const {stores, getStores} = useStore();
+  const {stores, getStores, getStoresByUser, getStoresByGroup, clearStoreState} = useStore();
 
   const [menuVisible, setMenuVisible] = React.useState(false);
   const toggleMenu = () => {
@@ -26,33 +27,52 @@ const SelectStore = ({ carType, setCarType, }) => {
   );
 
   const onItemSelect = (index) => {
+    console.log('okas');
     setSelectedIndex(index);
     toggleMenu();
   };
 
 
-useEffect(()=>{
-	console.log(stores[0]);
-},[stores]);
+
   useEffect(()=>{
-        //We find the resources here by role
-	console.log(user);
         if(user && user.tier){
-        //     if(getSources) getSources(user.tier._id);
+
+          clearStoreState();
+
+          //     if(getSources) getSources(user.tier._id);
         //     if(getMakes) getMakes(user.tier._id);
-            if(getStores) getStores(user.tier._id);
 
-        //     if(isSuper(user.tier._id) || isMarketing(user.tier._id) || isGeneralManager(user.tier._id)) if(getAgents) getAgents({role: user.tier._id, store: user.group.stores});
-        //     if(isAdmin(user.tier._id)) if(getAgents) getAgents({role: user.tier._id, store: user.stores});
-        //     if(isRockstar(user.tier._id)) if(getAgents) getAgents({role: user.tier._id});
-            
+          getStoresDPX(String(user.tier._id),user.group);
         }
-
-        //eslint-disable-next-line
     },[user])
 
+    useEffect(()=>{
+      if(stores.length>=1){
+        console.log('cambio store',stores.length);
+        setSelectedStores(getMultiStoresIds(stores));
+      }
+    },[stores])
 
-  const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="logo-apple" size={25} />;
+    const getStoresDPX = (role, groupId) => {
+      if(isAdmin(role) || isUser(role) || isMarketing(role)){
+        console.log('user - admin');
+         getStoresByUser(user._id);
+      }
+      else if(isSuper(role)|| isDigitalMkt(role) || isGeneralManager(role)){
+        console.log('super');
+         getStoresByGroup(user.group._id);
+      }
+      else if(isRockstar(role)){
+        console.log('rockstar');
+         getStores(true);
+      }
+      else if(role === 'group'){
+        console.log('group');
+         getStoresByGroup(groupId);
+      }  
+    }
+
+  const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="business-outline" size={25} />;
 
   useEffect(() => {
     if(user && user.tier){
@@ -68,27 +88,18 @@ useEffect(()=>{
   }, [user]);
 
   useEffect(()=>{
-//     switch(selectedIndex.row){
-//       case 0:
-//           if(setCarType) setCarType('all')
-//           return; 
-//       case 1:
-//           if(setCarType) setCarType('nuevo')
-//           return; 
-//       case 2:
-//           if(setCarType) setCarType('seminuevo')
-//           return; 
-    
-//       default:
-//           if(setCarType) setCarType('nuevo')
-//           return; 
-//     }
+    if(stores.length<=0)return;
+    if(selectedIndex.row == 0){
+      setSelectedStores(getMultiStoresIds(stores));
+    }else{
+      setSelectedStores(stores[selectedIndex.row-1]._id);
+    }
 },[selectedIndex])
 
   return (
     <>
     {
-      user && user.tier && (
+      user && user.tier && (stores.length >=2) && false &&(
         isRockstar(user.tier._id) || 
         isSuper(user.tier._id) || 
         isMarketing(user.tier._id) ||
@@ -107,8 +118,10 @@ useEffect(()=>{
         onBackdropPress={toggleMenu}
         onSelect={onItemSelect}
       >
+                                 <MenuItem title={`Todas las Agencias`} value={'all'}  />
+
         {stores.map((store, i) => (
-                                 <MenuItem title={`${store.make.slug +' '+ CapitalizeNames(store.name)}`} key={i}  />
+                                 <MenuItem title={`${store.make.slug +' '+ CapitalizeNames(store.name)}`} value={store._id}  />
                                 ))}
       </OverflowMenu>
     }

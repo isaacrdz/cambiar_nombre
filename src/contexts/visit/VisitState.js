@@ -26,13 +26,19 @@ const VisitState = props => {
 
   //Get Visits
   const getVisits = async (all) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       let actives = '';
       if(!all){
         actives = '&isActive=true';
       }
-      const res = await api.get(`/visits?sort=name${actives}`);
+      const res = await api.get(`/visits?sort=name${actives}`,config);
       dispatch({ type: GET_VISITS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -41,10 +47,16 @@ const VisitState = props => {
 
    //Get Visit
    const getVisit = async (visitId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearVisitState();
     setLoading();
     try {
-      const res = await api.get(`/visits/${visitId}`);
+      const res = await api.get(`/visits/${visitId}`,config);
       dispatch({ type: GET_VISIT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

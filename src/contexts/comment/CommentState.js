@@ -100,15 +100,21 @@ const CommentState = props => {
 
   //Gt comments to ListView
   const getCommentsAR = async (data) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     setLoading();
     try {
       let res;
 
       if(data.role === 'rockstar'){
         
-        res = await api.get(`/comments?page=${data.page}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`);
+        res = await api.get(`/comments?page=${data.page}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,config);
       }else{
-        res = await api.get(`/comments?page=${data.page}&store=${data.store}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`);
+        res = await api.get(`/comments?page=${data.page}&store=${data.store}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,config);
       }
 
       dispatch({ 
@@ -123,9 +129,15 @@ const CommentState = props => {
 
   //Get Comments
   const getComments = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     setLoading();
     try {
-      const res = await api.get(`/comments?pending=true`);
+      const res = await api.get(`/comments?pending=true`,config);
       dispatch({ type: GET_COMMENTS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
@@ -134,9 +146,15 @@ const CommentState = props => {
 
   //Get Comment
   const getComment = async (commentId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     setLoading();
     try {
-      const res = await api.get(`/comments/${commentId}`);
+      const res = await api.get(`/comments/${commentId}`,config);
       dispatch({ type: GET_COMMENT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -145,9 +163,15 @@ const CommentState = props => {
 
   //Get Comments By User
   const getCommentsByUser = async (userId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     setLoading();
     try {
-      const res = await api.get(`comments?user=${userId}&pending=true`);
+      const res = await api.get(`comments?user=${userId}&pending=true`,config);
       dispatch({ type: GET_COMMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})
@@ -157,9 +181,15 @@ const CommentState = props => {
 
   //Get Comments By Store
   const getCommentsByStore = async (query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     setLoading();
     try {
-      const res = await api.get(`/comments/admin?&pending=true${query}`);
+      const res = await api.get(`/comments/admin?&pending=true${query}`,config);
       dispatch({ type: GET_COMMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error})

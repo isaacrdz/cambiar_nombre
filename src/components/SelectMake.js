@@ -32,7 +32,7 @@ const data = ['uno'];
 
 
 useEffect(()=>{
-	console.log('hereeeeeeeee',makes[0]);
+	// console.log('hereeeeeeeee',makes[0]);
 },[makes]);
   useEffect(()=>{
         //We find the resources here by role

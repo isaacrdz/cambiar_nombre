@@ -25,10 +25,16 @@ const MakeState = props => {
 
   //Get Makes
   const getMakes = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      console.log('okas');
-      const res = await api.get(`/makes?sort=name`);
+      // console.log('okas');
+      const res = await api.get(`/makes?sort=name`,config);
       dispatch({ type: GET_MAKES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -37,10 +43,16 @@ const MakeState = props => {
 
   //Get Make
   const getMake = async (makeId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/makes/${makeId}`);
+      const res = await api.get(`/makes/${makeId}`,config);
       dispatch({ type: GET_MAKE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

@@ -28,9 +28,15 @@ const VehicleState = (props) => {
 
   //Get Vehicles
   const getVehiclesByMake = async (makeId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`makes/${makeId}/vehicles`);
+      const res = await api.get(`makes/${makeId}/vehicles`,config);
       dispatch({ type: GET_VEHICLES_BY_MAKE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -39,10 +45,16 @@ const VehicleState = (props) => {
 
   //Get Vehicles
   const getVehicles = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles?sort=model`);
+      const res = await api.get(`/vehicles?sort=model`,config);
       dispatch({ type: GET_VEHICLES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -51,10 +63,16 @@ const VehicleState = (props) => {
 
   //Get Vehicles
   const getVehicle = async (vehicleId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles/${vehicleId}`);
+      const res = await api.get(`/vehicles/${vehicleId}`,config);
       dispatch({ type: GET_VEHICLE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -124,10 +142,16 @@ const VehicleState = (props) => {
   };
 
   const getVehicleByCat = async (vehicleCat) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles/vehiclesByCategory/${vehicleCat}`);
+      const res = await api.get(`/vehicles/vehiclesByCategory/${vehicleCat}`,config);
       dispatch({ type: GET_VEHICLES_BY_CAT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });

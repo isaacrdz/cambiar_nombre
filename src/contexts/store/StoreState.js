@@ -27,6 +27,12 @@ const StoreState = props => {
 
   //Get Stores
   const getStores = async (all) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearStoreState();
     setLoading();
     try {
@@ -36,7 +42,7 @@ const StoreState = props => {
       if(!all){
         actives = 'isActive=true';
       }
-      const res = await api.get(`/stores?sort=make&${actives}`);
+      const res = await api.get(`/stores?sort=make&${actives}`,config);
       dispatch({ type: GET_STORES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -44,8 +50,52 @@ const StoreState = props => {
     }
   };
 
+  //Get Stores By User
+  const getStoresByUser = async (userId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
+    clearStoreState();
+    setLoading();
+    try {
+      const res = await api.get(`/users/stores/${userId}`,config);
+      dispatch({ type: GET_STORES, payload: res.data.data });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data})
+
+    }
+  };
+
+    //Get Stores By Group
+    const getStoresByGroup = async (groupId) => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        },
+      };
+      clearStoreState();
+      setLoading();
+      try {
+        const res = await api.get(`/groups/${groupId}/stores`,config);
+        dispatch({ type: GET_STORES, payload: res.data.data });
+      } catch (err) {
+        dispatch({ type: SET_ERROR, payload: err.response.data})
+  
+      }
+    };
+
   //Get Stores By Make
   const getStoresByMake = async (makeId, all) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearStoreState();
     setLoading();
     try {
@@ -55,7 +105,7 @@ const StoreState = props => {
         actives = '&isActive=true';
       }
       
-      const res = await api.get(`/makes/${makeId}/stores?${actives}`);
+      const res = await api.get(`/makes/${makeId}/stores?${actives}`,config);
       dispatch({ type: GET_STORES_BY_MAKE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -64,9 +114,15 @@ const StoreState = props => {
   };
 
   const getStoreByConversation = async (credentials) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/stores/conversation/${credentials}`);
+      const res = await api.get(`/stores/conversation/${credentials}`,config);
       dispatch({ type: GET_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -75,9 +131,15 @@ const StoreState = props => {
 
    //Get Store
    const getStore = async (storeId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/stores/${storeId}`);
+      const res = await api.get(`/stores/${storeId}`,config);
       dispatch({ type: GET_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -90,7 +152,7 @@ const StoreState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     };
     clearStoreState();
@@ -109,7 +171,7 @@ const StoreState = props => {
     const config =  {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     };
     setLoading();
@@ -124,13 +186,24 @@ const StoreState = props => {
   };
 
   //Update Store
-  const updateStore = async (store, storeId) => {
+  const updateStore = async (store, storeId, file) => {
     const config =  {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     };
+
+    if(file){
+      let uploadConfig = await api.post("/uploads/image", { type: file.type, fileName: file.name },config);
+
+      await api.put(uploadConfig.data.url, file, { headers: { "Content-Type": file ? file.type : null,Authorization:config.headers.Authorization} });
+
+      const dataKey = uploadConfig.data.key;
+
+      store.image = "https://automotive-api.s3.us-east-2.amazonaws.com/" + dataKey;
+    }
+
     setLoading();
     try {
       const res = await api.put(`/stores/${storeId}`, {...store} ,config);
@@ -162,7 +235,9 @@ const StoreState = props => {
         clearStoreState,
         setLoading,
         getStoresByMake,
-        getStoreByConversation
+        getStoreByConversation,
+        getStoresByUser,
+        getStoresByGroup
       }}
     >
       {props.children}

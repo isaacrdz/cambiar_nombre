@@ -80,6 +80,12 @@ const LeadState = (props) => {
 
   //Get Leads
   const getLeadsRockstar = async (pageCurrent, { type, value }, query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       let leads;
@@ -88,17 +94,17 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&status=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&status=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
           );
           break;
         case "subStatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&substatus=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&substatus=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
           );
           break;
       }
@@ -120,6 +126,12 @@ const LeadState = (props) => {
     { type, value },
     query
   ) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       let leads;
@@ -128,22 +140,22 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,config
           );
           break;
         case "subStatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`,config
           );
           break;
         case "unassigned":
           leads = await api.get(
-             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&assigned=false&searchText=${query}&searchType=or&validation=1${multiStore}`
+             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&assigned=false&searchText=${query}&searchType=or&validation=1${multiStore}`,config
           );
         break;
       }
@@ -158,6 +170,12 @@ const LeadState = (props) => {
   };
 
   const getLeads = async (pageCurrent, userId, { type, value }, query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
 
     try {
@@ -165,17 +183,17 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
           );
           break;
         case "substatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
           );
           break;
       }
@@ -191,9 +209,15 @@ const LeadState = (props) => {
 
   //Get Single Item by ID
   const getLead = async (leadId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/leads/${leadId}`);
+      const res = await api.get(`/leads/${leadId}`,config);
       dispatch({
         type: GET_LEAD,
         payload: res.data.data,
@@ -240,6 +264,7 @@ const LeadState = (props) => {
   };
 
   const setSelectedLeads = async (leads)=>{
+    
   try {
         leads = _.uniqBy(leads)
         dispatch({ type: SELECTED_LEADS, payload: leads, });
