@@ -13,6 +13,7 @@ import {
   SET_LOADING,
   GET_VERSIONS_BY_MODEL
 } from '../types';
+import { ScreenStackHeaderConfig } from 'react-native-screens';
 
 const VersionState = props => {
   const initialState = {
@@ -26,9 +27,15 @@ const VersionState = props => {
 
   //Get Versions
   const getVersions = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/versions?sort=name`);
+      const res = await api.get(`/versions?sort=name`,config);
       dispatch({ type: GET_VERSIONS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -37,9 +44,15 @@ const VersionState = props => {
 
   //Get Versions By Model
   const getVersionsByModel = async (modelId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/vehicles/${modelId}/versions?sort=name`);
+      const res = await api.get(`/vehicles/${modelId}/versions?sort=name`,ScreenStackHeaderConfig);
       dispatch({ type: GET_VERSIONS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -48,10 +61,16 @@ const VersionState = props => {
 
   //Get Version
   const getVersion = async (versionId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/versions/${versionId}`);
+      const res = await api.get(`/versions/${versionId}`,config);
       dispatch({ type: GET_VERSION, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

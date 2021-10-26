@@ -30,11 +30,17 @@ const UserState = props => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const AdvancedResults = async (pagination, query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       
       const res = await api.get(
-        `/users?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`
+        `/users?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,config
       );
       dispatch({
         type: GET_USERS,
@@ -47,6 +53,12 @@ const UserState = props => {
   };
 
   const getUsers = async (pagination, query, typeQuery) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       let res;
@@ -54,7 +66,7 @@ const UserState = props => {
 
       if (pagination) {
           res = await api.get(
-            `/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1`
+            `/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1`,config
           );
       }
       dispatch({
@@ -71,12 +83,17 @@ const UserState = props => {
 
   //Get Agents
   const getAgents = async (query) => {
-
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     if(!query) query = ''
 
     setLoading();
     try {
-      const res = await api.get(`/users/agents?sort=name&role=user&isActive=true${query}`);
+      const res = await api.get(`/users/agents?sort=name&role=user&isActive=true${query}`,config);
       dispatch({ type: GET_AGENTS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -86,9 +103,15 @@ const UserState = props => {
 
   //Get Users By Store
   const getUsersByStore = async (pagination, query, typeQuery, multiStores) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1${multiStores}`);
+      const res = await api.get(`/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1${multiStores}`,config);
       dispatch({ 
         type: GET_USERS_BY_STORE, 
         payload: res.data.data,
@@ -102,9 +125,15 @@ const UserState = props => {
 
   //Get Single Item by ID
   const getUser = async userId => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/users/${userId}`);
+      const res = await api.get(`/users/${userId}`,config);
       dispatch({
         type: GET_USER,
         payload: res.data.data

@@ -32,7 +32,14 @@ const ActivityState = props => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/activities`);
+      
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`/activities`,config);
       dispatch({ type: GET_ACTIVITIES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -44,7 +51,14 @@ const ActivityState = props => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`users/${userId}/activities`);
+      
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`users/${userId}/activities`,config);
       dispatch({ type: GET_ACTIVITIES_BY_USER, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -56,7 +70,13 @@ const ActivityState = props => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`leads/${leadId}/activities`);
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`leads/${leadId}/activities`,config);
       dispatch({ type: GET_ACTIVITIES_BY_LEAD, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -67,7 +87,13 @@ const ActivityState = props => {
    const getActivity = async (activityId) => {
     setLoading();
     try {
-      const res = await api.get(`/activities/${activityId}`);
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`/activities/${activityId}`,config);
       dispatch({ type: GET_ACTIVITY, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -87,6 +113,12 @@ const ActivityState = props => {
     setLoading();
     try {
       
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.delete(`/activities/${activityId}`, config);
       dispatch({ type: DELETE_ACTIVITY, payload: res.data })
     } catch (err) {
@@ -106,6 +138,12 @@ const ActivityState = props => {
     clearState();
     setLoading();
     try {
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.post(`/activities`, {...activity}, config);
       dispatch({ type: CREATE_ACTIVITY, payload: res.data.data });
     } catch (err) {
@@ -125,6 +163,12 @@ const ActivityState = props => {
     setLoading();
     try {
       
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.put(`/activities/${activityId}`, {...activity} ,config);
       dispatch({ type: UPDATE_ACTIVITY, payload: res.data.data })
     } catch (err) {
@@ -143,6 +187,12 @@ const ActivityState = props => {
     setLoading();
     try {
       
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.get(`/activities${search}` ,config);
       dispatch({ type: GET_ACTIVITIES_AR, payload: res.data.data })
     } catch (err) {

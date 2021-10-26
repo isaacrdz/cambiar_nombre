@@ -29,9 +29,15 @@ const AppointmentState = props => {
 
   //Get Appointments
   const getAppointments = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/appointments?status=true`);
+      const res = await api.get(`/appointments?status=true`,config);
       dispatch({ type: GET_APPOINTMENTS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -40,9 +46,15 @@ const AppointmentState = props => {
 
   //Get Appointments By User
   const getAppointmentsByUser = async (userId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`users/${userId}/appointments`);
+      const res = await api.get(`users/${userId}/appointments`,config);
       dispatch({ type: GET_APPOINTMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -51,9 +63,15 @@ const AppointmentState = props => {
 
   //Get Appointments By Store
   const getAppointmentsByStore = async (stores) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/appointments/admin?${stores}&status=true`);
+      const res = await api.get(`/appointments/admin?${stores}&status=true`,config);
       dispatch({ type: GET_APPOINTMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -62,9 +80,15 @@ const AppointmentState = props => {
 
    //Get Appointment
    const getAppointment = async (appointmentId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/appointments/${appointmentId}`);
+      const res = await api.get(`/appointments/${appointmentId}`,config);
       dispatch({ type: GET_APPOINTMENT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

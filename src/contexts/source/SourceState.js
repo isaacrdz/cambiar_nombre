@@ -26,13 +26,19 @@ const SourceState = props => {
 
   //Get Sources
   const getSources = async (all) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       let actives = '';
       if(!all){
         actives = '&isActive=true';
       }
-      const res = await api.get(`/sources?sort=name${actives}`);
+      const res = await api.get(`/sources?sort=name${actives}`,config);
       dispatch({ type: GET_SOURCES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -41,10 +47,16 @@ const SourceState = props => {
 
    //Get Source
    const getSource = async (sourceId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearSourceState();
     setLoading();
     try {
-      const res = await api.get(`/sources/${sourceId}`);
+      const res = await api.get(`/sources/${sourceId}`,config);
       dispatch({ type: GET_SOURCE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

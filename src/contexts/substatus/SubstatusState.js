@@ -25,10 +25,16 @@ const SubstatusState = props => {
   const [state, dispatch] = useReducer(SubstatusReducer, initialState);
 
   const getSubstatusesByStatus = async (statusId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/status/${statusId}/substatus?sort=name`);
+      const res = await api.get(`/status/${statusId}/substatus?sort=name`,config);
       dispatch({ type: GET_SUBSTATUSES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -37,10 +43,16 @@ const SubstatusState = props => {
 
   //Get Substatuses
   const getSubstatuses = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/substatus?sort=name`);
+      const res = await api.get(`/substatus?sort=name`,config);
       dispatch({ type: GET_SUBSTATUSES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -49,10 +61,16 @@ const SubstatusState = props => {
 
   //Get Substatus
   const getSubstatus = async (substatusId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/substatus/${substatusId}`);
+      const res = await api.get(`/substatus/${substatusId}`,config);
       dispatch({ type: GET_SUBSTATUS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

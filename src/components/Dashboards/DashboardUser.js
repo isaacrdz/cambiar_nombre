@@ -13,6 +13,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
 import numeral from 'numeral';
 import { ScrollView } from "react-native-gesture-handler";
+import Filters from '../Filters';
+
 
 const HomeUser = ({ navigation }) => {
   const { user } = useAuth();
@@ -48,6 +50,8 @@ const HomeUser = ({ navigation }) => {
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
     filter: "MMM",
   });
+  const [query, setQuery] = useState(false);
+
   let greeting;
 
 
@@ -61,14 +65,12 @@ const HomeUser = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id && carType) {
-        getTotalsDashboard(`${date}&agent=${user._id}&carType=${carType}`);
-        getLeadsMonthlyChart(
-          `${custom.date}&agent=${user._id}&filter=${custom.filter}&carType=${carType}`
-        );
-        getPieStatusChart(`${date}&agent=${user._id}&carType=${carType}`);
+      if (user && user._id && query) {
+        getTotalsDashboard(`${query}&agent=${user._id}`);
+        getLeadsMonthlyChart(`${query}${custom.date}&agent=${user._id}`);
+        getPieStatusChart(`${query}&agent=${user._id}`);
       }
-    }, [filter, date, user, carType])
+    }, [query])
   );
 
   return (
@@ -92,8 +94,7 @@ const HomeUser = ({ navigation }) => {
           )}
           </Layout>
           <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} getFilter={setCustom} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
+          <Filters filters={['date','carType','stores']} setQuery={setQuery}></Filters>
         </Layout>
         </Layout>
         <Divider />

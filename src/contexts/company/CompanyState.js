@@ -26,10 +26,16 @@ const CompanyState = props => {
 
   //Get Companies
   const getCompanies = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/companies?sort=name`);
+      const res = await api.get(`/companies?sort=name`,config);
       dispatch({ type: GET_COMPANIES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -38,10 +44,16 @@ const CompanyState = props => {
 
   //Get Company
   const getCompany = async companyId => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
+      }
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/companies/${companyId}`);
+      const res = await api.get(`/companies/${companyId}`,config);
       dispatch({ type: GET_COMPANY, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });

@@ -89,7 +89,7 @@ const Routes = ({ token, ...rest }) => {
   return (
     <NavigationContainer>
       {isAuthenticated ? (
-        <Tabs.Navigator
+          <Tabs.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -129,6 +129,7 @@ const Routes = ({ token, ...rest }) => {
           }
           <Tabs.Screen name="Perfil" component={ProfileStackScreen} />
         </Tabs.Navigator>
+
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Auth" component={AuthStackScreen} />

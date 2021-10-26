@@ -24,6 +24,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import numeral from "numeral";
 
+import SelectStore from "../SelectStore";
+import SelectMake from "../SelectMake";
+import Filters from '../Filters';
+
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
   const {
@@ -56,6 +60,8 @@ const HomeAdmin = ({ navigation }) => {
       .format()}&createdAt[lt]=${moment().endOf("month").format()}`
   );
 
+  const [query, setQuery] = useState(false);
+
   const [carType, setCarType] = useState(false);
 
   const today = new Date();
@@ -73,34 +79,22 @@ const HomeAdmin = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (user && user._id && carType) {
-        getTotalsDashboard(
-          `${date}&store[in]=${getMultiStoresIds(
-            user.stores
-          )}&carType=${carType}`
-        );
-        getPieStatusChart(
-          `${date}&store[in]=${getMultiStoresIds(
-            user.stores
-          )}&carType=${carType}`
-        );
-        getClosureTopUsers(
-          `${date}&store=${getMultiStoresIds(user.stores)}&carType=${carType}`
-        );
+      if (user && user._id && query) {
+        getTotalsDashboard(`${query}`);
+        getPieStatusChart( `${query}`);
+        getClosureTopUsers( `${query}`);
 
         let customDate = `&createdAt[gte]=${moment()
           .startOf("year")
           .format()}&createdAt[lt]=${moment()
           .endOf("month")
-          .format()}&carType=${carType}`;
+          .format()}`;
         let customFilter = "MMM";
         getLeadsMonthlyChart(
-          `${customDate}&store[in]=${getMultiStoresIds(
-            user.stores
-          )}&filter=${customFilter}&carType=${carType}`
+          `${query}&filter=${customFilter}`
         );
       }
-    }, [date, user, carType])
+    }, [query])
   );
 
   React.useEffect(() => {
@@ -129,8 +123,7 @@ const HomeAdmin = ({ navigation }) => {
           )}
           </Layout>
           <Layout style={styles.subContainer}>
-          <Calendar setDate={setDate} getFilter={setCustom} />
-          <SelectCarType carType={carType} setCarType={setCarType} />
+          <Filters filters={['date','carType','stores']} setQuery={setQuery}></Filters>
         </Layout>
         </Layout>
         <Divider />

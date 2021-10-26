@@ -28,11 +28,17 @@ const ListState = props => {
   const [state, dispatch] = useReducer(ListReducer, initialState);
 
   const AdvancedResults = async (pagination, query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
       
       const res = await api.get(
-        `/lists?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`
+        `/lists?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,config
       );
       dispatch({
         type: GET_LISTS,
@@ -46,9 +52,15 @@ const ListState = props => {
 
   //Get Lists
   const getLists = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     setLoading();
     try {
-      const res = await api.get(`/lists`);
+      const res = await api.get(`/lists`,config);
 
       dispatch({ 
         type: GET_LISTS, 
@@ -62,10 +74,16 @@ const ListState = props => {
 
    //Get List
    const getList = async (listId) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/lists/${listId}`);
+      const res = await api.get(`/lists/${listId}`,config);
       dispatch({ type: GET_LIST, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -74,10 +92,16 @@ const ListState = props => {
   };
 
   const getListsByStore = async (storeId) =>{
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/stores/${storeId}/lists`);
+      const res = await api.get(`/stores/${storeId}/lists`,config);
       dispatch({ type: GET_LIST_BY_STORE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})

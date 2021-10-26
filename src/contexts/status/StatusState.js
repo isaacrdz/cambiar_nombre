@@ -25,11 +25,19 @@ const StatusState = props => {
 
   const [state, dispatch] = useReducer(StatusReducer, initialState);
 
+  
+
   //Get Statuses
   const getStatuses = async () => {
     setLoading();
     try {
-      const res = await api.get(`/status?sort=name`);
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`/status?sort=name`,config);
       dispatch({ type: GET_STATUSES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -41,7 +49,13 @@ const StatusState = props => {
     clearStatusState();
     setLoading();
     try {
-      const res = await api.get(`/status/${statusId}`);
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
+      const res = await api.get(`/status/${statusId}`,config);
       dispatch({ type: GET_STATUS, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data})
@@ -50,14 +64,14 @@ const StatusState = props => {
 
   //Delete Status
   const deleteStatus = async (statusId) => {
-    const config =  {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
-    };
     setLoading();
     try {
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.delete(`/status/${statusId}`, config);
       dispatch({ type: DELETE_STATUS, payload: res.data.deletedId })
     } catch (err) {
@@ -68,16 +82,15 @@ const StatusState = props => {
 
   //Create Status
   const createStatus = async (status) => {
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
-    };
     clearStatusState();
     setLoading();
     try {
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.post(`/status`, { ...status }, config);
       dispatch({ type: CREATE_STATUS, payload: res.data.data });
     } catch (err) {
@@ -87,16 +100,16 @@ const StatusState = props => {
 
   //Update Make
   const updateStatus = async (status, statusId) => {
-    const config =  {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
-    };
     clearStatusState();
     setLoading();
     try {
       
+      const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  };
       const res = await api.put(`/status/${statusId}`, {...status} ,config);
       dispatch({ type: UPDATE_STATUS, payload: res.data.data })
     } catch (err) {

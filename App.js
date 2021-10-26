@@ -28,6 +28,7 @@ import NotificationState from "./src/contexts/notification/NotificationState";
 
 import Toast from "react-native-toast-message";
 import MailState from "./src/contexts/mail/MailState";
+import MakeState from "./src/contexts/make/MakeState";
 
 const App = () => {
   const [theme, setTheme] = React.useState("light");
@@ -51,6 +52,7 @@ const App = () => {
                       <VehicleState>
                         <SourceState>
                           <StoreState>
+                            <MakeState>
                             <ActivityState>
                               <StatusState>
                                 <SubstatusState>
@@ -73,6 +75,7 @@ const App = () => {
                                 </SubstatusState>
                               </StatusState>
                             </ActivityState>
+                            </MakeState>
                           </StoreState>
                         </SourceState>
                       </VehicleState>
