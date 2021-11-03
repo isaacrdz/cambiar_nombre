@@ -69,6 +69,7 @@ const ProfileTop = ({ navigation }) => {
 
   const Middle = () => (
     <Layout
+    flix={1}
       style={{
         paddingHorizontal: 40,
       }}
@@ -157,7 +158,7 @@ const ProfileTop = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="dark-content" />
       {Top()}
-      <Divider style={{ marginBottom: 30 }} />
+      <Divider style={{ marginBottom: 40 }} />
       {Middle()}
       {Bottom()}
     </SafeAreaView>
