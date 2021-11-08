@@ -1,30 +1,30 @@
-import React, { useReducer } from 'react';
-import UserContext from './userContext';
-import UserReducer from './userReducer';
-import api from '../../api/api';
-import { 
-  GET_USERS, 
-  GET_USER, 
-  GET_AGENTS, 
-  UPDATE_USER, 
-  DELETE_USER, 
-  CREATE_USER, 
+import React, { useReducer } from "react";
+import UserContext from "./userContext";
+import UserReducer from "./userReducer";
+import api from "../../api/api";
+import {
+  GET_USERS,
+  GET_USER,
+  GET_AGENTS,
+  UPDATE_USER,
+  DELETE_USER,
+  CREATE_USER,
   SET_ERROR,
   CLEAR_STATE,
   SET_LOADING,
   GET_USERS_BY_STORE,
-  SET_AGENT
-} from '../types';
-import AsyncStorage from "@react-native-community/async-storage";
+  SET_AGENT,
+} from "../types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const UserState = props => {
+const UserState = (props) => {
   const initialState = {
     users: [],
     user: {},
     loading: false,
     error: null,
     count: null,
-    agents: []
+    agents: [],
   };
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -38,14 +38,14 @@ const UserState = props => {
     };
     setLoading();
     try {
-      
       const res = await api.get(
-        `/users?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,config
+        `/users?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,
+        config
       );
       dispatch({
         type: GET_USERS,
         payload: res.data.data,
-        count: res.data.pagination.total
+        count: res.data.pagination.total,
       });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -62,17 +62,18 @@ const UserState = props => {
     setLoading();
     try {
       let res;
-      if (!query) query = '';
+      if (!query) query = "";
 
       if (pagination) {
-          res = await api.get(
-            `/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1`,config
-          );
+        res = await api.get(
+          `/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1`,
+          config
+        );
       }
       dispatch({
         type: GET_USERS,
         payload: res.data.data,
-        count: res.data.pagination.total
+        count: res.data.pagination.total,
       });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -89,15 +90,17 @@ const UserState = props => {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
-    if(!query) query = ''
+    if (!query) query = "";
 
     setLoading();
     try {
-      const res = await api.get(`/users/agents?sort=name&role=user&isActive=true${query}`,config);
+      const res = await api.get(
+        `/users/agents?sort=name&role=user&isActive=true${query}`,
+        config
+      );
       dispatch({ type: GET_AGENTS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -111,20 +114,22 @@ const UserState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1${multiStores}`,config);
-      dispatch({ 
-        type: GET_USERS_BY_STORE, 
+      const res = await api.get(
+        `/users?page=${pagination.page}&limit=${pagination.limit}&searchIndex=name-email-phone-role&searchText=${query}&searchType=${typeQuery}&validation=1${multiStores}`,
+        config
+      );
+      dispatch({
+        type: GET_USERS_BY_STORE,
         payload: res.data.data,
-        count: res.data.pagination.total
-       });
+        count: res.data.pagination.total,
+      });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Get Single Item by ID
-  const getUser = async userId => {
+  const getUser = async (userId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -133,44 +138,40 @@ const UserState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/users/${userId}`,config);
+      const res = await api.get(`/users/${userId}`, config);
       dispatch({
         type: GET_USER,
-        payload: res.data.data
+        payload: res.data.data,
       });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Delete User
   const deleteUser = async (userId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`,
+      },
     };
     setLoading();
     try {
-      
       const res = await api.delete(`/users/${userId}`, config);
-      dispatch({ type: DELETE_USER, payload: res.data.deletedId })
+      dispatch({ type: DELETE_USER, payload: res.data.deletedId });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Create User
   const createUser = async (user) => {
-
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`,
+      },
     };
     clearUserState();
     setLoading();
@@ -178,27 +179,24 @@ const UserState = props => {
       const res = await api.post(`/users`, { ...user }, config);
       dispatch({ type: CREATE_USER, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Update User
   const updateUser = async (user, userId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}}`,
+      },
     };
     setLoading();
     try {
-      
-      const res = await api.put(`/users/${userId}`, {...user} ,config);
-      dispatch({ type: UPDATE_USER, payload: res.data.data })
+      const res = await api.put(`/users/${userId}`, { ...user }, config);
+      dispatch({ type: UPDATE_USER, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -227,7 +225,7 @@ const UserState = props => {
         setLoading,
         getUsersByStore,
         AdvancedResults,
-        setAgent
+        setAgent,
       }}
     >
       {props.children}

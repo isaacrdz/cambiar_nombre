@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import VehicleContext from "./vehicleContext";
 import VehicleReducer from "./vehicleReducer";
 import api from "../../api/api";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   GET_VEHICLES,
   GET_VEHICLES_BY_MAKE,
@@ -36,7 +36,7 @@ const VehicleState = (props) => {
     };
     setLoading();
     try {
-      const res = await api.get(`makes/${makeId}/vehicles`,config);
+      const res = await api.get(`makes/${makeId}/vehicles`, config);
       dispatch({ type: GET_VEHICLES_BY_MAKE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -54,7 +54,7 @@ const VehicleState = (props) => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles?sort=model`,config);
+      const res = await api.get(`/vehicles?sort=model`, config);
       dispatch({ type: GET_VEHICLES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -72,7 +72,7 @@ const VehicleState = (props) => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles/${vehicleId}`,config);
+      const res = await api.get(`/vehicles/${vehicleId}`, config);
       dispatch({ type: GET_VEHICLE, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -151,7 +151,10 @@ const VehicleState = (props) => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/vehicles/vehiclesByCategory/${vehicleCat}`,config);
+      const res = await api.get(
+        `/vehicles/vehiclesByCategory/${vehicleCat}`,
+        config
+      );
       dispatch({ type: GET_VEHICLES_BY_CAT, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Stacks
 import HomeStackScreen from "./navigation/HomeStackScreen";
@@ -21,20 +21,16 @@ let notificationAmount = 0;
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
 const Routes = ({ token, ...rest }) => {
   const { isAuthenticated, loadUser, user, updateProfile } = useAuth();
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [tok, setTok] = useState(null);  
- 
+  const [tok, setTok] = useState(null);
 
   React.useEffect(() => {
     Notifications.setBadgeCountAsync(0);
   }, []);
-
-
 
   React.useEffect(() => {
     if (user && user._id) {
@@ -57,9 +53,11 @@ const Routes = ({ token, ...rest }) => {
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current =
-        Notifications.addNotificationResponseReceivedListener(async(response) => {
-          console.log(response.notification.request)
-        });
+        Notifications.addNotificationResponseReceivedListener(
+          async (response) => {
+            console.log(response.notification.request);
+          }
+        );
 
       return () => {
         Notifications.removeNotificationSubscription(
@@ -69,7 +67,6 @@ const Routes = ({ token, ...rest }) => {
       };
     }
   }, [user]);
-
 
   const getToken = async () => {
     let t = await AsyncStorage.getItem("token");
@@ -89,7 +86,7 @@ const Routes = ({ token, ...rest }) => {
   return (
     <NavigationContainer>
       {isAuthenticated ? (
-          <Tabs.Navigator
+        <Tabs.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -119,17 +116,22 @@ const Routes = ({ token, ...rest }) => {
         >
           <Tabs.Screen name="Home" component={HomeStackScreen} />
           <Tabs.Screen name="Leads" component={LeadStackScreen} />
-          {
-            user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isUser(user.tier._id)) &&
-            <Tabs.Screen name="Tareas" component={TaskStackScreen} />
-          }
-          {
-            user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isUser(user.tier._id)) &&
-            <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
-          }
+          {user &&
+            user.tier &&
+            (isRockstar(user.tier._id) ||
+              isAdmin(user.tier._id) ||
+              isUser(user.tier._id)) && (
+              <Tabs.Screen name="Tareas" component={TaskStackScreen} />
+            )}
+          {user &&
+            user.tier &&
+            (isRockstar(user.tier._id) ||
+              isAdmin(user.tier._id) ||
+              isUser(user.tier._id)) && (
+              <Tabs.Screen name="Citas" component={AppointmentStackScreen} />
+            )}
           <Tabs.Screen name="Perfil" component={ProfileStackScreen} />
         </Tabs.Navigator>
-
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Auth" component={AuthStackScreen} />

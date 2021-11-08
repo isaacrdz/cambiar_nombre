@@ -1,25 +1,25 @@
-import React, { useReducer } from 'react';
-import SubstatusContext from './substatusContext';
-import SubstatusReducer from './substatusReducer';
-import api from '../../api/api';
-import AsyncStorage from "@react-native-community/async-storage";
-import { 
-  GET_SUBSTATUSES, 
-  GET_SUBSTATUS, 
-  CREATE_SUBSTATUS, 
-  DELETE_SUBSTATUS, 
-  UPDATE_SUBSTATUS, 
-  SET_ERROR, 
-  CLEAR_STATE, 
-  SET_LOADING 
-} from '../types';
+import React, { useReducer } from "react";
+import SubstatusContext from "./substatusContext";
+import SubstatusReducer from "./substatusReducer";
+import api from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  GET_SUBSTATUSES,
+  GET_SUBSTATUS,
+  CREATE_SUBSTATUS,
+  DELETE_SUBSTATUS,
+  UPDATE_SUBSTATUS,
+  SET_ERROR,
+  CLEAR_STATE,
+  SET_LOADING,
+} from "../types";
 
-const SubstatusState = props => {
+const SubstatusState = (props) => {
   const initialState = {
     substatuses: [],
     substatus: {},
     loading: false,
-    error: null
+    error: null,
   };
 
   const [state, dispatch] = useReducer(SubstatusReducer, initialState);
@@ -34,10 +34,13 @@ const SubstatusState = props => {
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/status/${statusId}/substatus?sort=name`,config);
+      const res = await api.get(
+        `/status/${statusId}/substatus?sort=name`,
+        config
+      );
       dispatch({ type: GET_SUBSTATUSES, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -52,10 +55,10 @@ const SubstatusState = props => {
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/substatus?sort=name`,config);
+      const res = await api.get(`/substatus?sort=name`, config);
       dispatch({ type: GET_SUBSTATUSES, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -70,10 +73,10 @@ const SubstatusState = props => {
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.get(`/substatus/${substatusId}`,config);
+      const res = await api.get(`/substatus/${substatusId}`, config);
       dispatch({ type: GET_SUBSTATUS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -83,53 +86,60 @@ const SubstatusState = props => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
+      },
     };
 
     clearSubstatusState();
     setLoading();
     try {
-      const res = await api.post(`status/${status}/substatus`, { ...substatus }, config);
+      const res = await api.post(
+        `status/${status}/substatus`,
+        { ...substatus },
+        config
+      );
       dispatch({ type: CREATE_SUBSTATUS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
-   //Delete Substatus
-   const deleteSubstatus = async (substatusId) => {
-    const config =  {
+  //Delete Substatus
+  const deleteSubstatus = async (substatusId) => {
+    const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
+      },
     };
     setLoading();
     try {
-      
       const res = await api.delete(`/substatus/${substatusId}`, config);
-      dispatch({ type: DELETE_SUBSTATUS, payload: res.data.deletedId })
+      dispatch({ type: DELETE_SUBSTATUS, payload: res.data.deletedId });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Update Substatus
   const updateSubstatus = async (substatus, substatusId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
+      },
     };
     clearSubstatusState();
     setLoading();
 
-    try { 
-      const res = await api.put(`/substatus/${substatusId}`, {...substatus} ,config);
-      dispatch({ type: UPDATE_SUBSTATUS, payload: res.data.data })
+    try {
+      const res = await api.put(
+        `/substatus/${substatusId}`,
+        { ...substatus },
+        config
+      );
+      dispatch({ type: UPDATE_SUBSTATUS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -152,8 +162,8 @@ const SubstatusState = props => {
         deleteSubstatus,
         updateSubstatus,
         getSubstatusesByStatus,
-        setLoading, 
-        clearSubstatusState
+        setLoading,
+        clearSubstatusState,
       }}
     >
       {props.children}

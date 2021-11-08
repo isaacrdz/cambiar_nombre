@@ -5,7 +5,14 @@ import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 import { getMultiStoresIds } from "../utils/storesUser";
-import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "../utils/Authroles";
+import {
+  isAdmin,
+  isGeneralManager,
+  isRockstar,
+  isSuper,
+  isUser,
+} from "../utils/Authroles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const filters = [
   {
@@ -40,21 +47,35 @@ const filters = [
   {
     title: "Sin Asignar",
     value: "Unassigned",
-    type: "unassigned"
-  }
+    type: "unassigned",
+  },
 ];
 
 const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-  const { clearState, getLeads, getLeadsByStore, getLeadsRockstar, setTab } = useLead();
+  const { clearState, getLeads, getLeadsByStore, getLeadsRockstar, setTab } =
+    useLead();
   const { user } = useAuth();
 
   const handleSearch = async (item) => {
     await clearState();
-    if(user && user.tier && isUser(user.tier._id)){
+    if (user && user.tier && isUser(user.tier._id)) {
       await getLeads(1, user._id, item, query);
-    }else if(user && user.tier && isAdmin(user.tier._id)){
-      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`, item, query)
-    }else if (user && user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))) {
+    } else if (user && user.tier && isAdmin(user.tier._id)) {
+      await getLeadsByStore(
+        1,
+        `&multiStores=${getMultiStoresIds(user.stores)}${
+          user && user.carType && user.carType !== "ambos"
+            ? `&carType=${user.carType}`
+            : ""
+        }`,
+        item,
+        query
+      );
+    } else if (
+      user &&
+      user.tier &&
+      (isSuper(user.tier._id) || isGeneralManager(user.tier._id))
+    ) {
       getLeadsByStore(
         1,
         `&multiStores=${getMultiStoresIds(user.group.stores)}`,
@@ -96,7 +117,7 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
             )}
             onPress={() => {
               if (item !== current) {
-                setTab(`${item.type}.${item.value}`)
+                setTab(`${item.type}.${item.value}`);
                 setCurrent(item);
                 setPage(1);
                 handleSearch(item);

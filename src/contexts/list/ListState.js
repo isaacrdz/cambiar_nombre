@@ -1,28 +1,27 @@
-import React, { useReducer } from 'react';
-import ListContext from './listContext';
-import ListReducer from './listReducer';
-import AsyncStorage from "@react-native-community/async-storage";
-import api from '../../api/api';
-import { 
-  GET_LISTS, 
-  CREATE_LIST, 
-  GET_LIST, 
-  DELETE_LIST, 
-  UPDATE_LIST, 
+import React, { useReducer } from "react";
+import ListContext from "./listContext";
+import ListReducer from "./listReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../api/api";
+import {
+  GET_LISTS,
+  CREATE_LIST,
+  GET_LIST,
+  DELETE_LIST,
+  UPDATE_LIST,
   SET_ERROR,
   CLEAR_STATE,
   SET_LOADING,
-  GET_LIST_BY_STORE
-} from '../types';
+  GET_LIST_BY_STORE,
+} from "../types";
 
-const ListState = props => {
+const ListState = (props) => {
   const initialState = {
     lists: [],
     list: {},
     loading: false,
     error: null,
     count: null,
-
   };
 
   const [state, dispatch] = useReducer(ListReducer, initialState);
@@ -36,14 +35,14 @@ const ListState = props => {
     };
     setLoading();
     try {
-      
       const res = await api.get(
-        `/lists?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,config
+        `/lists?page=${pagination.page}&limit=${pagination.limit}${query}&searchType=and`,
+        config
       );
       dispatch({
         type: GET_LISTS,
         payload: res.data.data,
-        count: res.data.pagination.total
+        count: res.data.pagination.total,
       });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -60,20 +59,20 @@ const ListState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/lists`,config);
+      const res = await api.get(`/lists`, config);
 
-      dispatch({ 
-        type: GET_LISTS, 
+      dispatch({
+        type: GET_LISTS,
         payload: res.data.data,
-        count: res.data.pagination.total
-       });
+        count: res.data.pagination.total,
+      });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
-   //Get List
-   const getList = async (listId) => {
+  //Get List
+  const getList = async (listId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -83,15 +82,14 @@ const ListState = props => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/lists/${listId}`,config);
+      const res = await api.get(`/lists/${listId}`, config);
       dispatch({ type: GET_LIST, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
-  const getListsByStore = async (storeId) =>{
+  const getListsByStore = async (storeId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -101,41 +99,37 @@ const ListState = props => {
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/stores/${storeId}/lists`,config);
+      const res = await api.get(`/stores/${storeId}/lists`, config);
       dispatch({ type: GET_LIST_BY_STORE, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
-  
+
   //Delete List
   const deleteList = async (listId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
       const res = await api.delete(`/lists/${listId}`, config);
-      dispatch({ type: DELETE_LIST, payload: res.data.deletedId })
+      dispatch({ type: DELETE_LIST, payload: res.data.deletedId });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Create List
   const createList = async (list) => {
-
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
@@ -143,27 +137,25 @@ const ListState = props => {
       const res = await api.post(`/lists`, { ...list }, config);
       dispatch({ type: CREATE_LIST, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Update List
   const updateList = async (list, listId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      
-      const res = await api.put(`/lists/${listId}`, {...list} ,config);
-      dispatch({ type: UPDATE_LIST, payload: res.data.data })
+      const res = await api.put(`/lists/${listId}`, { ...list }, config);
+      dispatch({ type: UPDATE_LIST, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -188,7 +180,7 @@ const ListState = props => {
         clearState,
         setLoading,
         getListsByStore,
-        AdvancedResults
+        AdvancedResults,
       }}
     >
       {props.children}

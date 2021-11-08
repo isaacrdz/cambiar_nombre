@@ -69,7 +69,7 @@ const ProfileTop = ({ navigation }) => {
 
   const Middle = () => (
     <Layout
-    flix={1}
+      flix={1}
       style={{
         paddingHorizontal: 40,
       }}
@@ -131,7 +131,7 @@ const ProfileTop = ({ navigation }) => {
         Ellyonsoft, Inc.
       </Text>
       <Text style={{ marginBottom: 5, textAlign: "center" }}>
-        Version 1.0.9
+        Version 1.1.0
       </Text>
     </Layout>
   );

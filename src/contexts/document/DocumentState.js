@@ -1,26 +1,26 @@
-import React, { useReducer } from 'react';
-import DocumentContext from './documentContext';
-import DocumentReducer from './documentReducer';
-import AsyncStorage from "@react-native-community/async-storage";
-import api from '../../api/api';
-import { 
-  GET_DOCUMENTS, 
-  GET_DOCUMENTS_BY_STORE, 
-  CREATE_DOCUMENT, 
-  GET_DOCUMENT, 
-  DELETE_DOCUMENT, 
-  UPDATE_DOCUMENT, 
+import React, { useReducer } from "react";
+import DocumentContext from "./documentContext";
+import DocumentReducer from "./documentReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../api/api";
+import {
+  GET_DOCUMENTS,
+  GET_DOCUMENTS_BY_STORE,
+  CREATE_DOCUMENT,
+  GET_DOCUMENT,
+  DELETE_DOCUMENT,
+  UPDATE_DOCUMENT,
   SET_ERROR,
   CLEAR_STATE,
-  SET_LOADING
- } from '../types';
+  SET_LOADING,
+} from "../types";
 
-const DocumentState = props => {
+const DocumentState = (props) => {
   const initialState = {
     documents: [],
     document: {},
     loading: false,
-    error: null
+    error: null,
   };
 
   const [state, dispatch] = useReducer(DocumentReducer, initialState);
@@ -30,36 +30,33 @@ const DocumentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      const res = await api.get(`/documents?sort=title`,config);
+      const res = await api.get(`/documents?sort=title`, config);
       dispatch({ type: GET_DOCUMENTS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
-   //Get Document
-   const getDocument = async (documentId) => {
+  //Get Document
+  const getDocument = async (documentId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/documents/${documentId}`,config);
+      const res = await api.get(`/documents/${documentId}`, config);
       dispatch({ type: GET_DOCUMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -67,17 +64,16 @@ const DocumentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/documents/multiStores?${query}`,config);
+      const res = await api.get(`/documents/multiStores?${query}`, config);
       dispatch({ type: GET_DOCUMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -86,17 +82,16 @@ const DocumentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/stores/${storeId}/documents`,config);
+      const res = await api.get(`/stores/${storeId}/documents`, config);
       dispatch({ type: GET_DOCUMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -105,86 +100,96 @@ const DocumentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
 
     try {
-      const uploadConfig = await api.post("/uploads/image", { type: file.type, fileName: file.name }, config);
-
-      await api.put(uploadConfig.data.url, fil,confige,
-        {
-          headers: { "Content-Type": file ? file.type : null }
-        }
+      const uploadConfig = await api.post(
+        "/uploads/image",
+        { type: file.type, fileName: file.name },
+        config
       );
+
+      await api.put(uploadConfig.data.url, fil, confige, {
+        headers: { "Content-Type": file ? file.type : null },
+      });
 
       const dataKey = uploadConfig.data.key;
 
-      const res = await api.post(`/documents`, { ...document, file: dataKey }, config);
+      const res = await api.post(
+        `/documents`,
+        { ...document, file: dataKey },
+        config
+      );
       dispatch({ type: CREATE_DOCUMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
-   //Delete Document
-   const deleteDocument = async (documentId) => {
-    const config =  {
+  //Delete Document
+  const deleteDocument = async (documentId) => {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
       const res = await api.delete(`/documents/${documentId}`, config);
-      dispatch({ type: DELETE_DOCUMENT, payload: res.data.deletedId })
+      dispatch({ type: DELETE_DOCUMENT, payload: res.data.deletedId });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Update Document
   const updateDocument = async (document, documentId, file) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
       let res;
       let uploadConfig;
-      if(file){
-      uploadConfig = await api.post("/uploads/image", { type: file.type, fileName: file.name },config);
+      if (file) {
+        uploadConfig = await api.post(
+          "/uploads/image",
+          { type: file.type, fileName: file.name },
+          config
+        );
 
-      await api.put(uploadConfig.data.url, file, {
-        headers: {
-          headers: { "Content-Type": file ? file.type : null },
-          Authorization:config.headers.Authorization
-        }
-      });
+        await api.put(uploadConfig.data.url, file, {
+          headers: {
+            headers: { "Content-Type": file ? file.type : null },
+            Authorization: config.headers.Authorization,
+          },
+        });
 
-      const dataKey = uploadConfig.data.key;
+        const dataKey = uploadConfig.data.key;
 
-      res = await api.post(`/documents`, { ...document, file: dataKey }, config);
-      dispatch({ type: UPDATE_DOCUMENT, payload: res.data.data });
-      }else{
-        res = await api.put(`/documents/${documentId}`, {...document} ,config);
-        dispatch({ type: UPDATE_DOCUMENT, payload: res.data.data })
+        res = await api.post(
+          `/documents`,
+          { ...document, file: dataKey },
+          config
+        );
+        dispatch({ type: UPDATE_DOCUMENT, payload: res.data.data });
+      } else {
+        res = await api.put(
+          `/documents/${documentId}`,
+          { ...document },
+          config
+        );
+        dispatch({ type: UPDATE_DOCUMENT, payload: res.data.data });
       }
-      
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -209,7 +214,7 @@ const DocumentState = props => {
         getDocumentsByStore,
         getDocumentsByMultiStore,
         clearState,
-        setLoading
+        setLoading,
       }}
     >
       {props.children}
