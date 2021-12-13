@@ -45,7 +45,6 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   );
 
   const onItemSelect = (index) => {
-    console.log("okas");
     setSelectedIndex(index);
     toggleMenu();
   };
@@ -62,24 +61,19 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   }, [user]);
 
   useEffect(() => {
-    if (stores.length >= 1) {
-      console.log("cambio store", stores.length);
+    if (stores && stores.length >= 1) {
       setSelectedStores(getMultiStoresIds(stores));
     }
   }, [stores]);
 
   const getStoresDPX = (role, groupId) => {
     if (isAdmin(role) || isUser(role) || isMarketing(role)) {
-      console.log("user - admin");
       getStoresByUser(user._id);
     } else if (isSuper(role) || isDigitalMkt(role) || isGeneralManager(role)) {
-      console.log("super");
       getStoresByGroup(user.group._id);
     } else if (isRockstar(role)) {
-      console.log("rockstar");
       getStores(true);
     } else if (role === "group") {
-      console.log("group");
       getStoresByGroup(groupId);
     }
   };
@@ -102,7 +96,7 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   }, [user]);
 
   useEffect(() => {
-    if (stores.length <= 0) return;
+    if (stores && stores.length <= 0) return;
     if (selectedIndex.row == 0) {
       setSelectedStores(getMultiStoresIds(stores));
     } else {
@@ -113,7 +107,7 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   return (
     <>
       {user &&
-        user.tier &&
+        user.tier && stores &&
         stores.length >= 2 &&
         (isRockstar(user.tier._id) ||
           isSuper(user.tier._id) ||

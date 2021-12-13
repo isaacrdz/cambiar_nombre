@@ -13,11 +13,15 @@ GET_PIE_STATUS_CHART
 export default (state, action) => {
   switch (action.type) {
     case GET_LEADS_MONTHLY_CHART:
+      let cate = [];
+      let bar = []
+      if(action && action.payload && action.payload.categories) cate = action.payload.categories;
+      if(action && action.payload && action.payload.bar) bar =  action.payload.bar.series[0].data
       return {
         ...state,
         leadsMonthlyChart: {
-          categories: action.payload.categories,
-          serie: action.payload.bar.series[0].data
+          categories: cate,
+          serie: bar
         },
         loadingCharts: false,
         error: null

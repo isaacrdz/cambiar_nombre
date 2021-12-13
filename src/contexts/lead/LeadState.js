@@ -248,7 +248,6 @@ const LeadState = (props) => {
     try {
       const res = await api.post(`/utils/mobilecall`, config);
     } catch (err) {
-      console.log(err);
     }
   };
 

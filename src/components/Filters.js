@@ -44,7 +44,6 @@ const Filters = ({filters, setQuery, type='select'}) => {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			console.log('select',selectedStores.length);
 		  if(carType && selectedStores && selectedStores.length>=1)generateQuery();
 		}, [date,carType,selectedStores])
 	      );

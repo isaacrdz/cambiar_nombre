@@ -92,7 +92,6 @@ const ChartState = (props) => {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
-    // console.log(`/charts/getTotalsDashboard?${query}`)
     setLoading();
     try {
       const res = await api.get(`/charts/getTotalsDashboard?${query}`, config);

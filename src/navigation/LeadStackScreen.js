@@ -99,7 +99,7 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
           headerRight: () => (
             <Layout style={{ display: "flex", flexDirection: "row" }}>
-             {isAdmin(user.tier._id) &&
+             {user && user.tier && isAdmin(user.tier._id) &&
               <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
               {!checkBox ? (
                 <Ionicons
