@@ -104,6 +104,7 @@ const LeadsList = ({
   };
 
   const handleLoadMore = () => {
+
     if (!loading) {
       setpageCurrent(pageCurrent + 1);
     }
