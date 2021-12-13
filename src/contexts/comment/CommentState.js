@@ -1,12 +1,12 @@
-import React, { useReducer } from 'react';
-import CommentContext from './commentContext';
-import CommentReducer from './commentReducer';
-import api from '../../api/api';
-import AsyncStorage from "@react-native-community/async-storage";
-import { 
-  GET_COMMENTS_BY_LEAD, 
-  CREATE_COMMENT, 
-  SET_ERROR, 
+import React, { useReducer } from "react";
+import CommentContext from "./commentContext";
+import CommentReducer from "./commentReducer";
+import api from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  GET_COMMENTS_BY_LEAD,
+  CREATE_COMMENT,
+  SET_ERROR,
   CLEAR_STATE,
   GET_COMMENTS,
   GET_COMMENTS_BY_USER,
@@ -14,16 +14,16 @@ import {
   SET_LOADING,
   GET_COMMENT,
   DELETE_COMMENT,
-  UPDATE_COMMENT
-} from '../types';
+  UPDATE_COMMENT,
+} from "../types";
 
-const CommentState = props => {
+const CommentState = (props) => {
   const initialState = {
     comments: [],
     comment: {},
     loading: false,
     error: null,
-    count: 0
+    count: 0,
   };
 
   const [state, dispatch] = useReducer(CommentReducer, initialState);
@@ -34,8 +34,7 @@ const CommentState = props => {
       const res = await api.get(`/leads/${leadId}/comments?sort=-createdAt`);
       dispatch({ type: GET_COMMENTS_BY_LEAD, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -44,57 +43,63 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
 
     try {
-     
-      const res = await api.post(`/leads/${leadId}/comments`, { ...comment }, config);
-      
+      const res = await api.post(
+        `/leads/${leadId}/comments`,
+        { ...comment },
+        config
+      );
+
       dispatch({ type: CREATE_COMMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
-  }
+  };
 
   //Create Comment
   const createCommentFromCalendar = async (comment) => {
-
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
 
     try {
-     
-      const res = await api.post(`/leads/${comment.lead}/comments`, { ...comment, calendar: true }, config);
-      
+      const res = await api.post(
+        `/leads/${comment.lead}/comments`,
+        { ...comment, calendar: true },
+        config
+      );
+
       dispatch({ type: CREATE_COMMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Update Commment
   const updateComment = async (comment, commentId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
-      const res = await api.put(`/comments/${commentId}`, {...comment} ,config);
-      dispatch({ type: UPDATE_COMMENT, payload: res.data.data })
+      const res = await api.put(
+        `/comments/${commentId}`,
+        { ...comment },
+        config
+      );
+      dispatch({ type: UPDATE_COMMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -103,27 +108,32 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
       let res;
 
-      if(data.role === 'rockstar'){
-        
-        res = await api.get(`/comments?page=${data.page}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,config);
-      }else{
-        res = await api.get(`/comments?page=${data.page}&store=${data.store}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,config);
+      if (data.role === "rockstar") {
+        res = await api.get(
+          `/comments?page=${data.page}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,
+          config
+        );
+      } else {
+        res = await api.get(
+          `/comments?page=${data.page}&store=${data.store}&searchIndex=store-user&limit=${data.limit}&searchText=${data.query}&searchType=or&validation=1`,
+          config
+        );
       }
 
-      dispatch({ 
-        type: GET_COMMENTS, 
+      dispatch({
+        type: GET_COMMENTS,
         payload: res.data.data,
-        count: res.data.pagination.total
+        count: res.data.pagination.total,
       });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -132,15 +142,15 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      const res = await api.get(`/comments?pending=true`,config);
+      const res = await api.get(`/comments?pending=true`, config);
       dispatch({ type: GET_COMMENTS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -149,15 +159,15 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      const res = await api.get(`/comments/${commentId}`,config);
+      const res = await api.get(`/comments/${commentId}`, config);
       dispatch({ type: GET_COMMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -166,16 +176,15 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      const res = await api.get(`comments?user=${userId}&pending=true`,config);
+      const res = await api.get(`comments?user=${userId}&pending=true`, config);
       dispatch({ type: GET_COMMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -184,36 +193,36 @@ const CommentState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      const res = await api.get(`/comments/admin?&pending=true${query}`,config);
+      const res = await api.get(
+        `/comments/admin?&pending=true${query}`,
+        config
+      );
       dispatch({ type: GET_COMMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
   //Delete Comment
   const deleteComment = async (commentId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      
       const res = await api.delete(`/comments/${commentId}`, config);
-      dispatch({ type: DELETE_COMMENT, payload: res.data })
+      dispatch({ type: DELETE_COMMENT, payload: res.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -241,7 +250,7 @@ const CommentState = props => {
         deleteComment,
         updateComment,
         createCommentFromCalendar,
-        getCommentsAR
+        getCommentsAR,
       }}
     >
       {props.children}
@@ -250,4 +259,3 @@ const CommentState = props => {
 };
 
 export default CommentState;
-

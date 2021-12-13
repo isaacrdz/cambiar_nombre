@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
 import LeadContext from "./leadContext";
 import LeadReducer from "./leadReducer";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../api/api";
-import _ from 'lodash'
+import _ from "lodash";
 import {
   GET_LEADS,
   GET_LEAD,
@@ -18,7 +18,7 @@ import {
   SELECTED_CARTYPES,
   SET_TAB,
   ASSIGN_AGENTS,
-  SET_CHECKBOX
+  SET_CHECKBOX,
 } from "../types";
 
 const LeadState = (props) => {
@@ -32,9 +32,9 @@ const LeadState = (props) => {
     selectedLeads: [],
     selectedStores: [],
     selectedCarTypes: [],
-    tab: 'all',
+    tab: "all",
     checkBox: false,
-    agent:false
+    agent: false,
   };
 
   const [state, dispatch] = useReducer(LeadReducer, initialState);
@@ -94,17 +94,20 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&status=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&status=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,
+            config
           );
           break;
         case "subStatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&substatus=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&substatus=${value}&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,
+            config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1`,
+            config
           );
           break;
       }
@@ -120,7 +123,7 @@ const LeadState = (props) => {
   };
 
   //Get Leads
-  const getLeadsByStore = async(
+  const getLeadsByStore = async (
     pageCurrent,
     multiStore,
     { type, value },
@@ -140,24 +143,28 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,
+            config
           );
           break;
         case "subStatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&searchType=or&validation=1${multiStore}`,
+            config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&searchType=or&validation=1${multiStore}`,
+            config
           );
           break;
         case "unassigned":
           leads = await api.get(
-             `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&assigned=false&searchText=${query}&searchType=or&validation=1${multiStore}`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&assigned=false&searchText=${query}&searchType=or&validation=1${multiStore}`,
+            config
           );
-        break;
+          break;
       }
 
       dispatch({
@@ -183,17 +190,20 @@ const LeadState = (props) => {
       switch (type) {
         case "status":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&status=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,
+            config
           );
           break;
         case "substatus":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&substatus=${value}&searchText=${query}&agent=${userId}&searchType=or&validation=1`,
+            config
           );
           break;
         case "all":
           leads = await api.get(
-            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`,config
+            `/leads?page=${pageCurrent}&limit=10&searchIndex=name-email-make-phone-agent-source-vehicle-store&searchText=${query}&agent=${userId}&searchType=or&validation=1`,
+            config
           );
           break;
       }
@@ -217,7 +227,7 @@ const LeadState = (props) => {
     };
     setLoading();
     try {
-      const res = await api.get(`/leads/${leadId}`,config);
+      const res = await api.get(`/leads/${leadId}`, config);
       dispatch({
         type: GET_LEAD,
         payload: res.data.data,
@@ -245,56 +255,58 @@ const LeadState = (props) => {
   const assignAgents = async (leads, agent, currentTab) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     // setLoading();
     try {
-
       const res = await api.post(
         `/leads/assignAgent`,
         { leads, agent },
         config
       );
-      dispatch({ type: ASSIGN_AGENTS, payload: res.data.data, tab: currentTab });
+      dispatch({
+        type: ASSIGN_AGENTS,
+        payload: res.data.data,
+        tab: currentTab,
+      });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
-  const setSelectedLeads = async (leads)=>{
-    
-  try {
-        leads = _.uniqBy(leads)
-        dispatch({ type: SELECTED_LEADS, payload: leads, });
-      } catch (err) {
-        dispatch({ type: SET_ERROR, payload: err.response.data });
-      }
+  const setSelectedLeads = async (leads) => {
+    try {
+      leads = _.uniqBy(leads);
+      dispatch({ type: SELECTED_LEADS, payload: leads });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
   };
 
-  const setSelectedStores = async (stores)=>{
-  try {
-        stores = _.uniqBy(stores)
-        dispatch({ type: SELECTED_STORES, payload: stores, });
-      } catch (err) {
-        dispatch({ type: SET_ERROR, payload: err.response.data });
-      }
+  const setSelectedStores = async (stores) => {
+    try {
+      stores = _.uniqBy(stores);
+      dispatch({ type: SELECTED_STORES, payload: stores });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
   };
 
-  const setSelectedCarTypes = async (carTypes)=>{
-  try {
-        carTypes = _.uniqBy(carTypes)
-        dispatch({ type: SELECTED_CARTYPES, payload: carTypes, });
-      } catch (err) {
-        dispatch({ type: SET_ERROR, payload: err.response.data });
-      }
+  const setSelectedCarTypes = async (carTypes) => {
+    try {
+      carTypes = _.uniqBy(carTypes);
+      dispatch({ type: SELECTED_CARTYPES, payload: carTypes });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
   };
 
   //Set Tab
   const setTab = (tab) => dispatch({ type: SET_TAB, payload: tab });
   const setCheckBox = (checkBox) => {
-    dispatch({ type: SET_CHECKBOX, payload: checkBox })
+    dispatch({ type: SET_CHECKBOX, payload: checkBox });
   };
 
   //Clear State
@@ -334,7 +346,7 @@ const LeadState = (props) => {
         call,
         assignAgents,
         setTab,
-        setCheckBox
+        setCheckBox,
       }}
     >
       {props.children}

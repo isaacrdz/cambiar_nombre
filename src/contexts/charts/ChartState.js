@@ -1,8 +1,8 @@
-import React, { useReducer } from 'react';
-import ChartContext from './chartContext';
-import ChartReducer from './chartReducer';
-import api from '../../api/api';
-import AsyncStorage from "@react-native-community/async-storage";
+import React, { useReducer } from "react";
+import ChartContext from "./chartContext";
+import ChartReducer from "./chartReducer";
+import api from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   SET_ERROR,
@@ -13,11 +13,10 @@ import {
   GET_CLOSURE_TOP_STORES,
   GET_CLOSURE_TOP_USERS,
   GET_SUBSTATUS_AGENT_CHART,
-  GET_PIE_STATUS_CHART
-} from '../types';
+  GET_PIE_STATUS_CHART,
+} from "../types";
 
-const ChartState = props => {
-
+const ChartState = (props) => {
   const initialState = {
     total: null,
     totalLeads: null,
@@ -27,55 +26,53 @@ const ChartState = props => {
     error: null,
     loadingCharts: false,
     leadsMonthlyChart: false,
-    pieStatus:false,
-    substatusAgentChart:false,
-    closureTopStores:false,
-    closureTopUsers:false,
-
+    pieStatus: false,
+    substatusAgentChart: false,
+    closureTopStores: false,
+    closureTopUsers: false,
   };
 
   const [state, dispatch] = useReducer(ChartReducer, initialState);
-//Get Pie Status Chart
+  //Get Pie Status Chart
 
-const getPieStatusChart  = async (query) => {
+  const getPieStatusChart = async (query) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-
-    const res = await api.get(`/charts/pieStatusChart?${query}`, config);
-    dispatch({ type: GET_PIE_STATUS_CHART, payload: res.data.data });
+      const res = await api.get(`/charts/pieStatusChart?${query}`, config);
+      dispatch({ type: GET_PIE_STATUS_CHART, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
   const getSubstatusAgentChart = async (query) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
       const res = await api.get(`/charts/substatusAgentChart?${query}`, config);
-      dispatch({ type: GET_SUBSTATUS_AGENT_CHART , payload: res.data.data });
+      dispatch({ type: GET_SUBSTATUS_AGENT_CHART, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
   //Get Monthly Leads
   const getLeadsMonthlyChart = async (query) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
@@ -83,7 +80,7 @@ const getPieStatusChart  = async (query) => {
 
       dispatch({ type: GET_LEADS_MONTHLY_CHART, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -91,9 +88,9 @@ const getPieStatusChart  = async (query) => {
   const getTotalsDashboard = async (query) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     // console.log(`/charts/getTotalsDashboard?${query}`)
     setLoading();
@@ -101,7 +98,7 @@ const getPieStatusChart  = async (query) => {
       const res = await api.get(`/charts/getTotalsDashboard?${query}`, config);
       dispatch({ type: GET_TOTALS_DASHBOARD, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
 
@@ -109,32 +106,32 @@ const getPieStatusChart  = async (query) => {
   const getClosureTopUsers = async (query) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
       const res = await api.get(`/charts/closureTopUsers?${query}`, config);
       dispatch({ type: GET_CLOSURE_TOP_USERS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
-//Get Top Stores
+  //Get Top Stores
   const getClosureTopStores = async () => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
       const res = await api.get(`/charts/closureTopStores`, config);
       dispatch({ type: GET_CLOSURE_TOP_STORES, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data.error})
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
     }
   };
   //Clear State
@@ -167,12 +164,12 @@ const getPieStatusChart  = async (query) => {
 
         getSubstatusAgentChart,
         substatusAgentChart: state.substatusAgentChart,
-        
+
         getPieStatusChart,
         pieStatus: state.pieStatus,
 
         clearCharts,
-        setLoading
+        setLoading,
       }}
     >
       {props.children}

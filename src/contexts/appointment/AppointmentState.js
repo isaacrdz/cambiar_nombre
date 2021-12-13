@@ -1,28 +1,28 @@
-import React, { useReducer } from 'react';
-import AppointmentContext from './appointmentContext';
-import AsyncStorage from "@react-native-community/async-storage";
-import AppointmentReducer from './appointmentReducer';
-import api from '../../api/api';
-import { 
-  GET_APPOINTMENTS, 
-  CREATE_APPOINTMENT, 
-  GET_APPOINTMENT, 
-  DELETE_APPOINTMENT, 
-  UPDATE_APPOINTMENT, 
+import React, { useReducer } from "react";
+import AppointmentContext from "./appointmentContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppointmentReducer from "./appointmentReducer";
+import api from "../../api/api";
+import {
+  GET_APPOINTMENTS,
+  CREATE_APPOINTMENT,
+  GET_APPOINTMENT,
+  DELETE_APPOINTMENT,
+  UPDATE_APPOINTMENT,
   SET_ERROR,
   CLEAR_STATE,
   SET_LOADING,
   GET_APPOINTMENTS_BY_USER,
   GET_APPOINTMENTS_BY_STORE,
-  GET_APPOINTMENTS_AR
-} from '../types';
+  GET_APPOINTMENTS_AR,
+} from "../types";
 
-const AppointmentState = props => {
+const AppointmentState = (props) => {
   const initialState = {
     appointments: [],
     appointment: {},
     loading: false,
-    error: null
+    error: null,
   };
 
   const [state, dispatch] = useReducer(AppointmentReducer, initialState);
@@ -37,10 +37,10 @@ const AppointmentState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/appointments?status=true`,config);
+      const res = await api.get(`/appointments?status=true`, config);
       dispatch({ type: GET_APPOINTMENTS, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -54,10 +54,10 @@ const AppointmentState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`users/${userId}/appointments`,config);
+      const res = await api.get(`users/${userId}/appointments`, config);
       dispatch({ type: GET_APPOINTMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
@@ -71,15 +71,18 @@ const AppointmentState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/appointments/admin?${stores}&status=true`,config);
+      const res = await api.get(
+        `/appointments/admin?${stores}&status=true`,
+        config
+      );
       dispatch({ type: GET_APPOINTMENTS_BY_STORE, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
-   //Get Appointment
-   const getAppointment = async (appointmentId) => {
+  //Get Appointment
+  const getAppointment = async (appointmentId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -88,91 +91,94 @@ const AppointmentState = props => {
     };
     setLoading();
     try {
-      const res = await api.get(`/appointments/${appointmentId}`,config);
+      const res = await api.get(`/appointments/${appointmentId}`, config);
       dispatch({ type: GET_APPOINTMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Delete Appointment
   const deleteAppointment = async (appointmentId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization:  `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
       const res = await api.delete(`/appointments/${appointmentId}`, config);
-      dispatch({ type: DELETE_APPOINTMENT, payload: res.data })
+      dispatch({ type: DELETE_APPOINTMENT, payload: res.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
-
 
   //Create Appointment
   const createAppointment = async (appointment) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization:  `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.post(`/appointments`, { 
-        ...appointment,
-        endDate: appointment.allDay ? appointment.startDate : appointment.endDate,
-      }, config);
+      const res = await api.post(
+        `/appointments`,
+        {
+          ...appointment,
+          endDate: appointment.allDay
+            ? appointment.startDate
+            : appointment.endDate,
+        },
+        config
+      );
       dispatch({ type: CREATE_APPOINTMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
-
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Update Appointment
   const updateAppointment = async (appointment, appointmentId) => {
-    const config =  {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization:  `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
-      const res = await api.put(`/appointments/${appointmentId}`, {...appointment} ,config);
-      dispatch({ type: UPDATE_APPOINTMENT, payload: res.data.data })
+      const res = await api.put(
+        `/appointments/${appointmentId}`,
+        { ...appointment },
+        config
+      );
+      dispatch({ type: UPDATE_APPOINTMENT, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
   };
 
   //Get appointments AdvancedResults
-  const getAppointmentsAR = async (search) =>{
-    const config =  {
+  const getAppointmentsAR = async (search) => {
+    const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization:  `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
-      
-      const res = await api.get(`/appointments${search}` ,config);
-      dispatch({ type: GET_APPOINTMENTS_AR, payload: res.data.data })
+      const res = await api.get(`/appointments${search}`, config);
+      dispatch({ type: GET_APPOINTMENTS_AR, payload: res.data.data });
     } catch (err) {
-      dispatch({ type: SET_ERROR, payload: err.response.data})
+      dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Clear State
   const clearState = () => dispatch({ type: CLEAR_STATE });
@@ -196,7 +202,7 @@ const AppointmentState = props => {
         setLoading,
         getAppointmentsByUser,
         getAppointmentsByStore,
-        getAppointmentsAR
+        getAppointmentsAR,
       }}
     >
       {props.children}

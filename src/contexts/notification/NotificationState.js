@@ -1,16 +1,16 @@
-import React, { useReducer } from 'react';
-import NotificationContext from './notificationContext';
-import NotificationReducer from './notificationReducer';
-import AsyncStorage from "@react-native-community/async-storage";
-import api from '../../api/api';
-import { CREATE_NOTIFICATION, SET_LOADING, SET_ERROR } from '../types';
+import React, { useReducer } from "react";
+import NotificationContext from "./notificationContext";
+import NotificationReducer from "./notificationReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../api/api";
+import { CREATE_NOTIFICATION, SET_LOADING, SET_ERROR } from "../types";
 
-const NotificationState = props => {
+const NotificationState = (props) => {
   const initialState = {
     notifications: [],
     allNotifications: [],
     loading: false,
-    error: null
+    error: null,
   };
 
   const [state, dispatch] = useReducer(NotificationReducer, initialState);
@@ -18,9 +18,9 @@ const NotificationState = props => {
   const createNotification = async (notification) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
     try {
@@ -29,7 +29,7 @@ const NotificationState = props => {
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
     }
-  }
+  };
 
   //Clear State
   const setLoading = () => dispatch({ type: SET_LOADING });
@@ -42,7 +42,7 @@ const NotificationState = props => {
         allNotifications: state.allNotifications,
         error: state.error,
         createNotification,
-      }}  
+      }}
     >
       {props.children}
     </NotificationContext.Provider>

@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import AuthContext from "./authContext";
 import AuthReducer from "./authReducer";
 import api from "../../api/api";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   REGISTER_SUCCESS,
@@ -35,17 +35,17 @@ const AuthState = (async = (props) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   // const clearState = () => dispatch({ type: CLEAR_STATE });
-  const clearError = () => dispatch({ type: SET_ERROR })
- 
-  const register = async values => {
+  const clearError = () => dispatch({ type: SET_ERROR });
+
+  const register = async (values) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     try {
-      const res = await api.post('/auth/register', values, config);
+      const res = await api.post("/auth/register", values, config);
       await AsyncStorage.setItem("token", res.data.token);
       dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 
@@ -53,7 +53,7 @@ const AuthState = (async = (props) => {
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: err.response.data
+        payload: err.response.data,
       });
     }
   };
@@ -62,48 +62,45 @@ const AuthState = (async = (props) => {
   const updateProfile = async (values, type) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     setLoading();
 
     let res;
     try {
-      if (type === 'photo') {
+      if (type === "photo") {
         const uploadConfig = await api.post(
-          '/uploads/image',
+          "/uploads/image",
           { type: values.type, fileName: values.name },
           config
         );
 
-
         await api.put(uploadConfig.data.url, values, {
           headers: {
-            headers: { 'Content-Type': values ? values.type : null }
-          }
+            headers: { "Content-Type": values ? values.type : null },
+          },
         });
 
         const dataKey = uploadConfig.data.key;
 
         res = await api.put(`/auth/updatedetails`, { image: dataKey }, config);
       } else {
-        res = await api.put('/auth/updatedetails', values, config);
+        res = await api.put("/auth/updatedetails", values, config);
       }
 
       dispatch({
         type: UPDATE_PROFILE,
-        payload: res.data
+        payload: res.data,
       });
-
     } catch (err) {
       dispatch({
         type: SET_ERROR,
-        payload: err.response.data.error
+        payload: err.response.data.error,
       });
     }
   };
-
 
   //Set Current User
   const loadUser = async () => {
@@ -143,10 +140,9 @@ const AuthState = (async = (props) => {
 
       loadUser();
     } catch (err) {
-
       dispatch({
         type: SET_ERROR,
-        payload: err.response.data.error
+        payload: err.response.data.error,
       });
     }
   };
@@ -170,7 +166,7 @@ const AuthState = (async = (props) => {
         loadUser,
         logout,
         updateProfile,
-        register
+        register,
       }}
     >
       {props.children}

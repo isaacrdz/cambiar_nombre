@@ -1,8 +1,8 @@
-import React, { useReducer } from 'react';
-import CompanyContext from './companyContext';
-import CompanyReducer from './companyReducer';
-import AsyncStorage from "@react-native-community/async-storage";
-import api from '../../api/api';
+import React, { useReducer } from "react";
+import CompanyContext from "./companyContext";
+import CompanyReducer from "./companyReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../api/api";
 import {
   GET_COMPANIES,
   CREATE_COMPANY,
@@ -11,15 +11,15 @@ import {
   UPDATE_COMPANY,
   SET_ERROR,
   CLEAR_STATE,
-  SET_LOADING
-} from '../types';
+  SET_LOADING,
+} from "../types";
 
-const CompanyState = props => {
+const CompanyState = (props) => {
   const initialState = {
     companies: [],
     company: {},
     loading: false,
-    error: null
+    error: null,
   };
 
   const [state, dispatch] = useReducer(CompanyReducer, initialState);
@@ -29,13 +29,13 @@ const CompanyState = props => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/companies?sort=name`,config);
+      const res = await api.get(`/companies?sort=name`, config);
       dispatch({ type: GET_COMPANIES, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -43,17 +43,17 @@ const CompanyState = props => {
   };
 
   //Get Company
-  const getCompany = async companyId => {
+  const getCompany = async (companyId) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
     try {
-      const res = await api.get(`/companies/${companyId}`,config);
+      const res = await api.get(`/companies/${companyId}`, config);
       dispatch({ type: GET_COMPANY, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -61,12 +61,12 @@ const CompanyState = props => {
   };
 
   //Delete Company
-  const deleteCompany = async companyId => {
+  const deleteCompany = async (companyId) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
@@ -79,12 +79,12 @@ const CompanyState = props => {
   };
 
   //Create Company
-  const createCompany = async company => {
+  const createCompany = async (company) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
@@ -100,9 +100,9 @@ const CompanyState = props => {
   const updateCompany = async (company, companyId) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
     };
     clearState();
     setLoading();
@@ -137,7 +137,7 @@ const CompanyState = props => {
         deleteCompany,
         updateCompany,
         clearState,
-        setLoading
+        setLoading,
       }}
     >
       {props.children}
