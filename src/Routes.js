@@ -55,7 +55,7 @@ const Routes = ({ token, ...rest }) => {
       responseListener.current =
         Notifications.addNotificationResponseReceivedListener(
           async (response) => {
-            console.log(response.notification.request);
+            // console.log(response.notification.request);
           }
         );
 
