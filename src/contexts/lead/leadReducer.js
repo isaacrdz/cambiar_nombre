@@ -75,7 +75,7 @@ export default (state, action) => {
       if(action && action.payload &&  action.payload.length) leadsSize = action.payload.length;
       return {
         ...state,
-        leadsSize:leadsSize,
+        leadsSize: leadsSize,
         leads: [...state.leads, ...action.payload],
         loading: false,
         error: null,

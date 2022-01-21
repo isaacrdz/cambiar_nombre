@@ -1,19 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Icon, Input, Layout } from "@ui-kitten/components";
+import { Input, Layout } from "@ui-kitten/components";
 
 import useLead from "../../hooks/useLead";
-import useAuth from "../../hooks/useAuth";
-import { getMultiStoresIds } from "../../utils/storesUser";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "../../utils/Authroles";
+import { useFocusEffect } from "@react-navigation/native";
 
 const LeadSearch = ({
-  query,
-  setQuery,
-  setpageCurrent,
-  pageCurrent,
-  currentSearch,
+  params,
+  setParams
 }) => {
   const renderInputIcon = (props) => 
   <Ionicons
@@ -22,27 +17,21 @@ const LeadSearch = ({
     style={{color: "#5764b8" }}
   />;
 
-  const { getLeads, loading, clearState, getLeadsByStore, getLeadsRockstar } = useLead();
-  const { user } = useAuth()
+  const [query, setQuery] = useState('')
+  const { clearState } = useLead();
 
   const handleSubmit = async(e) => {
-    setpageCurrent(1)
-    await clearState();
-    if(user && user.tier && isUser(user.tier._id)){
-      await getLeads(1, user._id, currentSearch, query);
-    }else if(user && user.tier && isAdmin(user.tier._id)){
-      await getLeadsByStore(1, `&multiStores=${getMultiStoresIds(user.stores)}${user && user.carType && user.carType !== 'ambos' ? `&carType=${user.carType}` : ''}`, currentSearch, query);
-    }else if (user && user.tier && (isSuper(user.tier._id) || isGeneralManager(user.tier._id))) {
-      getLeadsByStore(
-        pageCurrent,
-        `&multiStores=${getMultiStoresIds(user.group.stores)}`,
-        currentSearch,
-        query
-      );
-    } else if (user && user.tier && isRockstar(user.tier._id)) {
-      getLeadsRockstar(pageCurrent, currentSearch, query);
-    }
+    clearState()
+    setParams({ ...params, page: 1, query})
   };
+
+  //delete here
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setQuery('');
+    }, [])
+  );
+
 
   return (
     <Layout style={styles.inputContainer} level="1">

@@ -1,49 +1,31 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
 import LeadsList from "../../components/leads/LeadsList";
-
+import LeadSearch from '../../components/leads/LeadSearch'
 import useAuth from "../../hooks/useAuth";
-import LeadSearch from "../../components/leads/LeadSearch";
-import Header from "../../components/header/Header";
-import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView } from "react-native";
 
 const Lead = ({ navigation }) => {
-  const [query, setQuery] = useState("");
-  const [pageCurrent, setpageCurrent] = useState(1);
-  const [currentSearch, setCurrentSearch] = useState({});
-  const { user } = useAuth()
 
-
-  useFocusEffect(
-    React.useCallback(() => {
-      setQuery('')
-     setCurrentSearch({
+  const [params, setParams] = useState({
+    page: 1,
+    query: '',
+    search: {
       title: "Todos",
       value: "all",
       type: "all",
-    })
-    }, [])
-  );
+    }
+  })
+  const { user } = useAuth()
 
   return (
-    <>
-      <LeadSearch
-        setQuery={setQuery}
-        query={query}
-        pageCurrent={pageCurrent}
-        setpageCurrent={setpageCurrent}
-        currentSearch={currentSearch}
-      />
-
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <LeadSearch params={params} setParams={setParams}/>
       <LeadsList
+        params={params}
+        setParams={setParams}
         user={user}
-        query={query}
-        pageCurrent={pageCurrent}
-        setpageCurrent={setpageCurrent}
-        currentSearch={currentSearch}
-        setCurrentSearch={setCurrentSearch}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

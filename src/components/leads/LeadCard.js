@@ -148,23 +148,7 @@ const LeadCard = ({ item }) => {
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    backgroundColor: "#f5fcff",
-  },
 
-  itemContainer: {},
-
-  itemRow: {
-    borderBottomColor: "#ccc",
-    marginBottom: 10,
-    borderBottomWidth: 1,
-  },
-  itemImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-  },
 
   itemText: {
     fontSize: 16,

@@ -137,6 +137,8 @@ const ProfileTop = ({ navigation }) => {
   );
 
   const Bottom = () => (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+
     <Layout
       style={{
         flex: 1,
@@ -152,6 +154,8 @@ const ProfileTop = ({ navigation }) => {
         Salir
       </Button>
     </Layout>
+    </SafeAreaView>
+
   );
 
   return (

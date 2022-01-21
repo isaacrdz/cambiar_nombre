@@ -43,6 +43,27 @@ const LeadState = (props) => {
 
   const clearCurrentLead = () => dispatch({ type: CLEAR_CURRENT_LEAD });
 
+  const getLeadsAR = async (values) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      }
+    };
+    setLoading();
+    try {
+      const  res = await api.post(`/leads/AdvancedResults`, { ...values }, config);
+
+      dispatch({
+        type: GET_LEADS,
+        payload: res.data.data,
+        count: res.data.pagination.total
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+  };
+
   //Update Lead
   const updateLead = async (lead, leadId) => {
     const config = {
@@ -346,6 +367,7 @@ const LeadState = (props) => {
         assignAgents,
         setTab,
         setCheckBox,
+        getLeadsAR
       }}
     >
       {props.children}
