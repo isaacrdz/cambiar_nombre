@@ -35,7 +35,7 @@ const LeadsList = ({
         setParams({
           ...params,
           page: 1,
-          limit: 1,
+          limit: 10
         })
         clearState();
 

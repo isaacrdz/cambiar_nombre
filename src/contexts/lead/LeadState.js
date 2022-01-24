@@ -19,6 +19,7 @@ import {
   SET_TAB,
   ASSIGN_AGENTS,
   SET_CHECKBOX,
+  SET_REJECTED
 } from "../types";
 
 const LeadState = (props) => {
@@ -27,6 +28,7 @@ const LeadState = (props) => {
     lead: {},
     loading: false,
     error: null,
+    isRejected: false,
     leadsSize: -1,
     callToken: null,
     selectedLeads: [],
@@ -335,6 +337,8 @@ const LeadState = (props) => {
   //Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING });
 
+  const setRejected = (status) => dispatch({ type: SET_REJECTED, payload: status });
+
   return (
     <LeadContext.Provider
       value={{
@@ -350,9 +354,11 @@ const LeadState = (props) => {
         agent: state.agent,
         tab: state.tab,
         checkBox: state.checkBox,
+        isRejected: state.isRejected,
         setSelectedLeads,
         setSelectedStores,
         setSelectedCarTypes,
+        setRejected,
         clearState,
         setLoading,
         getLeads,

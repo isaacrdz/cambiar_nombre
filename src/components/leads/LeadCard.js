@@ -85,7 +85,7 @@ const LeadCard = ({ item }) => {
 
           <Text style={styles.ItemTextName}>{item.name} </Text>
           <Text appearance="hint" style={styles.ItemText}>
-            {moment(item.createdAt).format("MMMM D, YYYY")}
+            {moment(item.arrivalDate).format("MMMM D, YYYY")}
           </Text>
         </Layout>
       )}
@@ -120,7 +120,6 @@ const LeadCard = ({ item }) => {
                 appearance="hint"
                 style={{ position: "absolute", right: 10, top: 5 }}
               >
-                {CapitalizeNames(item.store.make.name)}{" "}
                 {CapitalizeNames(item.store.name)}
               </Text>
             </>

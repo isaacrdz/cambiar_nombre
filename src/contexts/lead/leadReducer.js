@@ -13,7 +13,8 @@ import {
   SELECTED_STORES,
   SELECTED_CARTYPES,
   SET_TAB,
-  SET_CHECKBOX
+  SET_CHECKBOX,
+  SET_REJECTED
 } from "../types";
 import _ from "lodash";
 
@@ -80,6 +81,11 @@ export default (state, action) => {
         loading: false,
         error: null,
       };
+    case SET_REJECTED:
+      return {
+        ...state,
+        isRejected: action.payload
+      }
     case UPDATE_LEAD:
       return {
         ...state,

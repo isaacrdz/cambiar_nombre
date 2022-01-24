@@ -3,7 +3,7 @@ import { getMultiStoresIds } from "./storesUser";
 
 export const getOptions = ({user, page, search, query}) => {
     let options = {
-        limit: 1
+        limit: 10
     };
 
     if(search){
