@@ -9,6 +9,7 @@ export const getMultiRolesIds = (arr) => {
 
 export const getMultiRolesNames = (arr) => {
   let result = [];
+  if(!arr) return []
   arr.map(item => result.push(item.name))
   return result;
 }

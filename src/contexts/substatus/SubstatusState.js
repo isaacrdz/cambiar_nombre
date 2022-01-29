@@ -52,7 +52,6 @@ const SubstatusState = (props) => {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
-    clearSubstatusState();
     setLoading();
     try {
       const res = await api.get(`/substatus?sort=name`, config);

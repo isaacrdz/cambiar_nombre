@@ -23,7 +23,7 @@ const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-  const { selectedLeads, selectedStores, selectedCarTypes, setCheckBox, checkBox } = useLead();
+  const { selectedLeads, selectedStores, selectedCarTypes, setCheckBox, checkBox, isRejected } = useLead();
   const { user } = useAuth();
   const [menuVisible, setMenuVisible] = React.useState(false);
   const MenuIcon = (props) => <Ionicons style={{
@@ -99,7 +99,7 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
           headerRight: () => (
             <Layout style={{ display: "flex", flexDirection: "row" }}>
-             {isAdmin(user.tier._id) &&
+             {user && user.tier && isAdmin(user.tier._id) &&
               <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
               {!checkBox ? (
                 <Ionicons
@@ -141,7 +141,7 @@ const LeadMainStackScreen = ({ navigation }) => {
         name="LeadTabs"
         component={LeadTabs}
         options={{
-          headerRight: () => (
+          headerRight: () => isRejected ? null : (
             <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
               <Ionicons
                 name="add-circle-outline"

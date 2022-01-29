@@ -19,6 +19,7 @@ import {
   SET_TAB,
   ASSIGN_AGENTS,
   SET_CHECKBOX,
+  SET_REJECTED
 } from "../types";
 
 const LeadState = (props) => {
@@ -27,6 +28,7 @@ const LeadState = (props) => {
     lead: {},
     loading: false,
     error: null,
+    isRejected: false,
     leadsSize: -1,
     callToken: null,
     selectedLeads: [],
@@ -42,6 +44,27 @@ const LeadState = (props) => {
   const clearError = () => dispatch({ type: SET_ERROR });
 
   const clearCurrentLead = () => dispatch({ type: CLEAR_CURRENT_LEAD });
+
+  const getLeadsAR = async (values) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      }
+    };
+    setLoading();
+    try {
+      const  res = await api.post(`/leads/AdvancedResults`, { ...values }, config);
+
+      dispatch({
+        type: GET_LEADS,
+        payload: res.data.data,
+        count: res.data.pagination.total
+      });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data });
+    }
+  };
 
   //Update Lead
   const updateLead = async (lead, leadId) => {
@@ -248,7 +271,6 @@ const LeadState = (props) => {
     try {
       const res = await api.post(`/utils/mobilecall`, config);
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -315,6 +337,8 @@ const LeadState = (props) => {
   //Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING });
 
+  const setRejected = (status) => dispatch({ type: SET_REJECTED, payload: status });
+
   return (
     <LeadContext.Provider
       value={{
@@ -330,9 +354,11 @@ const LeadState = (props) => {
         agent: state.agent,
         tab: state.tab,
         checkBox: state.checkBox,
+        isRejected: state.isRejected,
         setSelectedLeads,
         setSelectedStores,
         setSelectedCarTypes,
+        setRejected,
         clearState,
         setLoading,
         getLeads,
@@ -347,6 +373,7 @@ const LeadState = (props) => {
         assignAgents,
         setTab,
         setCheckBox,
+        getLeadsAR
       }}
     >
       {props.children}

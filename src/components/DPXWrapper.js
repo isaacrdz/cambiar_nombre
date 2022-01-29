@@ -208,7 +208,6 @@ const DPXWrapper = ({ children, props }) => {
   // }
 
   const getStoresDPX = async (role, groupId) => {
-    console.log("okasssssssss dpx");
     if (isAdmin(role) || isUser(role) || isMarketing(role)) {
       await getStoresByUser(user._id);
     } else if (isSuper(role) || isDigitalMkt(role) || isGeneralManager(role)) {

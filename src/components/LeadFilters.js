@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
@@ -10,82 +10,65 @@ import {
   isGeneralManager,
   isRockstar,
   isSuper,
-  isUser,
 } from "../utils/Authroles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const filters = [
-  {
+const LeadFilters = ({ params, setParams }) => {
+  const { clearState } = useLead();
+  const { user } = useAuth()
+
+  const [current, setCurrent] = useState({
     title: "Todos",
     value: "all",
     type: "all",
-  },
+  })
 
-  {
-    title: "Lead",
-    value: "605bd4e80a4330245535db3c",
-    type: "status",
-  },
+  const [filters, setFilters] = useState([
+      {
+        title: "Todos",
+        value: "all",
+        type: "all",
+      },
+    
+      {
+        title: "Lead",
+        value: "605bd4e80a4330245535db3c",
+        type: "status",
+      },
+    
+      {
+        title: "Cita",
+        value: "604f80222b372e0cb11966dc",
+        type: "status",
+      },
+    
+      {
+        title: "Visita",
+        value: "6064f8065b21e51052eed547",
+        type: "status",
+      },
+    
+      {
+        title: "Vendido",
+        value: "5d7a514b5dac12c7449ce043",
+        type: "status",
+      },
+  ])
 
-  {
-    title: "Cita",
-    value: "604f80222b372e0cb11966dc",
-    type: "status",
-  },
+  useEffect(()=>{
+    if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isGeneralManager(user.tier._id))){
+      let aux = filters;
 
-  {
-    title: "Visita",
-    value: "6064f8065b21e51052eed547",
-    type: "status",
-  },
+      aux.push({
+        title: "Sin Asignar",
+        value: "Unassigned",
+        type: "unassigned",
+      })
 
-  {
-    title: "Vendido",
-    value: "5d7a514b5dac12c7449ce043",
-    type: "status",
-  },
-  {
-    title: "Sin Asignar",
-    value: "Unassigned",
-    type: "unassigned",
-  },
-];
-
-const LeadFilters = ({ current, setCurrent, setPage, query }) => {
-  const { clearState, getLeads, getLeadsByStore, getLeadsRockstar, setTab } =
-    useLead();
-  const { user } = useAuth();
-
-  const handleSearch = async (item) => {
-    await clearState();
-    if (user && user.tier && isUser(user.tier._id)) {
-      await getLeads(1, user._id, item, query);
-    } else if (user && user.tier && isAdmin(user.tier._id)) {
-      await getLeadsByStore(
-        1,
-        `&multiStores=${getMultiStoresIds(user.stores)}${
-          user && user.carType && user.carType !== "ambos"
-            ? `&carType=${user.carType}`
-            : ""
-        }`,
-        item,
-        query
-      );
-    } else if (
-      user &&
-      user.tier &&
-      (isSuper(user.tier._id) || isGeneralManager(user.tier._id))
-    ) {
-      getLeadsByStore(
-        1,
-        `&multiStores=${getMultiStoresIds(user.group.stores)}`,
-        item,
-        query
-      );
-    } else if (user && user.tier && isRockstar(user.tier._id)) {
-      getLeadsRockstar(1, item, query);
+      setFilters(aux)
+      
     }
-  };
+  },[user])
+
 
   return (
     <Layout style={{ marginTop: 20 }} level="4">
@@ -117,10 +100,10 @@ const LeadFilters = ({ current, setCurrent, setPage, query }) => {
             )}
             onPress={() => {
               if (item !== current) {
-                setTab(`${item.type}.${item.value}`);
-                setCurrent(item);
-                setPage(1);
-                handleSearch(item);
+                clearState()
+                setCurrent(item)
+                setParams({...params, search: item, page: 1})
+              
               }
             }}
           />

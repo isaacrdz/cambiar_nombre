@@ -6,6 +6,7 @@ import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 // import { FeatherIconsPack } from "./feather-icons";
 import { ThemeContext } from "./theme-context";
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 // Contexts
 import AuthState from "./src/contexts/auth/AuthState";
@@ -42,6 +43,7 @@ const App = () => {
     <>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         {/* <IconRegistry icons={FeatherIconsPack} /> */}
+        <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva[theme]}>
           <AuthState>
             <LeadState>

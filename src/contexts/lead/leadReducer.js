@@ -13,7 +13,8 @@ import {
   SELECTED_STORES,
   SELECTED_CARTYPES,
   SET_TAB,
-  SET_CHECKBOX
+  SET_CHECKBOX,
+  SET_REJECTED
 } from "../types";
 import _ from "lodash";
 
@@ -30,10 +31,12 @@ export default (state, action) => {
         checkBox: action.payload
       }
     case SELECTED_LEADS:
+      let x = 0;
+      if(action && action.payload && action.payload.length) x = action.payload.length
       return{
         ...state,
         selectedLeads: action.payload,
-        x: action.payload.length,
+        x: x,
         loading: false,
         error: null,
       };
@@ -68,13 +71,21 @@ export default (state, action) => {
         error: null,
       };
     case GET_LEADS:
+
+      let leadsSize = 0;
+      if(action && action.payload &&  action.payload.length) leadsSize = action.payload.length;
       return {
         ...state,
-        leadsSize: action.payload.length,
+        leadsSize: leadsSize,
         leads: [...state.leads, ...action.payload],
         loading: false,
         error: null,
       };
+    case SET_REJECTED:
+      return {
+        ...state,
+        isRejected: action.payload
+      }
     case UPDATE_LEAD:
       return {
         ...state,

@@ -68,7 +68,6 @@ const AddTask = ({ navigation }) => {
   const [selectedActions, setSelectedActions] = useState([]);
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
-  const [statusButton, setStatusButton] = useState(false);
   const [text, setText] = useState("");
 
   const [mode, setMode] = useState("date");
@@ -143,7 +142,6 @@ const AddTask = ({ navigation }) => {
   );
 
   const handleSubmit = async () => {
-    setStatusButton(true)
     if (text === "") {
       return Toast.show({
         text1: "Por favor deja un comentario",
@@ -217,8 +215,8 @@ const AddTask = ({ navigation }) => {
           await updateComment({ pending: false }, lead.comments[0]._id);
         }
 
-        await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
+        await createComment(BodyComment, lead._id);
         await getLead(lead._id);
         navigation.navigate("LeadTabs", { item: lead});
       }
@@ -263,6 +261,8 @@ const AddTask = ({ navigation }) => {
           item.status === lead.status._id &&
           item.name !== "new" &&
           item.name !== "rejected" &&
+          item.name !== "rsi" &&
+          item.name !== "new_service" &&
           item.name !== "visit_rejected"
         ) {
           aux.push(translateSubstatus(item.name));
@@ -454,7 +454,7 @@ const AddTask = ({ navigation }) => {
                 display="spinner"
               /> */}
                   <Layout>
-                    <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
+                    <Button style={styles.button} onPress={handleSubmit}>
                       Crear Tarea
                     </Button>
                   </Layout>

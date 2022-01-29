@@ -32,12 +32,10 @@ const data = ['uno'];
 
 
 useEffect(()=>{
-	// console.log('hereeeeeeeee',makes[0]);
 },[makes]);
   useEffect(()=>{
         //We find the resources here by role
         if(user && user.tier){
-	// console.log(user);
 
         //     if(getSources) getSources(user.tier._id);
             if(getMakes) getMakes(user.tier._id);

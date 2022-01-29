@@ -18,6 +18,7 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_ERROR = "SET_ERROR";
 
 // Leads
+export const SET_REJECTED = "SET_REJECTED";
 export const GET_LEADS = "GET_LEADS";
 export const GET_LEAD = "GET_LEAD";
 export const CLEAR_CURRENT_LEAD = "CLEAR_CURRENT_LEAD";

@@ -246,7 +246,8 @@ const TaskDetail = ({ route, navigation }) => {
           item.name !== "new" &&
           item.name !== "rejected" &&
           item.name !== "visit_rejected" &&
-          item.name !== "rsi"
+          item.name !== "rsi" && 
+          item.name !== 'new_service'
         ) {
           aux.push(translateSubstatus(item.name));
           auxIds.push(item._id);

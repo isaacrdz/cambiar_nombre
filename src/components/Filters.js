@@ -22,9 +22,9 @@ const Filters = ({filters, setQuery, type='select'}) => {
 		  .format()}&createdAt[lt]=${moment().endOf("month").format()}`
 	      );
  	const [selectedStores, setSelectedStores] = useState(false);
+	const { user } = useAuth();
 
  	const [carType, setCarType] = useState(false);
-
 
 	 const [custom, setCustom] = useState({
 		date: `&createdAt[gte]=${moment()
@@ -33,18 +33,30 @@ const Filters = ({filters, setQuery, type='select'}) => {
 		filter: "MMM",
 	      });
 
+		useFocusEffect(
+			React.useCallback(() => {
+			  
+			}, [user])
+		);
+
 
 	const generateQuery = ()=>{
+		let car = 'nuevo';
+
+		if(user && user.carType){
+			if(user.carType === 'ambos' || user.carType === 'nuevo') car ='nuevo'
+			if(user.carType === 'seminuevo') car ='seminuevo'
+		}
+
 		let newQuery = '';
 		newQuery += (date)?date:'';
-		newQuery += (carType)?`&carType=${carType}`:'';
+		newQuery += `&carType=${car}`;
 		newQuery += (selectedStores)?`&store[in]=${selectedStores}`:'';
 		setQuery((newQuery.length>=1)?newQuery:false);
 	};
 
 	useFocusEffect(
 		React.useCallback(() => {
-			console.log('select',selectedStores.length);
 		  if(carType && selectedStores && selectedStores.length>=1)generateQuery();
 		}, [date,carType,selectedStores])
 	      );
