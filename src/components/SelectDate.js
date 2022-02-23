@@ -7,7 +7,7 @@ const data = ["Hoy", "Ayer", "Este Mes", "Mes Anterior", "2022", "2021", "2020"]
 
 const SelectDate = ({ setDate, getFilter }) => {
 
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(2));
+  const [selectedIndex, setSelectedIndex] = useState(false);
   const displayValue = data[selectedIndex.row];
   const [menuVisible, setMenuVisible] = React.useState(false);
 
@@ -27,6 +27,7 @@ const SelectDate = ({ setDate, getFilter }) => {
   const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="calendar-outline" size={25} />;
 
   useEffect(()=>{
+    if(!selectedIndex)return;
       switch(selectedIndex.row){
         case 0:
             if(getFilter) getFilter('HH:00 a')
