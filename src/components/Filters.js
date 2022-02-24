@@ -18,9 +18,12 @@ import SelectDate from "./SelectDate";
 const Filters = ({filters, setQuery, type='select'}) => {
 	const [date, setDate] = useState(
 		`&createdAt[gte]=${moment()
-		  .startOf("month")
-		  .format()}&createdAt[lt]=${moment().endOf("month").format()}`
+		  .startOf("year")
+		  .format()}&createdAt[lt]=${moment().endOf("year").format()}`
 	      );
+
+
+	      
  	const [selectedStores, setSelectedStores] = useState(false);
 	const { user } = useAuth();
 
