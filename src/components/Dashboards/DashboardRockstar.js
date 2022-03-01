@@ -115,7 +115,7 @@ const HomeAdmin = ({ navigation }) => {
           <Text
             category="label"
             style={{ fontSize: 28, marginTop: 15 }}
-          >{`${user && CapitalizeNames(user.name)}`}</Text>
+          >{`${user && CapitalizeNames(user.name.split(' ')[0])}`}</Text>
           {loadingCharts ? (
             <Text category="p1" appearance="hint">{`. . .`}</Text>
           ) : (
