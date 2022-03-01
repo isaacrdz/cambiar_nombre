@@ -50,11 +50,14 @@ const Filters = ({filters, setQuery, type='select'}) => {
 			if(user.carType === 'ambos' || user.carType === 'nuevo') car ='nuevo'
 			if(user.carType === 'seminuevo') car ='seminuevo'
 		}
+		
+
 
 		let newQuery = '';
 		newQuery += (date)?date:'';
 		newQuery += `&carType=${car}`;
 		newQuery += (selectedStores)?`&store[in]=${selectedStores}`:'';
+
 		setQuery((newQuery.length>=1)?newQuery:false);
 	};
 

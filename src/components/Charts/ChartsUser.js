@@ -34,9 +34,9 @@ React.useEffect(() => {
   }, [leads]);
   return (
     <>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      {<ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Layout style={{ marginTop: 10 }}>
-          {leads ? (
+          {(leads && leads.categories && leads.serie && (leads.categories.length > 0) && (leads.serie.length > 0))? (
             <>
               <Text category="h5" style={{ textAlign: "center" }}>
                 Leads
@@ -133,7 +133,7 @@ React.useEffect(() => {
             <></>
           )}
         </Layout>
-      </ScrollView>
+      </ScrollView> }
     </>
   );
 };

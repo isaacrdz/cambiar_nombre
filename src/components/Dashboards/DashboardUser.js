@@ -67,7 +67,7 @@ const HomeUser = ({ navigation }) => {
     React.useCallback(() => {
       if (user && user._id && query) {
         getTotalsDashboard(`${query}&agent=${user._id}`);
-        getLeadsMonthlyChart(`${query}${custom.date}&agent=${user._id}`);
+        getLeadsMonthlyChart(`${query}&agent=${user._id}`);
         getPieStatusChart(`${query}&agent=${user._id}`);
       }
     }, [query])
@@ -80,8 +80,8 @@ const HomeUser = ({ navigation }) => {
           <Layout style={styles.subContainerLeft}>
           <Text
             category="label"
-            style={{ fontSize: 28, marginTop: 15 }}
-          >{`${user && CapitalizeNames(user.name)}`}</Text>
+            style={{fontSize: 28, marginTop: 15 }}
+          >{`${user && CapitalizeNames(user.name.split(' ')[0])}`}</Text>
           {loadingCharts ? (
             <Text category="p1" appearance="hint">{`. . .`}</Text>
           ) : (
@@ -176,6 +176,8 @@ const HomeUser = ({ navigation }) => {
         </Layout>
       </Layout>
 
+      {/* ! error arriba */}
+
       <Layout style={styles.subContainerDivider}>
         {!leadsMonthlyChart || !pieStatus ? (
           <Layout style={styles.center}>
@@ -215,7 +217,6 @@ const styles = StyleSheet.create({
   subContainerLeft: {
     flexDirection: "column",
     alignItems:'flex-start',
-    // backgroundColor:'red',
   },
   subContainerText: {
     display:'flex',
