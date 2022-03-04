@@ -72,13 +72,12 @@ const Filters = ({filters, setQuery, type='select'}) => {
 	{filters.includes('stores') &&
           <SelectStore setSelectedStores={setSelectedStores}/>
 	}
-	{filters.includes('date') &&
-          <SelectDate setDate={setDate} getFilter={setCustom} />
-	}
 	{filters.includes('carType') &&
           <SelectCarType carType={carType} setCarType={setCarType} />
 	}
-	
+	{filters.includes('date') &&
+          <SelectDate setDate={setDate} getFilter={setCustom} />
+	}
           {/* <SelectMake/> */}
         
 	</>)
