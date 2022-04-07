@@ -1,22 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   Layout,
   Text,
   Divider,
-  Icon,
-  List,
-  ListItem,
-  Button,
 } from "@ui-kitten/components";
-import Calendar from "../../components/SelectDate";
-import SelectCarType from "../SelectCarType";
 import moment from "moment";
-import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
-import { getMultiStoresIds } from "../../utils/storesUser";
 import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
@@ -24,8 +16,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import numeral from "numeral";
 
-import SelectStore from "../SelectStore";
-import SelectMake from "../SelectMake";
 import Filters from '../Filters';
 
 const HomeAdmin = ({ navigation }) => {
@@ -61,8 +51,6 @@ const HomeAdmin = ({ navigation }) => {
   );
 
   const [query, setQuery] = useState(false);
-
-  const [carType, setCarType] = useState(false);
 
   const today = new Date();
   const curHr = today.getHours();
@@ -134,7 +122,6 @@ const HomeAdmin = ({ navigation }) => {
               Leads
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="person-outline" size={25} color={"#673ab7"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />

@@ -65,8 +65,8 @@ const SelectDate = ({ setDate, getFilter }) => {
         onSelect={onItemSelect}
       >
         {data.map((title, i) => (
-                                 <MenuItem title={title} key={i}  />
-                                ))}
+          <MenuItem title={title} key={i}  />
+        ))}
       </OverflowMenu>
   );
 };

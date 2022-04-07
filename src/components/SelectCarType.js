@@ -4,7 +4,7 @@ import { IndexPath, Select, SelectItem, TopNavigationAction, OverflowMenu, MenuI
 import moment from 'moment';
 import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
+import { isAdmin, isGeneralManager, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
 const data = [
  'Todos',
   'Nuevos', 
@@ -57,7 +57,6 @@ const SelectCarType = ({ carType, setCarType, }) => {
       case 2:
           if(setCarType) setCarType('seminuevo')
           return; 
-    
       default:
           if(setCarType) setCarType('nuevo')
           return; 
@@ -74,6 +73,7 @@ const SelectCarType = ({ carType, setCarType, }) => {
             (
                 (
                     isAdmin(user.tier._id) ||
+                    isGeneralManager(user.tier._id) ||
                     isUser(user.tier._id) 
                 ) && 
                 user.carType && 
@@ -81,14 +81,15 @@ const SelectCarType = ({ carType, setCarType, }) => {
             )
         ) && 
          <OverflowMenu
-        anchor={renderMenuAction}
-        visible={menuVisible}
-        onBackdropPress={toggleMenu}
-        onSelect={onItemSelect}
-      >
+          anchor={renderMenuAction}
+          visible={menuVisible}
+          onBackdropPress={toggleMenu}
+          onSelect={onItemSelect}
+        >
         {data.map((title, i) => (
-                                 <MenuItem title={title} key={i}  />
-                                ))}
+          <MenuItem title={title} key={i}  />
+        ))}
+       
       </OverflowMenu>
     }
     </>

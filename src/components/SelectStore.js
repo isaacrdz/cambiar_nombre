@@ -67,9 +67,9 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   }, [stores]);
 
   const getStoresDPX = (role, groupId) => {
-    if (isAdmin(role) || isUser(role) || isMarketing(role)) {
+    if (isAdmin(role) || isUser(role) || isMarketing(role)|| isGeneralManager(role)) {
       getStoresByUser(user._id);
-    } else if (isSuper(role) || isDigitalMkt(role) || isGeneralManager(role)) {
+    } else if (isSuper(role) || isDigitalMkt(role) ) {
       getStoresByGroup(user.group._id);
     } else if (isRockstar(role)) {
       getStores(true);
@@ -106,15 +106,10 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
 
   return (
     <>
-      {user &&
-        user.tier && stores &&
-        stores.length >= 2 &&
-        (isRockstar(user.tier._id) ||
-          isSuper(user.tier._id) ||
-          isMarketing(user.tier._id) ||
-          ((isAdmin(user.tier._id) || isUser(user.tier._id)) &&
-            user.carType &&
-            user.carType === "ambos")) && (
+      {
+        stores &&
+        stores.length >= 1 &&
+        (
           <OverflowMenu
             anchor={renderMenuAction}
             visible={menuVisible}
