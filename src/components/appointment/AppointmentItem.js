@@ -5,20 +5,11 @@ import { Badge } from "react-native-paper";
 
 import {
   StyleSheet,
-  View,
-  ScrollView,
-  InteractionManager,
   TouchableOpacity,
 } from "react-native";
 import {
-  Button,
-  Card,
   Layout,
   Text,
-  Divider,
-  Icon,
-  ListItem,
-  List,
 } from "@ui-kitten/components";
 
 import { Ionicons } from "@expo/vector-icons";

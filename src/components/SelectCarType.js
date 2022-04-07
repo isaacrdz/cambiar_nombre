@@ -57,7 +57,6 @@ const SelectCarType = ({ carType, setCarType, }) => {
       case 2:
           if(setCarType) setCarType('seminuevo')
           return; 
-    
       default:
           if(setCarType) setCarType('nuevo')
           return; 
@@ -82,14 +81,15 @@ const SelectCarType = ({ carType, setCarType, }) => {
             )
         ) && 
          <OverflowMenu
-        anchor={renderMenuAction}
-        visible={menuVisible}
-        onBackdropPress={toggleMenu}
-        onSelect={onItemSelect}
-      >
+          anchor={renderMenuAction}
+          visible={menuVisible}
+          onBackdropPress={toggleMenu}
+          onSelect={onItemSelect}
+        >
         {data.map((title, i) => (
-                                 <MenuItem title={title} key={i}  />
-                                ))}
+          <MenuItem title={title} key={i}  />
+        ))}
+       
       </OverflowMenu>
     }
     </>
