@@ -336,9 +336,8 @@ const AddLead = ({ navigation }) => {
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Nombre
             </Text>
@@ -361,9 +360,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Correo Eléctronico
             </Text>
@@ -386,9 +384,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Teléfono
             </Text>
@@ -411,9 +408,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Tipo de Unidad
             </Text>
@@ -430,9 +426,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Agencia
             </Text>
@@ -459,9 +454,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Modelo
             </Text>
@@ -482,9 +476,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Año
             </Text>
@@ -507,9 +500,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Enganche
             </Text>
@@ -532,9 +524,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Tiempo de Compra
             </Text>
@@ -552,9 +543,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Fuente
             </Text>
@@ -572,9 +562,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Compañía
             </Text>
@@ -592,9 +581,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Lista
             </Text>
@@ -612,9 +600,8 @@ const AddLead = ({ navigation }) => {
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
             <Text
-              style={styles.text}
+              style={{...styles.text, marginBottom: 20}}
               category="s1"
-              style={{ marginBottom: 20 }}
             >
               Comentario
             </Text>

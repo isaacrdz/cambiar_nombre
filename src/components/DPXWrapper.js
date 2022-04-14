@@ -22,6 +22,7 @@ import {
   isGeneralManager,
   isMarketing,
   isRockstar,
+  isSalesManager,
   isSuper,
   isUser,
 } from "../utils/Authroles";
@@ -109,7 +110,8 @@ const DPXWrapper = ({ children, props }) => {
       isUser(role) ||
       isAdmin(role) ||
       isSuper(role) ||
-      isGeneralManager(role)
+      isGeneralManager(role) || 
+      isSalesManager(role) 
     ) {
       if (store) {
         await getVehiclesByMultiStore(`&make[in]=${store}${query}`);
@@ -159,7 +161,7 @@ const DPXWrapper = ({ children, props }) => {
     let queryLead = "";
     if (type) query = `&carType=${type}`;
     if (typeLead) queryLead = `&leadType=${typeLead}`;
-    if (isAdmin(role) || isSuper(role) || isGeneralManager(role)) {
+    if (isAdmin(role) || isSuper(role) || isGeneralManager(role) || isSalesManager(role)) {
       await getAgents(
         `&stores[in]=${getMultiStoresIds(store)}${query}${queryLead}`
       );
@@ -186,6 +188,7 @@ const DPXWrapper = ({ children, props }) => {
       isUser(role) ||
       isSuper(role) ||
       isGeneralManager(role) ||
+      isSalesManager(role) ||
       isMarketing(role) ||
       isDigitalMkt(role)
     ) {
@@ -210,7 +213,7 @@ const DPXWrapper = ({ children, props }) => {
   const getStoresDPX = async (role, groupId) => {
     if (isAdmin(role) || isUser(role) || isMarketing(role)) {
       await getStoresByUser(user._id);
-    } else if (isSuper(role) || isDigitalMkt(role) || isGeneralManager(role)) {
+    } else if (isSuper(role) || isDigitalMkt(role) || isSalesManager(role) || isGeneralManager(role)) {
       await getStoresByGroup(user.group._id);
     } else if (isRockstar(role)) {
       await getStores(true);
@@ -232,7 +235,7 @@ const DPXWrapper = ({ children, props }) => {
   };
 
   const getMakesDPX = async (role, groupId) => {
-    if (isAdmin(role) || isGeneralManager(role)) {
+    if (isAdmin(role) || isSalesManager(role) || isGeneralManager(role)) {
       await setMakesUser(getMakesUser(user.stores));
     } else if (isUser(role) || isSuper(role) || isDigitalMkt(role)) {
       await getMakes(`&isActive=true&group=${user.group._id}`);

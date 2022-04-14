@@ -126,18 +126,13 @@ const LeadCard = ({ item }) => {
           )}
 
           <Layout
-            style={{ alignItems: "flex-end", position: "relative" }}
             style={{
               ...styles.controlContainer,
               borderColor: setSubstatusColor(item.substatus.name),
+              alignItems: "flex-end", position: "relative"
             }}
           >
-            <Text
-              style={styles.ItemText}
-              style={{
-                color: setSubstatusColor(item.substatus.name),
-              }}
-            >
+            <Text style={{...styles.ItemText, color: setSubstatusColor(item.substatus.name)}}>
               {translateSubstatus(item.substatus.name)}
             </Text>
           </Layout>

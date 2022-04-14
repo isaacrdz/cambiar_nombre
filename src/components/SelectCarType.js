@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { IndexPath, Select, SelectItem, TopNavigationAction, OverflowMenu, MenuItem } from "@ui-kitten/components";
-import moment from 'moment';
+import { IndexPath, TopNavigationAction, OverflowMenu, MenuItem } from "@ui-kitten/components";
 import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isGeneralManager, isMarketing, isRockstar, isSuper, isUser } from './../utils/Authroles';
+import { isAdmin, isGeneralManager, isMarketing, isRockstar, isSalesManager, isSuper, isUser } from './../utils/Authroles';
 const data = [
  'Todos',
   'Nuevos', 
@@ -74,6 +73,7 @@ const SelectCarType = ({ carType, setCarType, }) => {
                 (
                     isAdmin(user.tier._id) ||
                     isGeneralManager(user.tier._id) ||
+                    isSalesManager(user.tier._id) ||
                     isUser(user.tier._id) 
                 ) && 
                 user.carType && 

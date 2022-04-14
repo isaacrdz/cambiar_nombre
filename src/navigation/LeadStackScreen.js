@@ -16,7 +16,7 @@ import Calling from "../components/leads/Calling";
 import { Ionicons } from "@expo/vector-icons";
 import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
-import { isAdmin } from "../utils/Authroles";
+import { isAdmin, isGeneralManager, isRockstar, isSalesManager, isSuper } from "../utils/Authroles";
 import _ from 'lodash';
 
 const LeadStack = createStackNavigator();
@@ -86,7 +86,7 @@ const LeadMainStackScreen = ({ navigation }) => {
                 size={25}
                 style={{
                   display:
-                    user && user.tier && isAdmin(user.tier._id)
+                    user && user.tier && (isRockstar(user.tier._id)  || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id))
                       ? "flex"
                       : "none",
                   width: 25,
@@ -99,7 +99,9 @@ const LeadMainStackScreen = ({ navigation }) => {
           ),
           headerRight: () => (
             <Layout style={{ display: "flex", flexDirection: "row" }}>
-             {user && user.tier && isAdmin(user.tier._id) &&
+             {user && user.tier && 
+             (isRockstar(user.tier._id)  || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id))
+              &&
               <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
               {!checkBox ? (
                 <Ionicons

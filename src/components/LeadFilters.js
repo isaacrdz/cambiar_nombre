@@ -9,6 +9,7 @@ import {
   isAdmin,
   isGeneralManager,
   isRockstar,
+  isSalesManager,
   isSuper,
 } from "../utils/Authroles";
 
@@ -55,7 +56,7 @@ const LeadFilters = ({ params, setParams }) => {
   ])
 
   useEffect(()=>{
-    if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isGeneralManager(user.tier._id))){
+    if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id))){
       let aux = filters;
 
       aux.push({
@@ -88,12 +89,7 @@ const LeadFilters = ({ params, setParams }) => {
                     : styles.controlContainerFilters
                 }
               >
-                <Text
-                  style={styles.ItemText}
-                  style={{
-                    color: item.value === current.value ? "white" : "#5764b8",
-                  }}
-                >
+                <Text style={{...styles.ItemText,color: item.value === current.value ? "white" : "#5764b8"}}>
                   {item.title}
                 </Text>
               </Layout>
