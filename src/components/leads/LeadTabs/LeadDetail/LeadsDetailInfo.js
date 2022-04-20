@@ -20,8 +20,6 @@ const LeadDetailInfo = ({ itemId }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    // getLead(itemId);
-
     return () => clearCurrentLead();
   }, []);
 
