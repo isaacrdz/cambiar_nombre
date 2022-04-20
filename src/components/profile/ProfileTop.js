@@ -33,35 +33,30 @@ const ProfileTop = ({ navigation }) => {
 
   const Top = () => {
     return (
-      <Layout
-        style={{
-          flexDirection: "row",
-          padding: 40,
-          alignItems: "center",
-        }}
-      >
-        <Layout style={{ marginRight: 20 }}>
+      <Layout style={{padding: 15}}>
+        <Layout style={{ marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
           <Avatar
-            style={{ width: 90, height: 90 }}
+            style={{ width: 90, height: 90, marginRight: 15 }}
             source={{
               uri: imageProfile,
             }}
           />
-        </Layout>
-        <Layout>
-          <Text
-            style={{
-              textTransform: "capitalize",
-              fontSize: 19,
-              fontWeight: "bold",
-              marginBottom: 5,
-            }}
-          >
-            {user && user.name}
-          </Text>
-          <Text appearance="hint" style={{ textTransform: "capitalize" }}>
-            {user && user.job}
-          </Text>
+          <Layout>
+            <Text
+              style={{
+                textTransform: "capitalize",
+                fontSize: 19,
+                fontWeight: "bold",
+                marginBottom: 5,
+                maxWidth: '88%',
+              }}
+            >
+              {user && user.name}
+            </Text>
+            <Text appearance="hint" style={{ textTransform: "capitalize" }}>
+              {user && user.job}
+            </Text>
+          </Layout>
         </Layout>
       </Layout>
     );
