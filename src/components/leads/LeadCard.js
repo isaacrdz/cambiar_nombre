@@ -14,7 +14,7 @@ import { CheckBox } from "@ui-kitten/components";
 import useLead from "../../hooks/useLead";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import useAuth from "../../hooks/useAuth";
-import { isUser } from "../../utils/Authroles";
+import { isRockstar, isSuper, isUser } from "../../utils/Authroles";
 
 const LeadCard = ({ item }) => {
   moment.locale("es-mx");
@@ -84,6 +84,7 @@ const LeadCard = ({ item }) => {
           </Text>
 
           <Text style={styles.ItemTextName}>{item.name} </Text>
+          <Text appearance="hint" style={styles.ItemText}>{item.carType}</Text>
           <Text appearance="hint" style={styles.ItemText}>
             {moment(item.arrivalDate).format("MMMM D, YYYY")}
           </Text>
@@ -114,22 +115,18 @@ const LeadCard = ({ item }) => {
       }
       accessoryRight={() => (
         <>
-          {user && user.stores && user.stores.length > 1 && (
+          {user && user.tier && (user.stores && user.stores.length > 1) || (isRockstar(user.tier._id) || isSuper(user.tier._id)) && 
             <>
-              <Text
-                appearance="hint"
-                style={{ position: "absolute", right: 10, top: 5 }}
-              >
+              <Text appearance="hint" style={{ position: "absolute", right: 10, top: 5 }}>
                 {CapitalizeNames(item.store.name)}
               </Text>
             </>
-          )}
+          }
 
           <Layout
             style={{
               ...styles.controlContainer,
               borderColor: setSubstatusColor(item.substatus.name),
-              alignItems: "flex-end", position: "relative"
             }}
           >
             <Text style={{...styles.ItemText, color: setSubstatusColor(item.substatus.name)}}>
@@ -171,7 +168,7 @@ const styles = StyleSheet.create({
     margin: 4,
     padding: 4,
     borderWidth: 1,
-    width: 150,
+    width: 120,
     alignItems: "center",
   },
   controlContainerFilters: {
