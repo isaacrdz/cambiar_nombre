@@ -1,4 +1,4 @@
-import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "./Authroles";
+import { isAdmin, isGeneralManager, isRockstar, isSalesManager, isSuper, isUser } from "./Authroles";
 import { getMultiStoresIds } from "./storesUser";
 
 export const getOptions = ({user, page, search, query}) => {
@@ -35,7 +35,7 @@ export const getOptions = ({user, page, search, query}) => {
     }
 
 
-    if (isAdmin(user.tier._id) || isGeneralManager(user.tier._id)) {
+    if (isAdmin(user.tier._id) || isGeneralManager(user.tier._id) || isSalesManager(user.tier._id) ) {
     if (user.stores) {
         options.store = { in: getMultiStoresIds(user.stores) };
     }

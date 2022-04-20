@@ -10,18 +10,23 @@ import SelectDate from "./SelectDate";
 
 
 const Filters = ({filters, setQuery}) => {
-	const [date, setDate] = useState(
-		`&createdAt[gte]=${moment()
-		  .startOf("year")
-		  .format()}&createdAt[lt]=${moment().endOf("year").format()}`
-	      );
+	//YEAR
+	// const [date, setDate] = useState(
+	// 	`&createdAt[gte]=${moment()
+	// 	  .startOf("year")
+	// 	  .format()}&createdAt[lt]=${moment().endOf("year").format()}`
+	//       );
+
+	const [date, setDate] = useState(`&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`);
 
  	const [selectedStores, setSelectedStores] = useState(false);
 	const { user } = useAuth();
 
  	const [carType, setCarType] = useState(false);
 
-	const [custom, setCustom] = useState({date: `&createdAt[gte]=${moment().startOf("year").format()}&createdAt[lt]=${moment().endOf("month").format()}`,filter: "MMM",});
+	 //YEAR
+	// const [custom, setCustom] = useState({date: `&createdAt[gte]=${moment().startOf("year").format()}&createdAt[lt]=${moment().endOf("month").format()}`,filter: "MMM",});
+	const [custom, setCustom] = useState({date: `&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`,filter: "DD MMMM YYYY",});
 
 	useFocusEffect(
 		React.useCallback(() => {

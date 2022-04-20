@@ -19,6 +19,7 @@ import {
   isUser,
   isDigitalMkt,
   isGeneralManager,
+  isSalesManager,
 } from "./../utils/Authroles";
 import useStore from "../hooks/useStore";
 import { CapitalizeNames } from "../utils/Capitalize";
@@ -67,7 +68,7 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   }, [stores]);
 
   const getStoresDPX = (role, groupId) => {
-    if (isAdmin(role) || isUser(role) || isMarketing(role)|| isGeneralManager(role)) {
+    if (isAdmin(role) || isUser(role) || isMarketing(role) || isSalesManager(role) || isGeneralManager(role)) {
       getStoresByUser(user._id);
     } else if (isSuper(role) || isDigitalMkt(role) ) {
       getStoresByGroup(user.group._id);

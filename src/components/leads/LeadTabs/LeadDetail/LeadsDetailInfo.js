@@ -65,7 +65,7 @@ const LeadDetailInfo = ({ itemId }) => {
           <Text style={[styles.mr, styles.textUppercase]}>
             {lead.vehicle && lead.vehicle.make.name}{" "}
             {lead.vehicle && lead.vehicle.model}{" "}
-            {lead.vehicle && lead.vehicle.year}
+            {lead && lead.year}
           </Text>
         </Layout>
         <Divider />

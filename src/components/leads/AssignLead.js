@@ -102,7 +102,6 @@ const AddAgent = ({ navigation }) => {
                 size="large"
                 style={{ marginBottom: 10 }}
                 onSelect={(index) => setSelectedAgent(index)}
-                value="Selecciona"
                 value={displayValue}
               >
                 {agentes.map((action, i) => (

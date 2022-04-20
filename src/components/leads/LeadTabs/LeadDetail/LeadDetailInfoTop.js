@@ -8,7 +8,7 @@ import { CapitalizeNames } from "../../../../utils/Capitalize";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import useLead from "../../../../hooks/useLead";
-import { isAdmin, isGeneralManager, isRockstar, isSuper, isUser } from "../../../../utils/Authroles";
+import { isAdmin, isGeneralManager, isRockstar, isSalesManager, isSuper, isUser } from "../../../../utils/Authroles";
 import useComment from "../../../../hooks/useComment";
 // import * as Contacts from "expo-contacts";
 
@@ -232,7 +232,7 @@ const LeadDetailInfoTop = ({ item, loading }) => {
 
 
         {
-          user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isGeneralManager(user.tier._id)) &&
+          user && user.tier && (isRockstar(user.tier._id) || isSalesManager(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isGeneralManager(user.tier._id)) &&
           item && item.substatus && (item.substatus._id === "60ae5d5f60638f03e9c629ce" || item.substatus._id === '605cbaafd5fc4809e161c526') &&
           <Layout style={styles.containerIcon}>
             <Icon 
