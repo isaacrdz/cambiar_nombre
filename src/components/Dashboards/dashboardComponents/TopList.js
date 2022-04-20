@@ -21,52 +21,32 @@ const TopList = ({ data, title }) => {
       <Divider style={{ marginTop: 10 }} />
 
       {(data.length>=1)?data.map((item, i) => (
-        <Layout
-          key={i}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Layout
-            style={styles.main}
-          >
-            <Layout
-            style={styles.left}
-            >
-              <Layout style={styles.number}>
-                <Text>
-                {`   ${i + 1}`}
-                </Text>
-              </Layout>
-             <Layout style={styles.info}>
-             <Text category="s1" >
-                 {CapitalizeNames(item.info.name)}
-              </Text>
-              <Text
-                category="c1"
-              >
-                {`${item.make.slug} ${CapitalizeNames(item.store.name)}`}
-              </Text>
-             </Layout>
+        <Layout key={i} style={{ flexDirection: "row", alignItems: "center", width: '100%' }}>
+          <Layout style={{padding: 10, display: 'flex', flexDirection: 'row', width: '100%'}}>
+
+            <Layout style={{width: '10%', display: 'flex', alignSelf: 'center', flexDirection: 'row'}}>
+              <Text category={'s1'}>{`${i + 1}`}</Text>
             </Layout>
 
-            <Layout
-            style={styles.rigth}
-            >
-              <Text
-                category="c1"
-                style={{
-                  marginLeft: 40,
-                }}
-              >
+            <Layout style={{width: '70%', padding: 10}}>
+              <Text category="s1">
+                {CapitalizeNames(item.info.name)}
+              </Text>
+              <Text category="c1">
+                {`${item.make.slug} ${CapitalizeNames(item.store.name)}`}
+              </Text>
+            </Layout>
+
+            <Layout style={{width: '20%', display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
+              <Text category="c2">
                 {`${item.sales} `} ventas
               </Text>
             </Layout>
           </Layout>
 
-          <Divider />
-        </Layout>
+            <Divider />
+          </Layout>
+
       )):<Layout style={styles.noSales}>
             <Text category="h6" style={{ textAlign: "center" }}>
             sin ventas
@@ -79,13 +59,10 @@ const TopList = ({ data, title }) => {
 const styles = StyleSheet.create({
   main:{
     flexDirection: "row",
-              justifyContent:'space-between',
-              alignItems:'center',
-              marginBottom: 10,
-              marginTop: 20,
-              display: "flex",
-              width: "100%",
-              
+    marginBottom: 10,
+    marginTop: 20,
+    display: "flex",
+    borderWidth: 1
   },
   noSales:{
     margin:15
@@ -93,20 +70,6 @@ const styles = StyleSheet.create({
   number:{
   marginRight:10
   },
-  info:{
-
-  },
-  left:{
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-
-  },
-  rigth:{
-    display:'flex',
-    textAlign:'right',
-    marginRight: 20,
-},
   marginleft: {
     marginLeft: 20,
   },
