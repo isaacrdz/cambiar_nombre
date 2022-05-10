@@ -126,31 +126,29 @@ const ProfileTop = ({ navigation }) => {
         Ellyonsoft, Inc.
       </Text>
       <Text style={{ marginBottom: 5, textAlign: "center" }}>
-        Version 1.1.0
+        Version 1.2.2.1
       </Text>
     </Layout>
   );
 
   const Bottom = () => (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-
-    <Layout
-      style={{
-        flex: 1,
-        justifyContent: "flex-end",
-        paddingHorizontal: 40,
-      }}
-    >
-      <Button
-        appearance="ghost"
-        style={{ marginBottom: 20 }}
-        onPress={() => logout()}
+      <Layout
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          paddingHorizontal: 40,
+        }}
       >
-        Salir
-      </Button>
-    </Layout>
+        <Button
+          appearance="ghost"
+          style={{ marginBottom: 20 }}
+          onPress={() => logout()}
+        >
+          Salir
+        </Button>
+      </Layout>
     </SafeAreaView>
-
   );
 
   return (
