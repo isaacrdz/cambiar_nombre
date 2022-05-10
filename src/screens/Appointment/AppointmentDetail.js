@@ -58,6 +58,7 @@ const AppointmentDetail = ({ route, navigation }) => {
 
   const handleSaveVisit = async () => {
 
+
     if(textVisit === ''){
       return Toast.show({
         text1: "Deja un comentario",
@@ -100,7 +101,7 @@ const AppointmentDetail = ({ route, navigation }) => {
     }
     navigation.pop();
 
-    // await getAppointmentsByUser(user._id);
+    await getAppointmentsByUser(user._id);
 
   }else{
 

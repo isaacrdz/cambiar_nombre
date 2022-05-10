@@ -36,9 +36,7 @@ const AppointmentItem = ({ item }) => {
   }
 
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("AppointmentDetail", { item: item })}
-    >
+    <TouchableOpacity onPress={() => navigation.navigate("AppointmentDetail", { item: item })}>
       <Layout
         style={{
           paddingHorizontal: 20,
@@ -71,7 +69,7 @@ const AppointmentItem = ({ item }) => {
               fontWeight: "600",
             }}
           >
-            {item.lead.name}
+            {item.leadName}
           </Text>
         </Layout>
 
