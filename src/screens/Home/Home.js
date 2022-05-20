@@ -7,8 +7,26 @@ import { SafeAreaView } from "react-native";
 import { Text, Layout } from "@ui-kitten/components";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { isAdmin, isGeneralManager, isRockstar, isSalesManager, isSuper, isUser } from "../../utils/Authroles";
+import * as Updates from "expo-updates";
+import DatePicker from 'react-native-modern-datepicker';
 
 const Home = ({ navigation }) => {
+
+   // updates on the fly
+   React.useEffect(() => {
+    reactToUpdates();
+  }, []);
+
+  const reactToUpdates = async () => {
+    Updates.addListener((event) => {
+      if (event.type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
+        Updates.reloadAsync();
+      }
+    });
+  };
+
+  // close updates on the fly
+
   const { user } = useAuth();
 
   return (

@@ -5,23 +5,19 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   translateStatus,
   translateSubstatus,
 } from "../../../../utils/tranlsateSubstatus";
 import {
   Layout,
-  Divider,
   Text,
   CheckBox,
   IndexPath,
   Select,
   SelectItem,
   Button,
-  Calendar,
   Input,
   Spinner,
 } from "@ui-kitten/components";
@@ -34,6 +30,7 @@ import _ from "lodash";
 import moment from "moment/min/moment-with-locales";
 import HeaderTitle from "../../../header/HeaderTitle";
 import { isAdmin, isRockstar, isSuper, isUser } from "../../../../utils/Authroles";
+import DatePicker from 'react-native-modern-datepicker';
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -55,10 +52,8 @@ const contactedStatus = [
 
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
-  const [hour, setHour] = useState(new Date());
-  const [finalDate, setFinalDate] = useState("");
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = React.useState(new Date());
+  const [hour, setHour] = useState('');
+  const [date, setDate] = React.useState('');
   const { substatuses, getSubstatuses } = useSubstatus();
   const { createComment, updateComment, loading } = useComment();
   const { user } = useAuth();
@@ -66,12 +61,11 @@ const AddTask = ({ navigation }) => {
   const [substatusArray, setSubstatusArray] = useState([]);
   const [substatusArrayIds, setSubstatusArrayIds] = useState([]);
   const [selectedActions, setSelectedActions] = useState([]);
+  const [statusButton, setStatusButton] = useState(false)
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
   const [text, setText] = useState("");
 
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
   moment.locale("es-mx");
 
   let paddingTop = 0;
@@ -79,61 +73,7 @@ const AddTask = ({ navigation }) => {
   if (Platform.OS === "android") {
     paddingTop = 30;
   }
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
-    setDate(currentDate);
-  };
-
-  const renderAndroidPicker = (state) => {
-    if (state === true) {
-      return (
-        <>
-          <DateTimePicker
-            value={hour}
-            mode="time"
-            display="spinner"
-            onChange={onChangeAndroidHour}
-          />
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="spinner"
-            onChange={onChangeAndroid}
-          />
-        </>
-      );
-    }
-  };
-
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-      setHour(selectedTime);
-    }
-  };
-
-  useEffect(() => {
-    if (hour && date) {
-      let finalDate = date.toString().split(" ");
-      let finalHour = hour.toString().split(" ");
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
-      setFinalDate(postDate);
-    }
-  }, [hour]);
-
-  const onChangeAndroid = (event, selectedDate) => {
-    setOpen(false);
-    if (selectedDate !== undefined) {
-      setDate(selectedDate);
-    }
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
+  
   const now = new Date();
   const yesterday = new Date(
     now.getFullYear(),
@@ -142,19 +82,46 @@ const AddTask = ({ navigation }) => {
   );
 
   const handleSubmit = async () => {
+    setStatusButton(true)
+
+    if(date === '') {
+
+      setStatusButton(false)
+      
+      return Toast.show({
+        text1: "Elige una fecha",
+        type: "error",
+        position: "bottom",
+      });
+    }
+      
+    if(hour === '') { 
+      setStatusButton(false)
+      
+      return Toast.show({
+      text1: "Elige una hora",
+      type: "error",
+      position: "bottom",
+    });
+    }
     if (text === "") {
+      setStatusButton(false)
+
       return Toast.show({
         text1: "Por favor deja un comentario",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length === 0) {
+      setStatusButton(false)
       return Toast.show({
         text1: "Selecciona al menos una accion",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length > 3) {
+      setStatusButton(false)
+
       return Toast.show({
         text1: "Selecciona máximo 3 acciones",
         type: "error",
@@ -183,11 +150,7 @@ const AddTask = ({ navigation }) => {
         action: selectedActions,
       };
 
-      if (Platform.OS === "ios") {
-        BodyComment.reschedule = moment(date).format();
-      } else {
-        BodyComment.reschedule = moment(finalDate).format();
-      }
+      BodyComment.reschedule =  moment(`${date} ${hour}`).format();
 
       if (author !== "") {
         BodyComment.assignedBy = author;
@@ -305,9 +268,8 @@ const AddTask = ({ navigation }) => {
             <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={styles.text}
+                  style={{...styles.text, marginBottom: 20}}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   1. Deja un comentario
                 </Text>
@@ -332,9 +294,8 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={styles.text}
+                  style={{...styles.text,marginBottom: 20}}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   2. Elige una acción
                 </Text>
@@ -361,9 +322,8 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={styles.text}
+                  style={{...styles.text,marginBottom: 20}}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   3. Elige un Estatus
                 </Text>
@@ -402,9 +362,8 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={styles.text}
+                  style={{...styles.text,marginBottom: 20}}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   4. Elige una Fecha
                 </Text>
@@ -414,45 +373,16 @@ const AddTask = ({ navigation }) => {
                     minHeight: 256,
                   }}
                 >
-                  <Text
-                    style={styles.text}
-                    category="s1"
-                    style={{ marginBottom: 20 }}
-                  >
-                    {Platform.OS === "android"
-                      ? `Fecha: ${
-                          finalDate &&
-                          moment(finalDate).format("DD MMMM YYYY - hh:mm a")
-                        }`
-                      : `Fecha`}
-                  </Text>
-                  {Platform.OS === "ios" && (
-                    <DateTimePicker
-                      value={date}
-                      mode="datetime"
-                      onChange={onChange}
-                      display="spinner"
-                    />
-                  )}
-                  {Platform.OS === "android" && (
-                    <Button
-                      style={{ marginBottom: 20, marginTop: 20 }}
-                      onPress={() => setOpen(true)}
-                    >
-                      Seleccionar Fecha
-                    </Button>
-                  )}
-                  {Platform.OS === "android" &&
-                    open &&
-                    renderAndroidPicker(open)}
+                <DatePicker 
+                  minimumDate={moment().add(1, 'day').format('YYYY-MM-DD')}
+                  onTimeChange={time => {
+                      setHour(time)
+                  }}
+                  onDateChange={date => {
+                    setDate(date)
+                  }}
+                />
 
-                  {/* <DateTimePicker
-                value={date}
-                mode={Platform.OS === "ios" ? "datetime" : "date"}
-                display="default"
-                onChange={onChange}
-                display="spinner"
-              /> */}
                   <Layout>
                     <Button style={styles.button} onPress={handleSubmit}>
                       Crear Tarea
