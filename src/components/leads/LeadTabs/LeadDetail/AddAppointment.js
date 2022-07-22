@@ -19,7 +19,7 @@ import {
   Input,
   Spinner
 } from "@ui-kitten/components";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from 'react-native-modern-datepicker';
 import useLead from "../../../../hooks/useLead";
 import { translateActions } from "../../../../utils/tranlsateSubstatus";
 import { isAdmin, isRockstar, isSuper } from "../../../../utils/Authroles";
@@ -29,24 +29,21 @@ const AddAppointment = ({ navigation }) => {
   const { createComment, updateComment } = useComment();
   const { lead, updateLead } = useLead();
   const { user } = useAuth();
-  const [date, setDate] = useState(new Date());
   const [finalDate, setFinalDate] = useState("");
-  const [hour, setHour] = useState(new Date());
   const [selectedAction, setSelectedAction] = useState(new IndexPath(0));
   const actions = ["information", "documentation", "driving test"];
   const times = ["1 Hora", "2 Horas"];
-  const [time, setTime] = useState({ row: 0 });
+  const [time, setTime] = useState(({ row: 0 }));
   const displayValue = actions[selectedAction.row];
   const displayValueTime = times[time.row];
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [text, setText] = useState("");
   const [statusButton, setStatusButton] = useState(false)
   const [values, setValues] = useState({
     title: "",
     description: "",
   });
+
+  const [date, setDate] = useState('');
+  const [hour, setHour] = useState('');
 
   moment.locale("es-mx");
   const handleSubmit = async () => {
@@ -72,13 +69,27 @@ const AddAppointment = ({ navigation }) => {
       });
     }
 
+    if(date === '') {
+      setStatusButton(false)
 
-    let endDate;
-    if(Platform.OS === 'ios'){
-      endDate = moment(date).add(time.row + 1, "hours");
-    }else{
-      endDate = moment(finalDate).add(time.row + 1, "hours");
+      return Toast.show({
+        text1: "Elige una fecha",
+        type: "error",
+        position: "bottom",
+      });
     }
+
+    if(hour === '') {
+      setStatusButton(false)
+
+      return Toast.show({
+        text1: "Elige una hora",
+        type: "error",
+        position: "bottom",
+      });
+    }
+    let startDate = moment(`${date} ${hour}`);
+    let endDate = moment(startDate).add(time.row + 1, "hours");
 
     ////
     let BodyComment = {
@@ -102,6 +113,7 @@ const AddAppointment = ({ navigation }) => {
 
     let BodyApp = {
       ...values,
+      startDate,
       endDate,
       action: displayValue,
       substatus: "605bd6b0bed49524ae40f885",
@@ -112,13 +124,7 @@ const AddAppointment = ({ navigation }) => {
       customer: lead.name,
     }
 
-    if(Platform.OS === 'ios'){
-      BodyApp.startDate = date
-
-    }else{
-      BodyApp.startDate = finalDate
-
-    }
+ 
 
     await createAppointment(BodyApp);
 
@@ -153,50 +159,6 @@ const AddAppointment = ({ navigation }) => {
     }
   }, [hour]);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const renderAndroidPicker = (state) => {
-    if (state === true) {
-      return (
-        <>
-          <DateTimePicker
-            value={hour}
-            mode="time"
-            display="spinner"
-            onChange={onChangeAndroidHour}
-          />
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="spinner"
-            onChange={onChangeAndroid}
-          />
-        </>
-      );
-    }
-  };
-
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-      setHour(selectedTime);
-    }
-  };
-
-  const onChangeAndroid = (event, selectedDate) => {
-    setOpen(false);
-    if (selectedDate !== undefined) {
-      setDate(selectedDate);
-    }
-  };
 
   let paddingTop = 0;
 
@@ -238,7 +200,7 @@ const AddAppointment = ({ navigation }) => {
           }}
           level="1"
         >
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
+          <Text style={{...styles.text, marginBottom: 20}} category="s1">
             1. Deja un comentario
           </Text>
           <Layout
@@ -250,7 +212,7 @@ const AddAppointment = ({ navigation }) => {
           >
             <Input
               placeholder="Comentario"
-              style={{ minWidth: 400 }}
+              style={{ minWidth: '100%' }}
               value={values.title}
               onChangeText={(string) => {
                 setValues({ ...values, title: string });
@@ -267,7 +229,7 @@ const AddAppointment = ({ navigation }) => {
           }}
           level="1"
         >
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
+          <Text style={{...styles.text, marginBottom: 20}} category="s1">
             2. Deja una descripción
           </Text>
           <Layout
@@ -280,7 +242,7 @@ const AddAppointment = ({ navigation }) => {
             <Input
               multiline={true}
               placeholder="Descripción"
-              style={{ minWidth: 400 }}
+              style={{ minWidth: '100%' }}
               value={values.description}
               onChangeText={(string) => {
                 setValues({ ...values, description: string });
@@ -290,13 +252,12 @@ const AddAppointment = ({ navigation }) => {
         </Layout>
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
+          <Text style={{...styles.text, marginBottom: 20}} category="s1">
             3. Elige una acción
           </Text>
           <Select
             size="large"
             style={{ marginBottom: 10 }}
-            value="Selecciona"
             selectedIndex={selectedAction}
             value={translateActions(displayValue)}
             onSelect={(index) => setSelectedAction(index)}
@@ -308,45 +269,37 @@ const AddAppointment = ({ navigation }) => {
         </Layout>
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
+          <Text style={{...styles.text, marginBottom: 20}} category="s1">
             4. Elige una Fecha
           </Text>
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
-            {Platform.OS === "android"
-              ? `Fecha de Inicio: ${
-                  finalDate &&
-                  moment(finalDate).format("DD MMMM YYYY - hh:mm a")
-                }`
-              : `Fecha de Inicio`}
-          </Text>
-          {Platform.OS === "ios" && (
-            <DateTimePicker
-              value={date}
-              mode="datetime"
-              onChange={onChange}
-              display="spinner"
+          <DatePicker 
+            minimumDate={moment().add(1, 'day').format('YYYY-MM-DD')}
+            onTimeChange={time => {
+              let h = time.split(':')[0];
+              if(parseInt(h) < 8 || parseInt(h) > 21) {
+                Toast.show({
+                  text1: "Elige un horario laboral (8:00am - 9:00pm)",
+                  type: "error",
+                  position: "bottom",
+                });
+              }else{  
+                setHour(time)
+              }
+            }}
+            onDateChange={date => {
+              setDate(date)
+            }}
             />
-          )}
-          {Platform.OS === "android" && (
-            <Button
-              style={{ marginBottom: 20, marginTop: 20 }}
-              onPress={() => setOpen(true)}
-            >
-              Seleccionar Fecha
-            </Button>
-          )}
-          {Platform.OS === "android" && renderAndroidPicker(open)}
         </Layout>
 
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={styles.text} category="s1" style={{ marginBottom: 20 }}>
+          <Text style={{...styles.text, marginBottom: 20}} category="s1">
             5. Elige el tiempo de la cita
           </Text>
           <Select
             size="large"
             style={{ marginBottom: 10 }}
             onSelect={(index) => setTime(index)}
-            value="Selecciona"
             value={displayValueTime}
           >
             {times.map((action, i) => (

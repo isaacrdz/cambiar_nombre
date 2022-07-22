@@ -95,7 +95,7 @@ const UserState = (props) => {
     setLoading();
     try {
       const res = await api.get(
-        `/users/agents?sort=name&role=user&isActive=true${query}`,
+        `/users/agents?sort=name&tier=6144d47b8fb0f1322599778c&isActive=true${query}`,
         config
       );
       dispatch({ type: GET_AGENTS, payload: res.data.data });
