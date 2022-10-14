@@ -7,11 +7,13 @@ import {
   SET_ERROR,
   GET_DOCUMENTS_BY_STORE,
   CLEAR_STATE,
-  SET_LOADING
+  SET_LOADING,
+  GET_DOCUMENTS_BY_LEAD,
  } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
+    case GET_DOCUMENTS_BY_LEAD:
     case GET_DOCUMENTS_BY_STORE: 
       return {
         ...state,

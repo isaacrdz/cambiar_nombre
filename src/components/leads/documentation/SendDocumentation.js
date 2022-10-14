@@ -19,14 +19,13 @@ import useLead from "../../../hooks/useLead";
 import useDocument from "../../../hooks/useDocument";
 import { CapitalizeNames } from "../../../utils/Capitalize";
 import useMail from "../../../hooks/useMail";
-import { AppLoading } from "expo";
 
 const SendDocumentation = ({ navigation }) => {
   const [currentDocuments, setCurrentDocuments] = useState([])
   const { lead } = useLead();
-  const { getDocumentsByStore } = useDocument();
+  const { getDocumentsLead } = useDocument();
   const { createMailAttachment, error, clearError} = useMail();
-
+  
   let paddingTop = 0;
 
   if(Platform.OS === 'android'){
@@ -76,9 +75,7 @@ const SendDocumentation = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-        if (lead && lead.store){
-          getDocumentsByStore(lead.store._id);
-        }
+        if (lead && lead._id) getDocumentsLead(lead._id);
     }, [lead])
   );
 

@@ -43,7 +43,6 @@ const DPXWrapper = ({ children, props }) => {
   const { getDocuments, getDocumentsByMultiStore } = useDocument();
   const { getCommentsByStore, getCommentsByUser } = useComment();
   const { getAppointmentsByStore, getAppointmentsByUser } = useAppointment();
-  import AsyncStorage from "@react-native-async-storage/async-storage";
 
   // const { getAllRoles, getRolesByGroup } = useRole()
 

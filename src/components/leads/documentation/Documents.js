@@ -24,6 +24,18 @@ const DocumentsTabs = ({ setCurrents, currents }) => {
         setCurrents(aux)
     }
 
+    const TITLES_DOCUMENTS = {
+      "Quote": "Cotización",
+      "TechnicalSheet": "Ficha Técnica",
+      "CreditsRequirements": "Requisitos de Crédito",
+      "MaintenanceCosts": "Costo de Mantenimiento",
+      "Location": "Ubicación",
+      "Catalogue": "Catálogo",
+      "GalleryVersions": "Versiones",
+      "CreditRequest": "Petición de Crédito"
+    }
+  
+
     return (
         <Layout style={{ marginTop: 20 }} level="4">
         <List
@@ -36,8 +48,8 @@ const DocumentsTabs = ({ setCurrents, currents }) => {
             <ListItem
                 title={ evaProps => 
                 <Layout style={currents.includes(item) ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
-                    <Text style={styles.ItemText} style={{ color: currents.includes(item) ? 'white' : "#5764b8" }}>
-                    {CapitalizeNames(item.title)}
+                    <Text style={{ ...styles.ItemText, color: currents.includes(item) ? 'white' : "#5764b8" }}>
+                    {TITLES_DOCUMENTS[item.title] ? TITLES_DOCUMENTS[item.title] : CapitalizeNames(item.title) }{' '}{item.vehicle ? `(${CapitalizeNames(item.vehicle.model)})` : ''}
                     </Text>
                 </Layout>
                 }

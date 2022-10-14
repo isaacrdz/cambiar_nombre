@@ -96,7 +96,8 @@ const AddAppointment = ({ navigation }) => {
       comment: values.description,
       action: ["appointment"],
       store: lead.store._id,
-      user: lead.agent._id
+      user: lead.agent._id,
+      reschedule: startDate
     };
 
     if(user && user.tier && (isAdmin(user.tier._id) || isSuper(user.tier._id) || isRockstar(user.tier._id))){
@@ -123,8 +124,6 @@ const AddAppointment = ({ navigation }) => {
       email: lead.email,
       customer: lead.name,
     }
-
- 
 
     await createAppointment(BodyApp);
 
