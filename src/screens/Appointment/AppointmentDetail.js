@@ -84,8 +84,9 @@ const AppointmentDetail = ({ route, navigation }) => {
       comment: textVisit,
       user: userId,
       action: ["visit"],
-      pending: false,
-      store: currentAppointment.lead.store._id
+      pending: true,
+      store: currentAppointment.lead.store._id,
+      reschedule: moment().add(15, 'minutes').format()
     }
 
     if(author !== ''){
@@ -439,7 +440,7 @@ const AppointmentDetail = ({ route, navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 Duración
               </Text>
-              <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value="Selecciona" value={displayValueTime}>
+              <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value={displayValueTime}>
                 {times.map((action, i) => (
                   <SelectItem title={action} key={i}  />
                 ))}

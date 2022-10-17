@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import useComment from "../../hooks/useComment";
 import { CapitalizeNames } from "../../utils/Capitalize"
 import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
+import moment from "moment";
 
 const Calling = ({ route, navigation }) => {
 
@@ -71,6 +72,8 @@ const Calling = ({ route, navigation }) => {
       action: ["call"],
       pending: false,
       store: lead.store._id,
+      reschedule: moment().add(15, 'minutes').format()
+
     };
 
     if (author !== "") {

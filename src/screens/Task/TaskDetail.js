@@ -452,9 +452,8 @@ const TaskDetail = ({ route, navigation }) => {
             <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={styles.text}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   1. Deja un comentario
                 </Text>
@@ -479,9 +478,8 @@ const TaskDetail = ({ route, navigation }) => {
               </Layout>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={styles.text}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   2. Elige una acción
                 </Text>
@@ -508,9 +506,8 @@ const TaskDetail = ({ route, navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={styles.text}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   3. Elige un Estatus
                 </Text>
@@ -536,9 +533,8 @@ const TaskDetail = ({ route, navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={styles.text}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
-                  style={{ marginBottom: 20 }}
                 >
                   4. Elige una Fecha
                 </Text>
@@ -549,9 +545,8 @@ const TaskDetail = ({ route, navigation }) => {
                   }}
                 >
                   <Text
-                    style={styles.text}
+                    style={{ ...styles.text, marginBottom: 20 }}
                     category="s1"
-                    style={{ marginBottom: 20 }}
                   >
                   
                     {Platform.OS === "android"
