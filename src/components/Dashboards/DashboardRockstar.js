@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import Calendar from "../../components/SelectDate";
-import SelectCarType from "../SelectCarType";
-import moment from "moment";
-import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
@@ -12,11 +8,8 @@ import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
-import { get } from "lodash";
 import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
-import SelectStore from "../SelectStore";
-import SelectMake from "../SelectMake";
 import Filters from '../Filters';
 
 
@@ -40,19 +33,14 @@ const HomeAdmin = ({ navigation }) => {
     getPieStatusChart,
     pieStatus,
   } = useChart();
-  const [custom, setCustom] = useState("D MMMM");
   const [query, setQuery] = useState(false);
-
-  const [date, setDate] = useState(
-    `&createdAt[gte]=${moment()
-      .startOf("month")
-      .format()}&createdAt[lt]=${moment().endOf("month").format()}`
-  );
-
-  const [carType, setCarType] = useState(false);
-
   const today = new Date();
   const curHr = today.getHours();
+  const [search, setSearch] = useState({
+    store: null,
+    carType: null,
+    date: null
+  })
 
   let greeting;
 
@@ -85,53 +73,40 @@ const HomeAdmin = ({ navigation }) => {
     clearCharts();
   }, []);
 
-  const BackIcon = (props) => (
-    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
-  );
-
-  const EditIcon = (props) => (
-    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
-  );
-
-  const InfoIcon = (props) => (
-    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
-  );
-
-  const LogoutIcon = (props) => (
-    <Ionicons name="person-outline" size={25} color={"#673ab7"} />
-  );
-
-  const data = [];
-
-  const [menuVisible, setMenuVisible] = React.useState(false);
-
-
   return (
     <ScrollView>
       <Layout style={styles.container}>
       
         <Layout style={styles.subContainerText}>
-          <Layout style={styles.subContainerLeft}>
-          <Text
-            category="label"
-            style={{ fontSize: 28, marginTop: 15 }}
-          >{`${user && CapitalizeNames(user.name.split(' ')[0])}`}</Text>
-          {loadingCharts ? (
-            <Text category="p1" appearance="hint">{`. . .`}</Text>
-          ) : (
-            <Text
-              category="p1"
-              appearance="hint"
-            >{`Tienes ${numeral(total).format(
-              "0,0"
-            )} leads acumulados`}</Text>
-          )}
+          <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <Filters filters={['date','carType','stores']} setQuery={setQuery} search={search} setSearch={setSearch} />
           </Layout>
-          <Layout style={styles.subContainer}>
-          <Filters filters={['date','carType','stores']} setQuery={setQuery}></Filters>
+
+          <Text category="label" style={{ fontSize: 28, overflow: 'hidden' }}>
+            {`${user && CapitalizeNames(user.name)}`}
+          </Text>
+
+          {
+            loadingCharts ? 
+            <Text category="p1" appearance="hint">{`. . .`}</Text> :
+            <Text category="p1" appearance="hint">
+              {`Tienes ${numeral(total).format("0,0")} leads acumulados`}
+            </Text>
+          }
+
+          {
+            !loadingCharts && (search.store || search.carType || search.date) && 
+            <Text category="p1" appearance="hint">
+              Búsqueda:{' '}
+              {`${search.carType ? search.carType : ''}`}{' '}
+              {`${search.store ? search.store : ''}`}{' '}
+              {`${search.date ? search.date : ''}`}
+            </Text>
+          }
+
         </Layout>
-        </Layout>
-        <Divider />
+
+        <Divider style={{ marginBottom: 15, marginTop: 15}}/>
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -139,7 +114,6 @@ const HomeAdmin = ({ navigation }) => {
               Leads
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="person-outline" size={25} color={"#673ab7"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -157,7 +131,6 @@ const HomeAdmin = ({ navigation }) => {
               Citas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="calendar-outline" size={25} color={"#33acee"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -242,22 +215,10 @@ const styles = StyleSheet.create({
   },
   container: {
     marginBottom: 20,
-    flex: 1,
   },
   subContainer: {
-    justifyContent: "flex-end",
     flexDirection: "row",
-    alignItems:'flex-start',
-    // paddingRight:10,
-    // backgroundColor:'blue',
-    // width:'98%',
-    // margin:'auto',
     marginTop:15
-  },
-  subContainerLeft: {
-    flexDirection: "column",
-    alignItems:'flex-start',
-    // backgroundColor:'red',
   },
   subContainerDivider: {
     paddingTop: 20,
@@ -265,13 +226,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   subContainerText: {
-    display:'flex',
-    flexDirection:'row',
-    // backgroundColor:'yellow',
-    justifyContent: "space-between",
-    paddingRight: 20,
-    paddingLeft: 25,
-    paddingBottom: 20,
+    paddingHorizontal: 20,
   },
   subContainerCards: {
     justifyContent: "space-between",

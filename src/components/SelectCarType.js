@@ -10,7 +10,7 @@ const data = [
   'Seminuevos'
 ];
 
-const SelectCarType = ({ carType, setCarType, }) => {
+const SelectCarType = ({ setCarType, setSearch, search }) => {
 
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(1));
   const displayValue = data[selectedIndex.row];
@@ -48,16 +48,28 @@ const SelectCarType = ({ carType, setCarType, }) => {
   useEffect(()=>{
     switch(selectedIndex.row){
       case 0:
-          if(setCarType) setCarType('all')
+          if(setCarType) {
+            setCarType('all')
+            setSearch({ ...search, carType: null })
+          }
           return; 
       case 1:
-          if(setCarType) setCarType('nuevo')
+          if(setCarType) {
+            setCarType('nuevo')
+            setSearch({ ...search, carType: 'Nuevos' })
+          }
           return; 
       case 2:
-          if(setCarType) setCarType('seminuevo')
+          if(setCarType) {
+            setCarType('seminuevo')
+            setSearch({ ...search, carType: 'Seminuevos' })
+          }
           return; 
       default:
-          if(setCarType) setCarType('nuevo')
+          if(setCarType) {
+            setCarType('nuevo')
+            setSearch({ ...search, carType: 'Nuevos' })
+          }
           return; 
     }
 },[selectedIndex])

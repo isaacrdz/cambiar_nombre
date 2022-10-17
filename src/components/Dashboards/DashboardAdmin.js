@@ -36,19 +36,12 @@ const HomeAdmin = ({ navigation }) => {
     getClosureTopUsers,
     closureTopUsers,
   } = useChart();
-  // const [custom, setCustom] = useState("D MMM");
 
-  const [custom, setCustom] = useState({
-    date: `&createdAt[gte]=${moment()
-      .startOf("year")
-      .format()}&createdAt[lt]=${moment().endOf("month").format()}`,
-    filter: "MMM",
-  });
-  const [date, setDate] = useState(
-    `&createdAt[gte]=${moment()
-      .startOf("month")
-      .format()}&createdAt[lt]=${moment().endOf("month").format()}`
-  );
+  const [search, setSearch] = useState({
+    store: null,
+    carType: null,
+    date: null
+  })
 
   const [query, setQuery] = useState(false);
 
@@ -72,11 +65,6 @@ const HomeAdmin = ({ navigation }) => {
         getPieStatusChart( `${query}`);
         getClosureTopUsers( `${query}`);
 
-        let customDate = `&createdAt[gte]=${moment()
-          .startOf("year")
-          .format()}&createdAt[lt]=${moment()
-          .endOf("month")
-          .format()}`;
         let customFilter = "MMM";
         getLeadsMonthlyChart(
           `${query}&filter=${customFilter}`
@@ -94,27 +82,32 @@ const HomeAdmin = ({ navigation }) => {
     <ScrollView>
       <Layout style={styles.container}>
       <Layout style={styles.subContainerText}>
-          <Layout style={styles.subContainerLeft}>
-          <Text
-            category="label"
-            style={{fontSize: 28, marginTop: 15 }}
-          >{`${user && CapitalizeNames(user.name.split(' ')[0])}`}</Text>
-          {loadingCharts ? (
-            <Text category="p1" appearance="hint">{`. . .`}</Text>
-          ) : (
-            <Text
-              category="p1"
-              appearance="hint"
-            >{`Tienes ${numeral(total).format(
-              "0,0"
-            )} leads acumulados`}</Text>
-          )}
-          </Layout>
-          <Layout style={styles.subContainer}>
-          <Filters filters={['date','carType','stores']} setQuery={setQuery}></Filters>
+        <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Filters filters={['date','carType','stores']} setQuery={setQuery} search={search} setSearch={setSearch} />
         </Layout>
-        </Layout>
-        <Divider />
+        <Text category="label" style={{ fontSize: 28, overflow: 'hidden' }}>
+          {`${user && CapitalizeNames(user.name)}`}
+        </Text>
+
+        {
+            loadingCharts ? 
+            <Text category="p1" appearance="hint">{`. . .`}</Text> :
+            <Text category="p1" appearance="hint">
+              {`Tienes ${numeral(total).format("0,0")} leads acumulados`}
+            </Text>
+          }
+
+          {
+            !loadingCharts && (search.store || search.carType || search.date) && 
+            <Text category="p1" appearance="hint">
+              Búsqueda:{' '}
+              {`${search.carType ? search.carType : ''}`}{' '}
+              {`${search.store ? search.store : ''}`}{' '}
+              {`${search.date ? search.date : ''}`}
+            </Text>
+          }
+      </Layout>
+      <Divider style={{ marginBottom: 15, marginTop: 15}}/>
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -220,38 +213,19 @@ const styles = StyleSheet.create({
   },
   container: {
     marginBottom: 20,
-    flex: 1,
   },
   subContainer: {
-    justifyContent: "flex-end",
     flexDirection: "row",
-    alignItems:'flex-start',
-    // paddingRight:10,
-    // backgroundColor:'blue',
-    // width:'98%',
-    // margin:'auto',
     marginTop:15
-  },
-  subContainerText: {
-    display:'flex',
-    flexDirection:'row',
-    // backgroundColor:'yellow',
-    justifyContent: "space-between",
-    paddingRight: 20,
-    paddingLeft: 25,
-    paddingBottom: 20,
-  },
-  subContainerLeft: {
-    flexDirection: "column",
-    alignItems:'flex-start',
-    // backgroundColor:'red',
   },
   subContainerDivider: {
     paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
   },
-
+  subContainerText: {
+    paddingHorizontal: 20,
+  },
   subContainerCards: {
     justifyContent: "space-between",
     flexDirection: "row",

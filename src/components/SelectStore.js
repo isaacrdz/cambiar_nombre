@@ -25,9 +25,8 @@ import useStore from "../hooks/useStore";
 import { CapitalizeNames } from "../utils/Capitalize";
 import { getMultiStoresIds } from "../utils/storesUser";
 
-const SelectStore = ({ selectedStores, setSelectedStores }) => {
+const SelectStore = ({ setSelectedStores, setSearch, search }) => {
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-  //   const displayValue = data[selectedIndex.row];
   const { user } = useAuth();
   const {
     stores,
@@ -53,18 +52,12 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
   useEffect(() => {
     if (user && user.tier) {
       clearStoreState();
-
-      //     if(getSources) getSources(user.tier._id);
-      //     if(getMakes) getMakes(user.tier._id);
-
       getStoresDPX(String(user.tier._id), user.group);
     }
   }, [user]);
 
   useEffect(() => {
-    if (stores && stores.length >= 1) {
-      setSelectedStores(getMultiStoresIds(stores));
-    }
+    if (stores && stores.length >= 1) setSelectedStores(getMultiStoresIds(stores));
   }, [stores]);
 
   const getStoresDPX = (role, groupId) => {
@@ -79,28 +72,17 @@ const SelectStore = ({ selectedStores, setSelectedStores }) => {
     }
   };
 
-  const MenuIcon = (props) => (
+  const MenuIcon = () => (
     <Ionicons style={{ color: "#5764b8" }} name="business-outline" size={25} />
   );
 
-  useEffect(() => {
-    if (user && user.tier) {
-      if (user.carType) {
-        if (user.carType === "ambos") {
-          //   setCarType('nuevo')
-        } else {
-          //   setCarType(user.carType)
-        }
-      }
-    }
-    //eslint-disable-next-line
-  }, [user]);
 
   useEffect(() => {
     if (stores && stores.length <= 0) return;
-    if (selectedIndex.row == 0) {
-      setSelectedStores(getMultiStoresIds(stores));
-    } else {
+    if (selectedIndex.row == 0) setSelectedStores(getMultiStoresIds(stores));
+    else  {
+      let name = CapitalizeNames(`${stores[selectedIndex.row - 1].make.name} ${stores[selectedIndex.row - 1].name}`)
+      setSearch({ ...search, store: name })
       setSelectedStores(stores[selectedIndex.row - 1]._id);
     }
   }, [selectedIndex]);

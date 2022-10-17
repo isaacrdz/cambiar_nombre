@@ -47,8 +47,7 @@ const ProfileTop = ({ navigation }) => {
                 textTransform: "capitalize",
                 fontSize: 19,
                 fontWeight: "bold",
-                marginBottom: 5,
-                maxWidth: '88%',
+                marginBottom: 5
               }}
             >
               {user && user.name}

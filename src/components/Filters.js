@@ -1,38 +1,20 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import moment from 'moment';
-import useAuth from "../hooks/useAuth";
 import SelectStore from "./SelectStore";
 import SelectCarType from "./SelectCarType";
 import SelectDate from "./SelectDate";
 
- 
-
-
-const Filters = ({filters, setQuery}) => {
-	//YEAR
-	// const [date, setDate] = useState(
-	// 	`&createdAt[gte]=${moment()
-	// 	  .startOf("year")
-	// 	  .format()}&createdAt[lt]=${moment().endOf("year").format()}`
-	//       );
-
+const Filters = ({filters, setQuery, setSearch, search}) => {
 	const [date, setDate] = useState(`&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`);
 
  	const [selectedStores, setSelectedStores] = useState(false);
-	const { user } = useAuth();
 
  	const [carType, setCarType] = useState(false);
 
 	 //YEAR
 	// const [custom, setCustom] = useState({date: `&createdAt[gte]=${moment().startOf("year").format()}&createdAt[lt]=${moment().endOf("month").format()}`,filter: "MMM",});
 	const [custom, setCustom] = useState({date: `&createdAt[gte]=${moment().startOf('month').format()}&createdAt[lt]=${moment().endOf('month').format()}`,filter: "DD MMMM YYYY",});
-
-	useFocusEffect(
-		React.useCallback(() => {
-			
-		}, [user])
-	);
 
 	const generateQuery = ()=>{
 		let car = 'nuevo';
@@ -57,16 +39,11 @@ const Filters = ({filters, setQuery}) => {
 	);
 
 
-	return(<>
-	{filters.includes('stores') &&
-        <SelectStore setSelectedStores={setSelectedStores}/>
-	}
-	{filters.includes('carType') &&
-    	<SelectCarType carType={carType} setCarType={setCarType} />
-	}
-	{filters.includes('date') &&
-        <SelectDate setDate={setDate} getFilter={setCustom} />
-	}
+	return(
+	<>
+		{ filters.includes('stores') && <SelectStore setSelectedStores={setSelectedStores} setSearch={setSearch} search={search}/> }
+		{ filters.includes('carType') && <SelectCarType carType={carType} setCarType={setCarType} setSearch={setSearch} search={search}/> }
+		{ filters.includes('date') && <SelectDate setDate={setDate} getFilter={setCustom} setSearch={setSearch} search={search}/> }
 	</>)
 }
 export default Filters;

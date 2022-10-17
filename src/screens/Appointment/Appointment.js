@@ -21,7 +21,7 @@ const Appointment = () => {
   const { agents, getAgents } = useUser();
   const { getAppointmentsByUser, getAppointmentsByStore, appointments, loading, clearState } = useAppointment();
   const { user } = useAuth();
-  const { getStoresByGroup, stores } = useStore()
+  const { getStoresByGroup, stores, getStoresByUser } = useStore()
 
   const [tiendas, setTiendas] = useState([""]);
   const [storeSelect, setStoreSelect] = useState(new IndexPath(0));
