@@ -1,21 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  View,
   StyleSheet,
   SafeAreaView,
   StatusBar,
-  ScrollView,
 } from "react-native";
 import {
   Layout,
   Text,
   Avatar,
-  Icon,
   Button,
   Divider,
 } from "@ui-kitten/components";
 import { Ionicons } from "@expo/vector-icons";
-
+import ModalDelete from "../ModalDelete";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { isRockstar, isSuper } from "../../utils/Authroles";
@@ -31,6 +28,7 @@ const ProfileTop = ({ navigation }) => {
     imageProfile = "https://liberate.gg/wp-content/uploads/blankAvatar.jpg";
   }
 
+  const [isVisible, setVisible] = useState(false)
   const Top = () => {
     return (
       <Layout style={{padding: 15}}>
@@ -116,6 +114,16 @@ const ProfileTop = ({ navigation }) => {
           {user && user.tier && CapitalizeNames(user.tier.name)}
         </Text>
       </Layout>
+      <ModalDelete isVisible={isVisible} setVisible={setVisible}/>
+      <Button
+        appearance="ghost"
+        style={{ marginBottom: 20}}
+        onPress={() => setVisible(true)}
+        status='danger'
+
+      >
+          Desactivar Cuenta
+    </Button>
       <Divider style={{ marginBottom: 25 }} />
       <Text style={{ fontWeight: "600", marginBottom: 5, textAlign: "center" }}>
         Code with <Ionicons name="heart" size={15} color="#f50357" /> by a
