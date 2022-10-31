@@ -2,14 +2,21 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
 import useAuth from '../hooks/useAuth';
+import Toast from "react-native-toast-message";
 
 const ModalDelete = ({ isVisible = false, setVisible = () => {}, submit = () => {} }) => {
 
-    const { logout } = useAuth()
+    const { logout, updateProfile } = useAuth()
 
     const handleSubmit = async() => {
-        logout()
+        await updateProfile({ isActive: false })
         setVisible(false)
+        await logout()
+        Toast.show({
+            text1: "Su cuenta ha sido desactivada",
+            type: "error",
+            position: "bottom",
+          });
     }
 
     const handleClose = () => setVisible(false)
