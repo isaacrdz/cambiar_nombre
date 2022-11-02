@@ -2,7 +2,7 @@
   "expo": {
     "name": "DPX",
     "slug": "dpx",
-    "version": "2.2",
+    "version": "2.3",
     "notification": {
       "icon": "./assets/logo.png"
     },
