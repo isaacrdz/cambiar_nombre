@@ -28,7 +28,7 @@ const ModalDelete = ({ isVisible = false, setVisible = () => {}, submit = () => 
             onBackdropPress={handleClose}
         >
             <Card style={styles.card}>
-                <Text style={styles.header}>¿Deseas desactivar tu cuenta?</Text>
+                <Text style={styles.header}>¿Deseas borrar tu cuenta?</Text>
                 <Input 
                     style={{marginBottom: 10}}
                     size='medium'
