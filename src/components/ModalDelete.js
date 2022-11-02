@@ -13,7 +13,7 @@ const ModalDelete = ({ isVisible = false, setVisible = () => {}, submit = () => 
         setVisible(false)
         await logout()
         Toast.show({
-            text1: "Su cuenta ha sido desactivada",
+            text1: "Su cuenta ha sido borrada",
             type: "error",
             position: "bottom",
           });
