@@ -15,7 +15,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "2.2"
+      "buildNumber": "2.3"
     },
     "android": {
       "package": "com.ellyonsoft.dpx",
