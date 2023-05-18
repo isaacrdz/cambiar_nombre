@@ -13,7 +13,7 @@ import {
   SET_ERROR,
   CLEAR_STATE,
   SET_LOADING,
-  GET_DOCUMENTS_BY_LEAD
+  GET_DOCUMENTS_BY_LEAD,
 } from "../types";
 
 const DocumentState = (props) => {
@@ -88,7 +88,6 @@ const DocumentState = (props) => {
     };
     clearState();
     setLoading();
-    console.log('aca?')
     try {
       const res = await api.get(`/leads/${leadId}/documents`, config);
       dispatch({ type: GET_DOCUMENTS_BY_LEAD, payload: res.data.data });

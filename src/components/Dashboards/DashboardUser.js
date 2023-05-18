@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import Calendar from "../../components/SelectDate";
-import SelectCarType from "../SelectCarType";
-import moment from "moment";
-import { Ionicons } from "@expo/vector-icons";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
 import { Spinner } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
 import ChartsUser from "../Charts/ChartsUser";
-import numeral from 'numeral';
+import numeral from "numeral";
 import { ScrollView } from "react-native-gesture-handler";
-import Filters from '../Filters';
-
+import Filters from "../Filters";
 
 const HomeUser = ({ navigation }) => {
   const { user } = useAuth();
@@ -35,14 +30,15 @@ const HomeUser = ({ navigation }) => {
   const [search, setSearch] = useState({
     store: null,
     carType: null,
-    date: null
-  })
+    date: null,
+    leadType: null,
+    source: null,
+  });
   const today = new Date();
   const curHr = today.getHours();
   const [query, setQuery] = useState(false);
 
   let greeting;
-
 
   if (curHr < 12) {
     greeting = "Buenos Dias";
@@ -66,32 +62,42 @@ const HomeUser = ({ navigation }) => {
     <ScrollView>
       <Layout style={styles.container}>
         <Layout style={styles.subContainerText}>
-          <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <Filters filters={['date','carType','stores']} setQuery={setQuery} search={search} setSearch={setSearch} />
+          <Layout
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Filters
+              filters={["date", "carType", "stores"]}
+              setQuery={setQuery}
+              search={search}
+              setSearch={setSearch}
+            />
           </Layout>
-          <Text category="label" style={{ fontSize: 28, overflow: 'hidden' }}>
+          <Text category="label" style={{ fontSize: 28, overflow: "hidden" }}>
             {`${user && CapitalizeNames(user.name)}`}
           </Text>
 
-          {
-            loadingCharts ? 
-            <Text category="p1" appearance="hint">{`. . .`}</Text> :
+          {loadingCharts ? (
+            <Text category="p1" appearance="hint">{`. . .`}</Text>
+          ) : (
             <Text category="p1" appearance="hint">
               {`Tienes ${numeral(total).format("0,0")} leads acumulados`}
             </Text>
-          }
+          )}
 
-          {
-            !loadingCharts && (search.store || search.carType || search.date) && 
-            <Text category="p1" appearance="hint">
-              Búsqueda:{' '}
-              {`${search.carType ? search.carType : ''}`}{' '}
-              {`${search.store ? search.store : ''}`}{' '}
-              {`${search.date ? search.date : ''}`}
-            </Text>
-          }
+          {!loadingCharts &&
+            (search.store || search.carType || search.date) && (
+              <Text category="p1" appearance="hint">
+                Búsqueda: {`${search.carType ? search.carType : ""}`}{" "}
+                {`${search.store ? search.store : ""}`}{" "}
+                {`${search.date ? search.date : ""}`}
+              </Text>
+            )}
         </Layout>
-        <Divider style={{ marginBottom: 15, marginTop: 15}}/>
+        <Divider style={{ marginBottom: 15, marginTop: 15 }} />
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -106,7 +112,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalLeads).format('0,0')}
+                  {numeral(totalLeads).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -124,7 +130,7 @@ const HomeUser = ({ navigation }) => {
                 </Layout>
               ) : (
                 <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalAppointments).format('0,0')}
+                  {numeral(totalAppointments).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -143,8 +149,8 @@ const HomeUser = ({ navigation }) => {
                   <Spinner size="large" />
                 </Layout>
               ) : (
-                  <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalVisits).format('0,0')}
+                <Text category="h5" style={{ fontSize: 40 }}>
+                  {numeral(totalVisits).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -161,8 +167,8 @@ const HomeUser = ({ navigation }) => {
                   <Spinner size="large" />
                 </Layout>
               ) : (
-                  <Text category="h5" style={{ fontSize: 40 }}>
-                  {numeral(totalSolds).format('0,0')}
+                <Text category="h5" style={{ fontSize: 40 }}>
+                  {numeral(totalSolds).format("0,0")}
                 </Text>
               )}
             </Layout>
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flexDirection: "row",
-    marginTop:15
+    marginTop: 15,
   },
   subContainerDivider: {
     paddingTop: 20,

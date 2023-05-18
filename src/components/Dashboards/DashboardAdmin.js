@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import {
-  Layout,
-  Text,
-  Divider,
-} from "@ui-kitten/components";
+import { Layout, Text, Divider } from "@ui-kitten/components";
 import moment from "moment";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
@@ -16,7 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import numeral from "numeral";
 
-import Filters from '../Filters';
+import Filters from "../Filters";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -40,8 +36,10 @@ const HomeAdmin = ({ navigation }) => {
   const [search, setSearch] = useState({
     store: null,
     carType: null,
-    date: null
-  })
+    date: null,
+    leadType: null,
+    source: null,
+  });
 
   const [query, setQuery] = useState(false);
 
@@ -62,13 +60,11 @@ const HomeAdmin = ({ navigation }) => {
     React.useCallback(() => {
       if (user && user._id && query) {
         getTotalsDashboard(`${query}`);
-        getPieStatusChart( `${query}`);
-        getClosureTopUsers( `${query}`);
+        getPieStatusChart(`${query}`);
+        getClosureTopUsers(`${query}`);
 
         let customFilter = "MMM";
-        getLeadsMonthlyChart(
-          `${query}&filter=${customFilter}`
-        );
+        getLeadsMonthlyChart(`${query}&filter=${customFilter}`);
       }
     }, [query])
   );
@@ -81,33 +77,43 @@ const HomeAdmin = ({ navigation }) => {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-      <Layout style={styles.subContainerText}>
-        <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Filters filters={['date','carType','stores']} setQuery={setQuery} search={search} setSearch={setSearch} />
-        </Layout>
-        <Text category="label" style={{ fontSize: 28, overflow: 'hidden' }}>
-          {`${user && CapitalizeNames(user.name)}`}
-        </Text>
+        <Layout style={styles.subContainerText}>
+          <Layout
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Filters
+              filters={["date", "carType", "stores"]}
+              setQuery={setQuery}
+              search={search}
+              setSearch={setSearch}
+            />
+          </Layout>
+          <Text category="label" style={{ fontSize: 28, overflow: "hidden" }}>
+            {`${user && CapitalizeNames(user.name)}`}
+          </Text>
 
-        {
-            loadingCharts ? 
-            <Text category="p1" appearance="hint">{`. . .`}</Text> :
+          {loadingCharts ? (
+            <Text category="p1" appearance="hint">{`. . .`}</Text>
+          ) : (
             <Text category="p1" appearance="hint">
               {`Tienes ${numeral(total).format("0,0")} leads acumulados`}
             </Text>
-          }
+          )}
 
-          {
-            !loadingCharts && (search.store || search.carType || search.date) && 
-            <Text category="p1" appearance="hint">
-              Búsqueda:{' '}
-              {`${search.carType ? search.carType : ''}`}{' '}
-              {`${search.store ? search.store : ''}`}{' '}
-              {`${search.date ? search.date : ''}`}
-            </Text>
-          }
-      </Layout>
-      <Divider style={{ marginBottom: 15, marginTop: 15}}/>
+          {!loadingCharts &&
+            (search.store || search.carType || search.date) && (
+              <Text category="p1" appearance="hint">
+                Búsqueda: {`${search.carType ? search.carType : ""}`}{" "}
+                {`${search.store ? search.store : ""}`}{" "}
+                {`${search.date ? search.date : ""}`}
+              </Text>
+            )}
+        </Layout>
+        <Divider style={{ marginBottom: 15, marginTop: 15 }} />
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -216,7 +222,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flexDirection: "row",
-    marginTop:15
+    marginTop: 15,
   },
   subContainerDivider: {
     paddingTop: 20,

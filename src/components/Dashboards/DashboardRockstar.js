@@ -10,8 +10,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import TopList from "./dashboardComponents/TopList";
 import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
-import Filters from '../Filters';
-
+import Filters from "../Filters";
 
 const HomeAdmin = ({ navigation }) => {
   const { user } = useAuth();
@@ -27,7 +26,6 @@ const HomeAdmin = ({ navigation }) => {
     getClosureTopUsers,
     closureTopUsers,
     getClosureTopStores,
-    closureTopStores,
     getLeadsMonthlyChart,
     leadsMonthlyChart,
     getPieStatusChart,
@@ -39,8 +37,10 @@ const HomeAdmin = ({ navigation }) => {
   const [search, setSearch] = useState({
     store: null,
     carType: null,
-    date: null
-  })
+    date: null,
+    leadType: null,
+    source: null,
+  });
 
   let greeting;
 
@@ -59,14 +59,10 @@ const HomeAdmin = ({ navigation }) => {
         getClosureTopUsers(`${query}`);
         getClosureTopStores(`${query}`);
         getPieStatusChart(`${query}`);
-        // customDate = `&createdAt[gte]=${moment()
-        //   .startOf("year")
-        //   .format()}&createdAt[lt]=${moment().endOf("month").format()}`;
         let customFilter = "MMM";
         getLeadsMonthlyChart(`${query}&filter=${customFilter}`);
-
       }
-    }, [query,user])
+    }, [query, user])
   );
 
   React.useEffect(() => {
@@ -76,37 +72,51 @@ const HomeAdmin = ({ navigation }) => {
   return (
     <ScrollView>
       <Layout style={styles.container}>
-      
         <Layout style={styles.subContainerText}>
-          <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <Filters filters={['date','carType','stores']} setQuery={setQuery} search={search} setSearch={setSearch} />
+          <Layout
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Filters
+              filters={["date", "carType", "stores", "leadType", "source"]}
+              setQuery={setQuery}
+              search={search}
+              setSearch={setSearch}
+            />
           </Layout>
 
-          <Text category="label" style={{ fontSize: 28, overflow: 'hidden' }}>
+          <Text category="label" style={{ fontSize: 28, overflow: "hidden" }}>
             {`${user && CapitalizeNames(user.name)}`}
           </Text>
 
-          {
-            loadingCharts ? 
-            <Text category="p1" appearance="hint">{`. . .`}</Text> :
+          {loadingCharts ? (
+            <Text category="p1" appearance="hint">{`. . .`}</Text>
+          ) : (
             <Text category="p1" appearance="hint">
               {`Tienes ${numeral(total).format("0,0")} leads acumulados`}
             </Text>
-          }
+          )}
 
-          {
-            !loadingCharts && (search.store || search.carType || search.date) && 
-            <Text category="p1" appearance="hint">
-              Búsqueda:{' '}
-              {`${search.carType ? search.carType : ''}`}{' '}
-              {`${search.store ? search.store : ''}`}{' '}
-              {`${search.date ? search.date : ''}`}
-            </Text>
-          }
-
+          {!loadingCharts &&
+            (search.store ||
+              search.carType ||
+              search.date ||
+              search.leadType ||
+              search.source) && (
+              <Text category="p1" appearance="hint">
+                Búsqueda: {`${search.carType ? search.carType : ""}`}{" "}
+                {`${search.leadType ? search.leadType : ""}`}{" "}
+                {`${search.store ? search.store : ""}`}{" "}
+                {`${search.source ? search.source : ""}`}{" "}
+                {`${search.date ? search.date : ""}`}
+              </Text>
+            )}
         </Layout>
 
-        <Divider style={{ marginBottom: 15, marginTop: 15}}/>
+        <Divider style={{ marginBottom: 15, marginTop: 15 }} />
 
         <Layout style={styles.subContainerCards}>
           <Layout style={styles.card}>
@@ -196,12 +206,8 @@ const HomeAdmin = ({ navigation }) => {
         </Layout>
       </Layout>
 
-      
-        <TopList
-          data={closureTopUsers}
-          title="Top 10 Ventas"
-        />
-    
+      <TopList data={closureTopUsers} title="Top 10 Ventas" />
+
       {/* <TopList data={(closureTopStores)?closureTopStores:data} title="Top 10 Ventas por agencia" /> */}
     </ScrollView>
   );
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flexDirection: "row",
-    marginTop:15
+    marginTop: 15,
   },
   subContainerDivider: {
     paddingTop: 20,

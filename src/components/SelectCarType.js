@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { IndexPath, TopNavigationAction, OverflowMenu, MenuItem } from "@ui-kitten/components";
+import {
+  IndexPath,
+  TopNavigationAction,
+  OverflowMenu,
+  MenuItem,
+} from "@ui-kitten/components";
 import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
-import { isAdmin, isGeneralManager, isMarketing, isRockstar, isSalesManager, isSuper, isUser } from './../utils/Authroles';
-const data = [
- 'Todos',
-  'Nuevos', 
-  'Seminuevos'
-];
+import {
+  isAdmin,
+  isGeneralManager,
+  isMarketing,
+  isRockstar,
+  isSalesManager,
+  isSuper,
+  isUser,
+} from "./../utils/Authroles";
+const data = ["Todos", "Nuevos", "Seminuevos"];
 
 const SelectCarType = ({ setCarType, setSearch, search }) => {
-
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(1));
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
   const displayValue = data[selectedIndex.row];
   const { user } = useAuth();
 
@@ -29,84 +37,83 @@ const SelectCarType = ({ setCarType, setSearch, search }) => {
     toggleMenu();
   };
 
-
-  const MenuIcon = (props) => <Ionicons style={{color: "#5764b8"}} name="car-outline" size={25} />;
+  const MenuIcon = (props) => (
+    <Ionicons style={{ color: "#5764b8" }} name="car-outline" size={25} />
+  );
 
   useEffect(() => {
-    if(user && user.tier){
-      if(user.carType){
-        if(user.carType === 'ambos'){
-          setCarType('nuevo')
-        }else{
-          setCarType(user.carType)
+    if (user && user.tier) {
+      if (user.carType) {
+        if (user.carType === "ambos") {
+          setCarType("all");
+        } else {
+          if (user.carType === "nuevo") {
+            setSelectedIndex(new IndexPath(1));
+            setCarType("nuevo");
+          } else {
+            setSelectedIndex(new IndexPath(2));
+            setCarType("seminuevo");
+          }
         }
       }
     }
     //eslint-disable-next-line
   }, [user]);
 
-  useEffect(()=>{
-    switch(selectedIndex.row){
+  useEffect(() => {
+    switch (selectedIndex.row) {
       case 0:
-          if(setCarType) {
-            setCarType('all')
-            setSearch({ ...search, carType: null })
-          }
-          return; 
+        if (setCarType) {
+          setCarType("all");
+          setSearch({ ...search, carType: "" });
+        }
+        return;
       case 1:
-          if(setCarType) {
-            setCarType('nuevo')
-            setSearch({ ...search, carType: 'Nuevos' })
-          }
-          return; 
+        if (setCarType) {
+          setCarType("nuevo");
+          setSearch({ ...search, carType: "Nuevos" });
+        }
+        return;
       case 2:
-          if(setCarType) {
-            setCarType('seminuevo')
-            setSearch({ ...search, carType: 'Seminuevos' })
-          }
-          return; 
+        if (setCarType) {
+          setCarType("seminuevo");
+          setSearch({ ...search, carType: "Seminuevos" });
+        }
+        return;
       default:
-          if(setCarType) {
-            setCarType('nuevo')
-            setSearch({ ...search, carType: 'Nuevos' })
-          }
-          return; 
+        if (setCarType) {
+          setCarType("all");
+          setSearch({ ...search, carType: "" });
+        }
+        return;
     }
-},[selectedIndex])
+  }, [selectedIndex]);
 
   return (
     <>
-    {
-      user && user.tier && (
-        isRockstar(user.tier._id) || 
-        isSuper(user.tier._id) || 
-        isMarketing(user.tier._id) ||
-            (
-                (
-                    isAdmin(user.tier._id) ||
-                    isGeneralManager(user.tier._id) ||
-                    isSalesManager(user.tier._id) ||
-                    isUser(user.tier._id) 
-                ) && 
-                user.carType && 
-                user.carType === 'ambos'
-            )
-        ) && 
-         <OverflowMenu
-          anchor={renderMenuAction}
-          visible={menuVisible}
-          onBackdropPress={toggleMenu}
-          onSelect={onItemSelect}
-        >
-        {data.map((title, i) => (
-          <MenuItem title={title} key={i}  />
-        ))}
-       
-      </OverflowMenu>
-    }
+      {user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isSuper(user.tier._id) ||
+          isMarketing(user.tier._id) ||
+          ((isAdmin(user.tier._id) ||
+            isGeneralManager(user.tier._id) ||
+            isSalesManager(user.tier._id) ||
+            isUser(user.tier._id)) &&
+            user.carType &&
+            user.carType === "ambos")) && (
+          <OverflowMenu
+            anchor={renderMenuAction}
+            visible={menuVisible}
+            onBackdropPress={toggleMenu}
+            onSelect={onItemSelect}
+          >
+            {data.map((title, i) => (
+              <MenuItem title={title} key={i} />
+            ))}
+          </OverflowMenu>
+        )}
     </>
-
-        
   );
 };
 
