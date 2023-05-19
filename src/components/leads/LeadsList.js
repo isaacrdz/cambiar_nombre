@@ -9,36 +9,31 @@ import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 import { getOptions } from "../../utils/getOptionsLeads";
 
-const LeadsList = ({
-  user, 
-  params,
-  setParams
-}) => {
-  const {
-    getLeadsAR,
-    leads,
-    loading,
-    clearState,
-    leadsSize,
-  } = useLead();
+const LeadsList = ({ user, params, setParams }) => {
+  const { getLeadsAR, leads, loading, clearState, leadsSize } = useLead();
 
   useFocusEffect(
     React.useCallback(() => {
-      getLeadsAR(getOptions({ user, page: params.page, search: params.search, query: params.query }));
+      getLeadsAR(
+        getOptions({
+          user,
+          page: params.page,
+          search: params.search,
+          query: params.query,
+        })
+      );
     }, [params])
   );
 
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-
         setParams({
           ...params,
           page: 1,
-          limit: 10
-        })
+          limit: 10,
+        });
         clearState();
-
       };
     }, [])
   );
@@ -57,25 +52,28 @@ const LeadsList = ({
 
     if (Math.abs(dif) > 0) {
       if (!loading && leadsSize !== 0) {
-        setParams({...params, page:  params.page + 1});
-      } 
+        setParams({ ...params, page: params.page + 1 });
+      }
     }
-
-  }
+  };
 
   return (
     <Fragment>
-      <LeadFilters params={params} setParams={setParams}/>
-        <List
-          style={styles.container}
-          data={leads}
-          renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
-          keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={Divider}
-          initialNumToRender={1}
-          ListFooterComponent={renderFooter}
-          onMomentumScrollBegin={handleMomentun}
-        />
+      <LeadFilters
+        params={params}
+        setParams={setParams}
+        loadingLeads={loading}
+      />
+      <List
+        style={styles.container}
+        data={leads}
+        renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
+        keyExtractor={(item) => item._id}
+        ItemSeparatorComponent={Divider}
+        initialNumToRender={1}
+        ListFooterComponent={renderFooter}
+        onMomentumScrollBegin={handleMomentun}
+      />
     </Fragment>
   );
 };
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: "white",
-    height: '100%'
+    height: "100%",
   },
   loader: {
     marginTop: 20,

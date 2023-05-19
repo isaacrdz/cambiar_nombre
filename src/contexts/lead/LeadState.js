@@ -19,7 +19,7 @@ import {
   SET_TAB,
   ASSIGN_AGENTS,
   SET_CHECKBOX,
-  SET_REJECTED
+  SET_REJECTED,
 } from "../types";
 
 const LeadState = (props) => {
@@ -48,18 +48,22 @@ const LeadState = (props) => {
   const getLeadsAR = async (values) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      }
+      },
     };
     setLoading();
     try {
-      const  res = await api.post(`/leads/AdvancedResults`, { ...values }, config);
+      const res = await api.post(
+        `/leads/AdvancedResults`,
+        { ...values },
+        config
+      );
 
       dispatch({
         type: GET_LEADS,
         payload: res.data.data,
-        count: res.data.pagination.total
+        count: res.data.pagination.total,
       });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });
@@ -270,8 +274,7 @@ const LeadState = (props) => {
 
     try {
       const res = await api.post(`/utils/mobilecall`, config);
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const assignAgents = async (leads, agent, currentTab) => {
@@ -337,7 +340,8 @@ const LeadState = (props) => {
   //Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING });
 
-  const setRejected = (status) => dispatch({ type: SET_REJECTED, payload: status });
+  const setRejected = (status) =>
+    dispatch({ type: SET_REJECTED, payload: status });
 
   return (
     <LeadContext.Provider
@@ -373,7 +377,7 @@ const LeadState = (props) => {
         assignAgents,
         setTab,
         setCheckBox,
-        getLeadsAR
+        getLeadsAR,
       }}
     >
       {props.children}
