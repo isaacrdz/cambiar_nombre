@@ -13,63 +13,69 @@ import {
   isSuper,
 } from "../utils/Authroles";
 
-const LeadFilters = ({ params, setParams }) => {
+const LeadFilters = ({ params, setParams, loadingLeads }) => {
   const { clearState } = useLead();
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   const [current, setCurrent] = useState({
     title: "Todos",
     value: "all",
     type: "all",
-  })
+  });
 
   const [filters, setFilters] = useState([
-      {
-        title: "Todos",
-        value: "all",
-        type: "all",
-      },
-    
-      {
-        title: "Lead",
-        value: "605bd4e80a4330245535db3c",
-        type: "status",
-      },
-    
-      {
-        title: "Cita",
-        value: "604f80222b372e0cb11966dc",
-        type: "status",
-      },
-    
-      {
-        title: "Visita",
-        value: "6064f8065b21e51052eed547",
-        type: "status",
-      },
-    
-      {
-        title: "Vendido",
-        value: "5d7a514b5dac12c7449ce043",
-        type: "status",
-      },
-  ])
+    {
+      title: "Todos",
+      value: "all",
+      type: "all",
+    },
 
-  useEffect(()=>{
-    if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id) || isAdmin(user.tier._id) || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id))){
+    {
+      title: "Lead",
+      value: "605bd4e80a4330245535db3c",
+      type: "status",
+    },
+
+    {
+      title: "Cita",
+      value: "604f80222b372e0cb11966dc",
+      type: "status",
+    },
+
+    {
+      title: "Visita",
+      value: "6064f8065b21e51052eed547",
+      type: "status",
+    },
+
+    {
+      title: "Vendido",
+      value: "5d7a514b5dac12c7449ce043",
+      type: "status",
+    },
+  ]);
+
+  useEffect(() => {
+    if (
+      user &&
+      user.tier &&
+      (isRockstar(user.tier._id) ||
+        isSuper(user.tier._id) ||
+        isAdmin(user.tier._id) ||
+        isSalesManager(user.tier._id) ||
+        isGeneralManager(user.tier._id))
+    ) {
       let aux = filters;
 
       aux.push({
         title: "Sin Asignar",
         value: "Unassigned",
         type: "unassigned",
-      })
+      });
 
-      setFilters(aux)
-      
+      setFilters(aux);
     }
-  },[user])
-
+  }, [user]);
 
   return (
     <Layout style={{ marginTop: 20 }} level="4">
@@ -81,6 +87,7 @@ const LeadFilters = ({ params, setParams }) => {
         data={filters}
         renderItem={({ item }) => (
           <ListItem
+            disabled={loadingLeads ? true : false}
             title={(evaProps) => (
               <Layout
                 style={
@@ -89,17 +96,21 @@ const LeadFilters = ({ params, setParams }) => {
                     : styles.controlContainerFilters
                 }
               >
-                <Text style={{...styles.ItemText,color: item.value === current.value ? "white" : "#5764b8"}}>
+                <Text
+                  style={{
+                    ...styles.ItemText,
+                    color: item.value === current.value ? "white" : "#5764b8",
+                  }}
+                >
                   {item.title}
                 </Text>
               </Layout>
             )}
             onPress={() => {
               if (item !== current) {
-                clearState()
-                setCurrent(item)
-                setParams({...params, search: item, page: 1})
-              
+                clearState();
+                setCurrent(item);
+                setParams({ ...params, search: item, page: 1 });
               }
             }}
           />

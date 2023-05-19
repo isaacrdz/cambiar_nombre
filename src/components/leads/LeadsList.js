@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
 import { List, Divider } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,36 +9,31 @@ import LeadFilters from "../LeadFilters";
 import LeadCard from "./LeadCard";
 import { getOptions } from "../../utils/getOptionsLeads";
 
-const LeadsList = ({
-  user, 
-  params,
-  setParams
-}) => {
-  const {
-    getLeadsAR,
-    leads,
-    loading,
-    clearState,
-    leadsSize,
-  } = useLead();
+const LeadsList = ({ user, params, setParams }) => {
+  const { getLeadsAR, leads, loading, clearState, leadsSize } = useLead();
 
   useFocusEffect(
     React.useCallback(() => {
-      getLeadsAR(getOptions({ user, page: params.page, search: params.search, query: params.query }));
+      getLeadsAR(
+        getOptions({
+          user,
+          page: params.page,
+          search: params.search,
+          query: params.query,
+        })
+      );
     }, [params])
   );
 
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-
         setParams({
           ...params,
           page: 1,
-          limit: 10
-        })
+          limit: 10,
+        });
         clearState();
-
       };
     }, [])
   );
@@ -53,29 +48,32 @@ const LeadsList = ({
 
   const handleMomentun = (event) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const dif = currentOffset - (200 || 0);
+    const dif = currentOffset - 200;
 
-    if (Math.abs(dif) > 0) {
+    if (dif > 0) {
       if (!loading && leadsSize !== 0) {
-        setParams({...params, page:  params.page + 1});
-      } 
+        setParams({ ...params, page: params.page + 1 });
+      }
     }
-
-  }
+  };
 
   return (
     <Fragment>
-      <LeadFilters params={params} setParams={setParams}/>
-        <List
-          style={styles.container}
-          data={leads}
-          renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
-          keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={Divider}
-          initialNumToRender={1}
-          ListFooterComponent={renderFooter}
-          onMomentumScrollBegin={handleMomentun}
-        />
+      <LeadFilters
+        params={params}
+        setParams={setParams}
+        loadingLeads={loading}
+      />
+      <List
+        style={styles.container}
+        data={leads}
+        renderItem={({ item }) => <LeadCard item={item} key={item._id} />}
+        keyExtractor={(item) => item._id}
+        ItemSeparatorComponent={Divider}
+        initialNumToRender={1}
+        ListFooterComponent={renderFooter}
+        onMomentumScrollEnd={!loading ? handleMomentun : null}
+      />
     </Fragment>
   );
 };
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: "white",
-    height: '100%'
+    height: "100%",
   },
   loader: {
     marginTop: 20,

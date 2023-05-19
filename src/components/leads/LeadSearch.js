@@ -6,36 +6,30 @@ import useLead from "../../hooks/useLead";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 
-const LeadSearch = ({
-  params,
-  setParams
-}) => {
-  const renderInputIcon = (props) => 
-  <Ionicons
-    name="search-outline"
-    size={20}
-    style={{color: "#5764b8" }}
-  />;
+const LeadSearch = ({ params, setParams, loadingLeads }) => {
+  const renderInputIcon = (props) => (
+    <Ionicons name="search-outline" size={20} style={{ color: "#5764b8" }} />
+  );
 
-  const [query, setQuery] = useState('')
-  const { clearState } = useLead();
+  const [query, setQuery] = useState("");
+  const { clearState, loading } = useLead();
 
-  const handleSubmit = async(e) => {
-    clearState()
-    setParams({ ...params, page: 1, query})
+  const handleSubmit = async (e) => {
+    clearState();
+    setParams({ ...params, page: 1, query });
   };
 
   //delete here
   useFocusEffect(
     React.useCallback(() => {
-      return () => setQuery('');
+      return () => setQuery("");
     }, [])
   );
-
 
   return (
     <Layout style={styles.inputContainer} level="1">
       <Input
+        disabled={loading ? true : false}
         onSubmitEditing={handleSubmit}
         style={styles.input}
         placeholder="Búsqueda de Leads"
