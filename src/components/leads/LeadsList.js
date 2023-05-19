@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
 import { List, Divider } from "@ui-kitten/components";
 import { useFocusEffect } from "@react-navigation/native";
@@ -48,9 +48,9 @@ const LeadsList = ({ user, params, setParams }) => {
 
   const handleMomentun = (event) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const dif = currentOffset - (200 || 0);
+    const dif = currentOffset - 200;
 
-    if (Math.abs(dif) > 0) {
+    if (dif > 0) {
       if (!loading && leadsSize !== 0) {
         setParams({ ...params, page: params.page + 1 });
       }
@@ -72,7 +72,7 @@ const LeadsList = ({ user, params, setParams }) => {
         ItemSeparatorComponent={Divider}
         initialNumToRender={1}
         ListFooterComponent={renderFooter}
-        onMomentumScrollBegin={handleMomentun}
+        onMomentumScrollEnd={!loading ? handleMomentun : null}
       />
     </Fragment>
   );
