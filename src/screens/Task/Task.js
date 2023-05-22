@@ -8,7 +8,7 @@ import useAuth from "../../hooks/useAuth";
 import { useFocusEffect } from "@react-navigation/native";
 import { getMultiStoresIds } from "../../utils/storesUser";
 import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from "react-native";
 import useUser from "../../hooks/useUser";
 import useStore from "../../hooks/useStore";
 import { IndexPath, Layout, Select, SelectItem } from "@ui-kitten/components";
@@ -18,10 +18,17 @@ import { CapitalizeNames } from "../../utils/Capitalize";
 const Appointment = () => {
   const [items, setItems] = React.useState({});
   const [marked, setMarked] = React.useState({});
+  const [itemsByDate, setItemsByDate] = React.useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-  const { getCommentsByUser, getCommentsByStore, clearState, comments, loading } = useComment();
+  const {
+    getCommentsByUser,
+    getCommentsByStore,
+    clearState,
+    comments,
+    loading,
+  } = useComment();
   const { user } = useAuth();
-  const { getStoresByGroup, stores } = useStore()
+  const { getStoresByGroup, stores } = useStore();
   const { agents, getAgents } = useUser();
 
   const [tiendas, setTiendas] = useState([""]);
@@ -39,27 +46,38 @@ const Appointment = () => {
       const mappedData = comments.map((task) => {
         const date = task.reschedule;
 
-        let color = ''
-        if(moment(date).format('YYYY-MM-DD') > moment().format('YYYY-MM-DD')){
-          color = '#388e3c'
-        }else if( moment(date).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')) {
-          color = '#d32f2f'
+        let color = "";
+        if (moment(date).format("YYYY-MM-DD") > moment().format("YYYY-MM-DD")) {
+          color = "#388e3c";
+        } else if (
+          moment(date).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")
+        ) {
+          color = "#d32f2f";
         } else {
-          color = '#f9a825'
+          color = "#f9a825";
         }
-        
+
         mark.push({
           date: moment(date).format("YYYY-MM-DD"),
           selectedColor: color,
           selected: true,
-        })
+        });
 
-        return{
-            ...task,
-            date: moment(date).format("YYYY-MM-DD"),
-          }
+        return {
+          ...task,
+          date: moment(date).format("YYYY-MM-DD"),
+        };
       });
 
+      const reducedByDate = {};
+      mappedData.forEach((task) => {
+        const { date, ...app } = task;
+        if (reducedByDate[date]) {
+          reducedByDate[date].push(app);
+        } else {
+          reducedByDate[date] = [app];
+        }
+      });
 
       const reduced = mappedData.reduce((acc, currentItem) => {
         const { date, ...app } = currentItem;
@@ -78,6 +96,7 @@ const Appointment = () => {
       }, {});
 
       setItems(reduced);
+      setItemsByDate(reducedByDate);
       setMarked(reducedMarked);
     }
   }, [comments]);
@@ -85,30 +104,34 @@ const Appointment = () => {
   useFocusEffect(
     React.useCallback(() => {
       if (user && user.tier && isUser(user.tier._id)) {
-        getCommentsByUser(user._id)
-      }else if(user && user.tier && isAdmin(user.tier._id) && user.stores){
-        getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
-      }else if(user && user.tier && (isRockstar(user.tier._id) || isSuper(user.tier._id))){
-        getStoresByGroup('61003180d1cd3b1299a82fd0')
+        getCommentsByUser(user._id);
+      } else if (user && user.tier && isAdmin(user.tier._id) && user.stores) {
+        getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`);
+      } else if (
+        user &&
+        user.tier &&
+        (isRockstar(user.tier._id) || isSuper(user.tier._id))
+      ) {
+        getStoresByGroup("61003180d1cd3b1299a82fd0");
       }
     }, [user])
   );
 
   React.useEffect(() => {
-
-    if(stores && stores.length > 0){
-      let aux = stores.map((item) => CapitalizeNames(item.make.name + " " + item.name));
-      setTiendas(['Selecciona una agencia', ...aux]);
+    if (stores && stores.length > 0) {
+      let aux = stores.map((item) =>
+        CapitalizeNames(item.make.name + " " + item.name)
+      );
+      setTiendas(["Selecciona una agencia", ...aux]);
     }
-  },[stores])
+  }, [stores]);
 
   React.useEffect(() => {
-
-    if(agents && agents.length > 0){
+    if (agents && agents.length > 0) {
       let aux = agents.map((item) => CapitalizeNames(item.name));
-      setAgentes(['Selecciona un agente', ...aux]);
+      setAgentes(["Selecciona un agente", ...aux]);
     }
-  },[agents])
+  }, [agents]);
 
   const renderEmptyDate = () => {
     return <EmpyDate />;
@@ -119,87 +142,90 @@ const Appointment = () => {
   };
 
   React.useEffect(() => {
-    if(storeSelect.row !== 0){
+    if (storeSelect.row !== 0) {
       getAgents(`&stores[in]=${stores[storeSelect.row - 1]._id}`);
     }
-  }, [storeSelect])
+  }, [storeSelect]);
 
   const handleRefresh = () => {
     if (user && user.tier && isUser(user.tier._id)) {
-      getCommentsByUser(user._id)
-    }else if(user && user.tier && isAdmin(user.tier._id) && user.stores){
-      getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`)
+      getCommentsByUser(user._id);
+    } else if (user && user.tier && isAdmin(user.tier._id) && user.stores) {
+      getCommentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`);
     }
   };
 
   React.useEffect(() => {
-    if(stores && stores.length > 0){
-      let string = storeSelect.row !== 0 ? `&store[in]=${stores[storeSelect.row - 1]._id}` : '';
-      if(agenteSelect.row !== 0) string += `&user=${agents[agenteSelect.row - 1]._id}`
-      if(string !== '') getCommentsByStore(string)
-      else clearState()
+    if (stores && stores.length > 0) {
+      let string =
+        storeSelect.row !== 0
+          ? `&store[in]=${stores[storeSelect.row - 1]._id}`
+          : "";
+      if (agenteSelect.row !== 0)
+        string += `&user=${agents[agenteSelect.row - 1]._id}`;
+      if (string !== "") getCommentsByStore(string);
+      else clearState();
     }
-  }, [storeSelect, agenteSelect])
+  }, [storeSelect, agenteSelect]);
 
   return (
     <Fragment>
-      {
-        user && user.tier &&
-        (
-          (
-            isRockstar(user.tier._id) || isSuper(user.tier._id)
-          ) ||
-          (
-            (isAdmin(user.tier._id) || isUser(user.tier._did)) && user.stores && user.stores.length > 1 
-          ) 
-        ) &&
-       <Layout style={{ paddingHorizontal: 15, paddingVertical: 5 }} level="1">
-        <Text style={{...styles.text, marginBottom: 10}} category="s1">
-          Agencia
-        </Text>
-        <Select
-          size="large"
-          onSelect={(index) => setStoreSelect(index)}
-          placeholder='Selecciona una agencia'
-          value={displayStore}
+      {user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isSuper(user.tier._id) ||
+          ((isAdmin(user.tier._id) || isUser(user.tier._did)) &&
+            user.stores &&
+            user.stores.length > 1)) && (
+          <Layout
+            style={{ paddingHorizontal: 15, paddingVertical: 5 }}
+            level="1"
           >
-          {
-            tiendas.map((item) => <SelectItem title={CapitalizeNames(item)} key={item} />)
-          }
-        </Select>
-      </Layout>
-      }
-      {
-        user && user.tier && !isUser(user.tier._id) &&
+            <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
+              Agencia
+            </Text>
+            <Select
+              size="large"
+              onSelect={(index) => setStoreSelect(index)}
+              placeholder="Selecciona una agencia"
+              value={displayStore}
+            >
+              {tiendas.map((item) => (
+                <SelectItem title={CapitalizeNames(item)} key={item} />
+              ))}
+            </Select>
+          </Layout>
+        )}
+      {user && user.tier && !isUser(user.tier._id) && (
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 5 }} level="1">
-          <Text style={{...styles.text, marginBottom: 10}} category="s1">
+          <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
             Agente
           </Text>
           <Select
             size="large"
             onSelect={(index) => setAgenteSelect(index)}
-            placeholder='Selecciona una agente'
+            placeholder="Selecciona una agente"
             value={displayAgente}
-            >
-            {
-              agentes.map((item) => <SelectItem title={CapitalizeNames(item)} key={item} />)
-            }
+          >
+            {agentes.map((item) => (
+              <SelectItem title={CapitalizeNames(item)} key={item} />
+            ))}
           </Select>
         </Layout>
-      }
-    <Agenda
-      items={items}
-      renderItem={renderItem}
-      renderEmptyData={renderEmptyDate}
-      markedDates={marked}
-      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      onRefresh={() => handleRefresh()}
-      refreshing={loading}
-      // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-      // minDate={moment().format()}
-      // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-      // maxDate={"2025-05-30"}
-      showClosingKnob={true}
+      )}
+      <Agenda
+        items={itemsByDate}
+        renderItem={renderItem}
+        renderEmptyData={renderEmptyDate}
+        markedDates={marked}
+        //renderDay={renderDay}
+        onRefresh={() => handleRefresh()}
+        refreshing={loading}
+        // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+        // minDate={moment().format()}
+        // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+        // maxDate={"2025-05-30"}
+        showClosingKnob={true}
       />
     </Fragment>
   );

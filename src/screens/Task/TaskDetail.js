@@ -51,11 +51,14 @@ const contactedStatus = [
 const TaskDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { user } = useAuth();
-  const { updateComment, createComment, getComment, comment, loading } = useComment();
-  const [currentComment, setCurrentComment] = useState({startDate: new Date()});
+  const { updateComment, createComment, getComment, comment, loading } =
+    useComment();
+  const [currentComment, setCurrentComment] = useState({
+    startDate: new Date(),
+  });
   const [substatusComment, setSubstatusComment] = useState([]);
   const [substatusVisit, setSubstatusVisit] = useState([]);
-  const [statusButton, setStatusButton] = useState(false)
+  const [statusButton, setStatusButton] = useState(false);
   ////////
 
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
@@ -126,9 +129,9 @@ const TaskDetail = ({ route, navigation }) => {
   };
 
   const handleSubmit = async () => {
-    setStatusButton(true)
+    setStatusButton(true);
     if (text === "") {
-    setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Por favor deja un comentario",
@@ -136,7 +139,7 @@ const TaskDetail = ({ route, navigation }) => {
         position: "bottom",
       });
     } else if (selectedActions.length === 0) {
-    setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Selecciona al menos una accion",
@@ -144,7 +147,7 @@ const TaskDetail = ({ route, navigation }) => {
         position: "bottom",
       });
     } else if (selectedActions.length > 3) {
-    setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Selecciona máximo 3 acciones",
@@ -159,7 +162,15 @@ const TaskDetail = ({ route, navigation }) => {
       let userId = "";
       let author = "";
 
-      if (user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && lead.agent && lead.agent._id) {
+      if (
+        user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isAdmin(user.tier._id) ||
+          isSuper(user.tier._id)) &&
+        lead.agent &&
+        lead.agent._id
+      ) {
         userId = lead.agent._id;
         author = user._id;
       }
@@ -209,7 +220,7 @@ const TaskDetail = ({ route, navigation }) => {
         await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
         await getLead(lead._id);
-        setStatusButton(false)
+        setStatusButton(false);
 
         navigation.navigate("TaskMain");
       }
@@ -242,12 +253,12 @@ const TaskDetail = ({ route, navigation }) => {
       let auxIds = [];
       substatuses.map((item) => {
         if (
-          item.status === comment.lead.status &&
+          item.status === comment.lead.status._id &&
           item.name !== "new" &&
           item.name !== "rejected" &&
           item.name !== "visit_rejected" &&
-          item.name !== "rsi" && 
-          item.name !== 'new_service'
+          item.name !== "rsi" &&
+          item.name !== "new_service"
         ) {
           aux.push(translateSubstatus(item.name));
           auxIds.push(item._id);
@@ -329,7 +340,9 @@ const TaskDetail = ({ route, navigation }) => {
           store: comment.lead.store,
           comments: comment.lead.comments,
         },
-        reschedule: comment.reschedule ? new Date(comment.reschedule) : new Date(),
+        reschedule: comment.reschedule
+          ? new Date(comment.reschedule)
+          : new Date(),
       });
     }
   }, [comment]);
@@ -548,11 +561,11 @@ const TaskDetail = ({ route, navigation }) => {
                     style={{ ...styles.text, marginBottom: 20 }}
                     category="s1"
                   >
-                  
                     {Platform.OS === "android"
                       ? `Fecha: ${
-                          finalDate !== '' && finalDate !== undefined ?
-                          moment(finalDate).format("DD MMMM YYYY - hh:mm a") : ''
+                          finalDate !== "" && finalDate !== undefined
+                            ? moment(finalDate).format("DD MMMM YYYY - hh:mm a")
+                            : ""
                         }`
                       : `Fecha`}
                   </Text>
@@ -584,7 +597,11 @@ const TaskDetail = ({ route, navigation }) => {
                 display="spinner"
               /> */}
                   <Layout>
-                    <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
+                    <Button
+                      style={styles.button}
+                      disabled={statusButton}
+                      onPress={handleSubmit}
+                    >
                       Crear Tarea
                     </Button>
                   </Layout>
