@@ -23,8 +23,7 @@ const LeadTabs = ({ route }) => {
   const { item } = route.params;
   const { user } = useAuth();
 
-  const { getLead, loading, clearState, lead } =
-    useLead();
+  const { getLead, loading, clearState, lead } = useLead();
 
   React.useEffect(() => {
     getLead(item._id);

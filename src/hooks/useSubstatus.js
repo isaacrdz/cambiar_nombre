@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import SubstatusContext from '../contexts/substatus/substatusContext';
+import { useContext } from "react";
+import SubstatusContext from "../contexts/substatus/substatusContext";
 
 const useSubstatus = () => useContext(SubstatusContext);
 

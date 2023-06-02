@@ -15,7 +15,7 @@ import { IndexPath, Layout, Select, SelectItem } from "@ui-kitten/components";
 import { Text } from "react-native-paper";
 import { CapitalizeNames } from "../../utils/Capitalize";
 
-const Appointment = () => {
+const Task = () => {
   const [items, setItems] = React.useState({});
   const [marked, setMarked] = React.useState({});
   const [itemsByDate, setItemsByDate] = React.useState({});
@@ -34,6 +34,10 @@ const Appointment = () => {
   const [tiendas, setTiendas] = useState([""]);
   const [storeSelect, setStoreSelect] = useState(new IndexPath(0));
   const displayStore = tiendas[storeSelect.row];
+
+  const carType = ["All", "Nuevo", "Seminuevo"];
+  const [carTypeSelect, setCarTypeSelect] = useState(new IndexPath(0));
+  const displayCarType = carType[carTypeSelect.row];
 
   const [agentes, setAgentes] = useState([""]);
   const [agenteSelect, setAgenteSelect] = useState(new IndexPath(0));
@@ -143,9 +147,17 @@ const Appointment = () => {
 
   React.useEffect(() => {
     if (storeSelect.row !== 0) {
-      getAgents(`&stores[in]=${stores[storeSelect.row - 1]._id}`);
+      if (carTypeSelect.row !== 0) {
+        getAgents(
+          `&stores[in]=${stores[storeSelect.row - 1]._id}&carType=${carType[
+            carTypeSelect.row
+          ].toLowerCase()}`
+        );
+      } else {
+        getAgents(`&stores[in]=${stores[storeSelect.row - 1]._id}`);
+      }
     }
-  }, [storeSelect]);
+  }, [storeSelect, carTypeSelect]);
 
   const handleRefresh = () => {
     if (user && user.tier && isUser(user.tier._id)) {
@@ -161,12 +173,14 @@ const Appointment = () => {
         storeSelect.row !== 0
           ? `&store[in]=${stores[storeSelect.row - 1]._id}`
           : "";
+      if (carTypeSelect.row !== 0 && carType[carTypeSelect.row] !== "All")
+        string += `&carType=${carType[carTypeSelect.row].toLowerCase()}`;
       if (agenteSelect.row !== 0)
         string += `&user=${agents[agenteSelect.row - 1]._id}`;
       if (string !== "") getCommentsByStore(string);
       else clearState();
     }
-  }, [storeSelect, agenteSelect]);
+  }, [storeSelect, agenteSelect, carTypeSelect]);
 
   return (
     <Fragment>
@@ -178,10 +192,10 @@ const Appointment = () => {
             user.stores &&
             user.stores.length > 1)) && (
           <Layout
-            style={{ paddingHorizontal: 15, paddingVertical: 5 }}
+            style={{ paddingHorizontal: 15, paddingVertical: 1 }}
             level="1"
           >
-            <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
+            <Text style={{ ...styles.text, marginBottom: 2 }} category="s1">
               Agencia
             </Text>
             <Select
@@ -196,15 +210,43 @@ const Appointment = () => {
             </Select>
           </Layout>
         )}
+      {user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isSuper(user.tier._id) ||
+          ((isAdmin(user.tier._id) || isUser(user.tier._did)) &&
+            user.carType === "ambos")) && (
+          <Layout
+            style={{ paddingHorizontal: 15, paddingVertical: 1 }}
+            level="1"
+          >
+            <Text style={{ ...styles.text, marginBottom: 2 }} category="s1">
+              Tipo de auto
+            </Text>
+            <Select
+              size="large"
+              onSelect={(index) => setCarTypeSelect(index)}
+              placeholder="Selecciona un tipo de auto"
+              value={displayCarType}
+            >
+              <SelectItem title={CapitalizeNames("all")} key={"all"} />
+              <SelectItem title={CapitalizeNames("nuevo")} key={"nuevo"} />
+              <SelectItem
+                title={CapitalizeNames("seminuevo")}
+                key={"seminuevo"}
+              />
+            </Select>
+          </Layout>
+        )}
       {user && user.tier && !isUser(user.tier._id) && (
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 5 }} level="1">
-          <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
+        <Layout style={{ paddingHorizontal: 15, paddingVertical: 1 }} level="1">
+          <Text style={{ ...styles.text, marginBottom: 2 }} category="s1">
             Agente
           </Text>
           <Select
             size="large"
             onSelect={(index) => setAgenteSelect(index)}
-            placeholder="Selecciona una agente"
+            placeholder="Selecciona un agente"
             value={displayAgente}
           >
             {agentes.map((item) => (
@@ -244,4 +286,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Appointment;
+export default Task;

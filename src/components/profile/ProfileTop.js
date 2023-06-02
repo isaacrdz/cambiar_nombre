@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-} from "react-native";
-import {
-  Layout,
-  Text,
-  Avatar,
-  Button,
-  Divider,
-} from "@ui-kitten/components";
+import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import { Layout, Text, Avatar, Button, Divider } from "@ui-kitten/components";
 import { Ionicons } from "@expo/vector-icons";
 import ModalDelete from "../ModalDelete";
 import useAuth from "../../hooks/useAuth";
@@ -28,11 +18,17 @@ const ProfileTop = ({ navigation }) => {
     imageProfile = "https://liberate.gg/wp-content/uploads/blankAvatar.jpg";
   }
 
-  const [isVisible, setVisible] = useState(false)
+  const [isVisible, setVisible] = useState(false);
   const Top = () => {
     return (
-      <Layout style={{padding: 15}}>
-        <Layout style={{ marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
+      <Layout style={{ padding: 15 }}>
+        <Layout
+          style={{
+            marginRight: 15,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <Avatar
             style={{ width: 90, height: 90, marginRight: 15 }}
             source={{
@@ -45,7 +41,7 @@ const ProfileTop = ({ navigation }) => {
                 textTransform: "capitalize",
                 fontSize: 19,
                 fontWeight: "bold",
-                marginBottom: 5
+                marginBottom: 5,
               }}
             >
               {user && user.name}
@@ -114,16 +110,15 @@ const ProfileTop = ({ navigation }) => {
           {user && user.tier && CapitalizeNames(user.tier.name)}
         </Text>
       </Layout>
-      <ModalDelete isVisible={isVisible} setVisible={setVisible}/>
+      <ModalDelete isVisible={isVisible} setVisible={setVisible} />
       <Button
         appearance="ghost"
-        style={{ marginBottom: 20}}
+        style={{ marginBottom: 20 }}
         onPress={() => setVisible(true)}
-        status='danger'
-
+        status="danger"
       >
-          Desactivar Cuenta
-    </Button>
+        Desactivar Cuenta
+      </Button>
       <Divider style={{ marginBottom: 25 }} />
       <Text style={{ fontWeight: "600", marginBottom: 5, textAlign: "center" }}>
         Code with <Ionicons name="heart" size={15} color="#f50357" /> by a
@@ -133,7 +128,7 @@ const ProfileTop = ({ navigation }) => {
         Ellyonsoft, Inc.
       </Text>
       <Text style={{ marginBottom: 5, textAlign: "center" }}>
-        Version 1.2.2.1
+        Version 2.0.0.0
       </Text>
     </Layout>
   );

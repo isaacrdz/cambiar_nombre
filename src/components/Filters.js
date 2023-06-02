@@ -35,7 +35,7 @@ const Filters = ({ filters, setQuery, setSearch, search }) => {
     let sourceFlt = "";
 
     if (carType) {
-      if (carType === "all") car = "";
+      if (carType === "all") car = "all";
       else if (carType !== "all") car = `${carType}`;
     }
 

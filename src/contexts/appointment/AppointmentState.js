@@ -45,16 +45,20 @@ const AppointmentState = (props) => {
   };
 
   //Get Appointments By User
-  const getAppointmentsByUser = async (userId) => {
+  const getAppointmentsByUser = async (userId, query) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       },
     };
+    if (!query) query = "";
     setLoading();
     try {
-      const res = await api.get(`users/${userId}/appointments`, config);
+      const res = await api.get(
+        `/appointments/admin?&status=true&agent=${userId}${query}`,
+        config
+      );
       dispatch({ type: GET_APPOINTMENTS_BY_USER, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data });

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { Agenda } from "react-native-calendars";
-import {
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import {
   translateStatus,
   translateSubstatus,
@@ -29,8 +25,13 @@ import useComment from "../../../../hooks/useComment";
 import _ from "lodash";
 import moment from "moment/min/moment-with-locales";
 import HeaderTitle from "../../../header/HeaderTitle";
-import { isAdmin, isRockstar, isSuper, isUser } from "../../../../utils/Authroles";
-import DatePicker from 'react-native-modern-datepicker';
+import {
+  isAdmin,
+  isRockstar,
+  isSuper,
+  isUser,
+} from "../../../../utils/Authroles";
+import DatePicker from "react-native-modern-datepicker";
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -52,8 +53,8 @@ const contactedStatus = [
 
 const AddTask = ({ navigation }) => {
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
-  const [hour, setHour] = useState('');
-  const [date, setDate] = React.useState('');
+  const [hour, setHour] = useState("");
+  const [date, setDate] = React.useState("");
   const { substatuses, getSubstatuses } = useSubstatus();
   const { createComment, updateComment, loading } = useComment();
   const { user } = useAuth();
@@ -61,7 +62,7 @@ const AddTask = ({ navigation }) => {
   const [substatusArray, setSubstatusArray] = useState([]);
   const [substatusArrayIds, setSubstatusArrayIds] = useState([]);
   const [selectedActions, setSelectedActions] = useState([]);
-  const [statusButton, setStatusButton] = useState(false)
+  const [statusButton, setStatusButton] = useState(false);
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
   const [text, setText] = useState("");
@@ -73,7 +74,7 @@ const AddTask = ({ navigation }) => {
   if (Platform.OS === "android") {
     paddingTop = 30;
   }
-  
+
   const now = new Date();
   const yesterday = new Date(
     now.getFullYear(),
@@ -82,30 +83,29 @@ const AddTask = ({ navigation }) => {
   );
 
   const handleSubmit = async () => {
-    setStatusButton(true)
+    setStatusButton(true);
 
-    if(date === '') {
+    if (date === "") {
+      setStatusButton(false);
 
-      setStatusButton(false)
-      
       return Toast.show({
         text1: "Elige una fecha",
         type: "error",
         position: "bottom",
       });
     }
-      
-    if(hour === '') { 
-      setStatusButton(false)
-      
+
+    if (hour === "") {
+      setStatusButton(false);
+
       return Toast.show({
-      text1: "Elige una hora",
-      type: "error",
-      position: "bottom",
-    });
+        text1: "Elige una hora",
+        type: "error",
+        position: "bottom",
+      });
     }
     if (text === "") {
-      setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Por favor deja un comentario",
@@ -113,14 +113,14 @@ const AddTask = ({ navigation }) => {
         position: "bottom",
       });
     } else if (selectedActions.length === 0) {
-      setStatusButton(false)
+      setStatusButton(false);
       return Toast.show({
         text1: "Selecciona al menos una accion",
         type: "error",
         position: "bottom",
       });
     } else if (selectedActions.length > 3) {
-      setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Selecciona máximo 3 acciones",
@@ -135,7 +135,15 @@ const AddTask = ({ navigation }) => {
       let userId = "";
       let author = "";
 
-      if (user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && lead.agent && lead.agent._id) {
+      if (
+        user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isAdmin(user.tier._id) ||
+          isSuper(user.tier._id)) &&
+        lead.agent &&
+        lead.agent._id
+      ) {
         userId = lead.agent._id;
         author = user._id;
       }
@@ -150,7 +158,7 @@ const AddTask = ({ navigation }) => {
         action: selectedActions,
       };
 
-      BodyComment.reschedule =  moment(`${date} ${hour}`).format();
+      BodyComment.reschedule = moment(`${date} ${hour}`).format();
 
       if (author !== "") {
         BodyComment.assignedBy = author;
@@ -181,10 +189,10 @@ const AddTask = ({ navigation }) => {
         await updateLead(bodyLead, lead._id);
         await createComment(BodyComment, lead._id);
         await getLead(lead._id);
-        navigation.navigate("LeadTabs", { item: lead});
+        navigation.navigate("LeadTabs", { item: lead });
       }
     }
-    setStatusButton(false)
+    setStatusButton(false);
   };
 
   const handleSetAction = (item) => {
@@ -268,7 +276,7 @@ const AddTask = ({ navigation }) => {
             <>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={{...styles.text, marginBottom: 20}}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
                 >
                   1. Deja un comentario
@@ -294,7 +302,7 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout style={{ marginBottom: 30 }} level="1">
                 <Text
-                  style={{...styles.text,marginBottom: 20}}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
                 >
                   2. Elige una acción
@@ -322,7 +330,7 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={{...styles.text,marginBottom: 20}}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
                 >
                   3. Elige un Estatus
@@ -362,7 +370,7 @@ const AddTask = ({ navigation }) => {
               </Layout>
               <Layout>
                 <Text
-                  style={{...styles.text,marginBottom: 20}}
+                  style={{ ...styles.text, marginBottom: 20 }}
                   category="s1"
                 >
                   4. Elige una Fecha
@@ -373,15 +381,15 @@ const AddTask = ({ navigation }) => {
                     minHeight: 256,
                   }}
                 >
-                <DatePicker 
-                  minimumDate={moment().add(1, 'day').format('YYYY-MM-DD')}
-                  onTimeChange={time => {
-                      setHour(time)
-                  }}
-                  onDateChange={date => {
-                    setDate(date)
-                  }}
-                />
+                  <DatePicker
+                    minimumDate={moment().add(1, "day").format("YYYY-MM-DD")}
+                    onTimeChange={(time) => {
+                      setHour(time);
+                    }}
+                    onDateChange={(date) => {
+                      setDate(date);
+                    }}
+                  />
 
                   <Layout>
                     <Button style={styles.button} onPress={handleSubmit}>

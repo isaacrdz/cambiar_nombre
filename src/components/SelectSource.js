@@ -75,11 +75,4 @@ const SelectSource = ({ setSource, setSearch, search }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  select: {
-    flex: 1,
-    margin: 2,
-  },
-});
-
 export default SelectSource;

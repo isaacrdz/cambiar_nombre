@@ -24,7 +24,7 @@ export default (state, action) => {
         ...action.payload,
         isAuthenticated: true,
         loading: false,
-        error: null
+        error: null,
       };
     case SET_LOADING:
       return {
@@ -35,10 +35,9 @@ export default (state, action) => {
       return {
         ...state,
         error: null,
-        loading: false
-      }
+        loading: false,
+      };
     case USER_LOADED:
-
       return {
         ...state,
         isAuthenticated: true,
@@ -49,7 +48,6 @@ export default (state, action) => {
       };
 
     case LOGIN_SUCCESS:
-
       return {
         ...state,
         ...action.payload,
@@ -61,8 +59,8 @@ export default (state, action) => {
       return {
         ...state,
         error: action.payload,
-        loading: false
-      }
+        loading: false,
+      };
     case LOGIN_FAIL:
     case REGISTER_FAIL:
     case LOGOUT:
@@ -72,8 +70,7 @@ export default (state, action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error: action.payload
-
+        error: action.payload,
       };
 
     default:

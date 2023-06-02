@@ -335,10 +335,7 @@ const AddLead = ({ navigation }) => {
       <ScrollView>
         <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Nombre
             </Text>
             <Layout
@@ -351,7 +348,7 @@ const AddLead = ({ navigation }) => {
               <Input
                 multiline={true}
                 placeholder="Nombre"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 onChangeText={(name) =>
                   setCurrentLead({ ...currentLead, name })
                 }
@@ -359,10 +356,7 @@ const AddLead = ({ navigation }) => {
             </Layout>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Correo Eléctronico
             </Text>
             <Layout
@@ -375,7 +369,7 @@ const AddLead = ({ navigation }) => {
               <Input
                 multiline={true}
                 placeholder="Correo Eléctronico"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 onChangeText={(email) =>
                   setCurrentLead({ ...currentLead, email })
                 }
@@ -383,10 +377,7 @@ const AddLead = ({ navigation }) => {
             </Layout>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Teléfono
             </Text>
             <Layout
@@ -399,7 +390,7 @@ const AddLead = ({ navigation }) => {
               <Input
                 multiline={true}
                 placeholder="Teléfono"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 onChangeText={(phone) =>
                   setCurrentLead({ ...currentLead, phone })
                 }
@@ -407,10 +398,7 @@ const AddLead = ({ navigation }) => {
             </Layout>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Tipo de Unidad
             </Text>
             <Select
@@ -425,10 +413,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Agencia
             </Text>
             <Select
@@ -453,10 +438,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Modelo
             </Text>
 
@@ -475,10 +457,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Año
             </Text>
             <Layout
@@ -491,7 +470,7 @@ const AddLead = ({ navigation }) => {
               <Input
                 multiline={true}
                 placeholder="Año"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 onChangeText={(year) =>
                   setCurrentLead({ ...currentLead, year })
                 }
@@ -499,10 +478,7 @@ const AddLead = ({ navigation }) => {
             </Layout>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Enganche
             </Text>
             <Layout
@@ -515,7 +491,7 @@ const AddLead = ({ navigation }) => {
               <Input
                 multiline={true}
                 placeholder="Enganche"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 onChangeText={(downPayment) =>
                   setCurrentLead({ ...currentLead, downPayment })
                 }
@@ -523,10 +499,7 @@ const AddLead = ({ navigation }) => {
             </Layout>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Tiempo de Compra
             </Text>
 
@@ -542,10 +515,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Fuente
             </Text>
 
@@ -561,10 +531,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Compañía
             </Text>
 
@@ -580,10 +547,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Lista
             </Text>
 
@@ -599,10 +563,7 @@ const AddLead = ({ navigation }) => {
             </Select>
           </Layout>
           <Layout style={{ marginBottom: 20 }} level="1">
-            <Text
-              style={{...styles.text, marginBottom: 20}}
-              category="s1"
-            >
+            <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
               Comentario
             </Text>
 
@@ -610,7 +571,7 @@ const AddLead = ({ navigation }) => {
               multiline={true}
               placeholder="Comentario"
               textStyle={{ minHeight: 64 }}
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               value={currentLead.comment}
               onChangeText={(comment) =>
                 setCurrentLead({ ...currentLead, comment: comment })

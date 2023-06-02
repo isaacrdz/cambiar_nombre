@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import useAppointment from "../../hooks/useAppointment";
 import useVisit from "../../hooks/useVisit";
 import useLead from "../../hooks/useLead";
@@ -14,7 +13,6 @@ import {
   Divider,
   Text,
   Button,
-  Icon,
   Input,
   Select,
   IndexPath,
@@ -24,148 +22,192 @@ import moment from "moment/min/moment-with-locales";
 import { useFocusEffect } from "@react-navigation/native";
 import { translateSubstatus } from "../../utils/tranlsateSubstatus";
 import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
+import DatePicker from "react-native-modern-datepicker";
 
 const AppointmentDetail = ({ route, navigation }) => {
   const { item } = route.params;
   const { appointment, getAppointment, updateAppointment } = useAppointment();
   const { createVisit } = useVisit();
 
-  const [open, setOpen] = useState(false)
   const { user } = useAuth();
-  const { updateLead } = useLead()
+  const { updateLead } = useLead();
   const { substatuses, getSubstatuses } = useSubstatus();
   const { updateComment, createComment } = useComment();
   const times = ["1 Hora", "2 Horas"];
-  const [hour, setHour] = useState(new Date());
-  const [finalDate, setFinalDate] = useState('')
-  const [time, setTime] = useState({row: 0});
-  const [textVisit, setTextVisit] = useState('');
+
+  const [hour, setHour] = useState("");
+  const [date, setDate] = React.useState("");
+
+  const [finalDate, setFinalDate] = useState("");
+  const [time, setTime] = useState({ row: 0 });
+  const [textVisit, setTextVisit] = useState("");
   const displayValueTime = times[time.row];
   const [currentAppointment, setCurrentAppointment] = useState({
-    startDate: new Date()
+    startDate: new Date(),
   });
-  
 
   const [substatusAppointment, setSubstatusAppointment] = useState([]);
   const [substatusVisit, setSubstatusVisit] = useState([]);
 
-  const [substatusAppointmentIndex, setSubstatusAppointmentIndex] = useState(new IndexPath(0));
-  const displaySubstatusAppointment = substatusAppointment[substatusAppointmentIndex.row];
+  const [substatusAppointmentIndex, setSubstatusAppointmentIndex] = useState(
+    new IndexPath(0)
+  );
+  const displaySubstatusAppointment =
+    substatusAppointment[substatusAppointmentIndex.row];
 
-  const [substatusVisitIndex, setSubstatusVisitIndex] = useState(new IndexPath(0));
+  const [substatusVisitIndex, setSubstatusVisitIndex] = useState(
+    new IndexPath(0)
+  );
   const displaySubstatusVisit = substatusVisit[substatusVisitIndex.row];
 
-
   const handleSaveVisit = async () => {
+    if (date === "") {
+      setStatusButton(false);
 
+      return Toast.show({
+        text1: "Elige una fecha",
+        type: "error",
+        position: "bottom",
+      });
+    }
 
-    if(textVisit === ''){
+    if (hour === "") {
+      setStatusButton(false);
+
+      return Toast.show({
+        text1: "Elige una hora",
+        type: "error",
+        position: "bottom",
+      });
+    }
+    if (textVisit === "") {
       return Toast.show({
         text1: "Deja un comentario",
         type: "error",
         position: "bottom",
       });
     }
-  
-    if(currentAppointment && currentAppointment.lead && currentAppointment.lead.agent){
 
-    let author = '';
-    let userId = '';
-    if(user && user.tier && (isRockstar(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id)) && currentAppointment.lead.agent && currentAppointment.lead.agent._id){
+    if (
+      currentAppointment &&
+      currentAppointment.lead &&
+      currentAppointment.lead.agent
+    ) {
+      let author = "";
+      let userId = "";
+      if (
+        user &&
+        user.tier &&
+        (isRockstar(user.tier._id) ||
+          isAdmin(user.tier._id) ||
+          isSuper(user.tier._id)) &&
+        currentAppointment.lead.agent &&
+        currentAppointment.lead.agent._id
+      ) {
         userId = currentAppointment.lead.agent._id;
         author = user._id;
+      }
+
+      if (user && user.tier && isUser(user.tier._id)) {
+        userId = user._id;
+      }
+
+      let BodyComment = {
+        comment: textVisit,
+        user: userId,
+        action: ["visit"],
+        pending: true,
+        store: currentAppointment.lead.store._id,
+      };
+
+      if (author !== "") {
+        BodyComment.assignedBy = author;
+      }
+
+      BodyComment.reschedule = moment(`${date} ${hour}`).format();
+
+      await updateLead(
+        {
+          status: "6064f8065b21e51052eed547",
+          substatus: substatusVisit[substatusVisitIndex.row]._id,
+        },
+        currentAppointment.lead._id
+      );
+      await createComment(BodyComment, currentAppointment.lead._id);
+      await createVisit({
+        substatus: substatusVisit[substatusVisitIndex.row]._id,
+        lead: currentAppointment.lead._id,
+        store: currentAppointment.lead.store._id,
+        user: currentAppointment.lead.agent._id,
+      });
+      await updateAppointment({ status: false }, item._id);
+      if (
+        currentAppointment &&
+        currentAppointment.lead &&
+        currentAppointment.lead.comments &&
+        currentAppointment.lead.comments[0]
+      ) {
+        await updateComment(
+          { pending: false },
+          currentAppointment.lead.comments[
+            currentAppointment.lead.comments.length - 1
+          ]._id
+        );
+      }
+      navigation.pop();
+    } else {
+      Toast.show({
+        text1: "Agrega un agente primero",
+        type: "error",
+        position: "bottom",
+      });
     }
+  };
 
-    if(user && user.tier && isUser(user.tier._id)){
-      userId = user._id;
-    }
-
-    let BodyComment = {
-      comment: textVisit,
-      user: userId,
-      action: ["visit"],
-      pending: true,
-      store: currentAppointment.lead.store._id,
-      reschedule: moment().add(15, 'minutes').format()
-    }
-
-    if(author !== ''){
-      BodyComment.assignedBy = author;
-    }
-
-    await updateLead({status: "6064f8065b21e51052eed547", substatus: substatusVisit[substatusVisitIndex.row]._id}, currentAppointment.lead._id);
-    await createComment(BodyComment, currentAppointment.lead._id)
-    await createVisit({ substatus: substatusVisit[substatusVisitIndex.row]._id, lead: currentAppointment.lead._id, store: currentAppointment.lead.store._id, user: currentAppointment.lead.agent._id });
-    await updateAppointment({status: false}, item._id);
-    if(currentAppointment && currentAppointment.lead && currentAppointment.lead.comments && currentAppointment.lead.comments[0]){
-      await updateComment({pending: false}, currentAppointment.lead.comments[currentAppointment.lead.comments.length - 1]._id);
-    }
-    navigation.pop();
-
-    await getAppointmentsByUser(user._id);
-
-  }else{
-
-    Toast.show({
-      text1: "Agrega un agente primero",
-      type: "error",
-      position: "bottom",
-    });
-   
-  }
-
-  }
-
-  const renderAndroidPicker = (state) => {
-
-    if(state === true){
-      return (
-        <>
-          <DateTimePicker
-            value={hour}
-            mode="time"
-            display="spinner"
-            onChange={onChangeAndroidHour}
-          />
-          <DateTimePicker
-            value={currentAppointment.startDate}
-            mode="date"
-            display="spinner"
-            onChange={onChangeAndroid}
-          />
-        </>
-      )
-    }
-  }
-
-  const handleSaveSubstatusAppointment = async() => {
+  const handleSaveSubstatusAppointment = async () => {
     let bodyAppointment = {
       substatus: substatusAppointment[substatusAppointmentIndex.row]._id,
-    }
+    };
 
-    if(substatusAppointment[substatusAppointmentIndex.row]._id === '605bd729bed49524ae40f889' || substatusAppointment[substatusAppointmentIndex.row]._id === '605bd717bed49524ae40f888'){
+    if (
+      substatusAppointment[substatusAppointmentIndex.row]._id ===
+        "605bd729bed49524ae40f889" ||
+      substatusAppointment[substatusAppointmentIndex.row]._id ===
+        "605bd717bed49524ae40f888"
+    ) {
       bodyAppointment.status = false;
     }
 
-    await updateLead({status: "604f80222b372e0cb11966dc", substatus: substatusAppointment[substatusAppointmentIndex.row]._id}, currentAppointment.lead._id);
+    await updateLead(
+      {
+        status: "604f80222b372e0cb11966dc",
+        substatus: substatusAppointment[substatusAppointmentIndex.row]._id,
+      },
+      currentAppointment.lead._id
+    );
 
-    await updateAppointment(bodyAppointment, item._id)
+    await updateAppointment(bodyAppointment, item._id);
 
     Toast.show({
       text1: "Cita Actualizada",
       type: "success",
       position: "bottom",
     });
-    if(substatusAppointment[substatusAppointmentIndex.row]._id === '605bd729bed49524ae40f889' || substatusAppointment[substatusAppointmentIndex.row]._id === '605bd717bed49524ae40f888'){
+    if (
+      substatusAppointment[substatusAppointmentIndex.row]._id ===
+        "605bd729bed49524ae40f889" ||
+      substatusAppointment[substatusAppointmentIndex.row]._id ===
+        "605bd717bed49524ae40f888"
+    ) {
       navigation.pop();
     }
+  };
 
-
-  }
-
-  const handleSaveAppointment = async() => {
-
-    if(currentAppointment.description === '' || currentAppointment.title === ''){
+  const handleSaveAppointment = async () => {
+    if (
+      currentAppointment.description === "" ||
+      currentAppointment.title === ""
+    ) {
       return Toast.show({
         text1: "Por favor llena todos los campos",
         type: "error",
@@ -175,29 +217,30 @@ const AppointmentDetail = ({ route, navigation }) => {
 
     let endDate;
     let startDate;
-    if(Platform.OS === 'ios'){
+    if (Platform.OS === "ios") {
       startDate = currentAppointment.startDate;
-      endDate = moment(startDate).add((time.row + 1), 'hours');
-    }else{
+      endDate = moment(startDate).add(time.row + 1, "hours");
+    } else {
       startDate = finalDate;
-      endDate = moment(startDate).add((time.row + 1), 'hours');
+      endDate = moment(startDate).add(time.row + 1, "hours");
     }
 
-    
-
-    await updateAppointment({
-      title: currentAppointment.title, 
-      description: currentAppointment.description, 
-      endDate,
-      startDate,
-    }, item._id);
+    await updateAppointment(
+      {
+        title: currentAppointment.title,
+        description: currentAppointment.description,
+        endDate,
+        startDate,
+      },
+      item._id
+    );
 
     Toast.show({
       text1: "Cita Actualizada",
       type: "success",
       position: "bottom",
     });
-  }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -207,7 +250,7 @@ const AppointmentDetail = ({ route, navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      getSubstatuses()
+      getSubstatuses();
     }, [])
   );
 
@@ -219,44 +262,40 @@ const AppointmentDetail = ({ route, navigation }) => {
 
         let cA = 0;
         let cV = 0;
-        substatuses.map(item => {
-          if(item.status === '604f80222b372e0cb11966dc'){
+        substatuses.map((item) => {
+          if (item.status === "604f80222b372e0cb11966dc") {
             sA.push(item);
-            if(item._id.toString() === currentAppointment.substatus._id){
-              setSubstatusAppointmentIndex(new IndexPath(cA))
+            if (item._id.toString() === currentAppointment.substatus._id) {
+              setSubstatusAppointmentIndex(new IndexPath(cA));
             }
-            cA ++;
+            cA++;
           }
 
-          if(item.status === '6064f8065b21e51052eed547' && item.name !== 'frontdesk'){
+          if (
+            item.status === "6064f8065b21e51052eed547" &&
+            item.name !== "frontdesk"
+          ) {
             sV.push(item);
-            cV ++;
+            cV++;
           }
-        })
+        });
         setSubstatusAppointment(sA);
         setSubstatusVisit(sV);
       }
     }, [substatuses, currentAppointment])
   );
 
-
-  useEffect(()=>{
-    if(hour && currentAppointment.startDate){
-      let finalDate = currentAppointment.startDate.toString().split(' ')
-      let finalHour = hour.toString().split(' ')
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`
-      setFinalDate(postDate)
-    }
-  },[hour])
-
   useEffect(() => {
-    if(appointment && appointment._id){
-      let timeDif = moment(appointment.endDate).diff(appointment.startDate, 'hours');
+    if (appointment && appointment._id) {
+      let timeDif = moment(appointment.endDate).diff(
+        appointment.startDate,
+        "hours"
+      );
 
-      setFinalDate(appointment.startDate)
-      setTime({row: (timeDif-1)})
+      setFinalDate(appointment.startDate);
+      setTime({ row: timeDif - 1 });
 
-      setCurrentAppointment({ 
+      setCurrentAppointment({
         substatus: appointment.substatus,
         lead: {
           agent: appointment.lead.agent,
@@ -265,45 +304,31 @@ const AppointmentDetail = ({ route, navigation }) => {
           email: appointment.lead.email,
           phone: appointment.lead.phone,
           store: appointment.lead.store,
-          comments: appointment.lead.comments
+          comments: appointment.lead.comments,
         },
         title: appointment.title,
-        description: appointment.description, 
-        startDate: new Date(appointment.startDate)
-      })
+        description: appointment.description,
+        startDate: new Date(appointment.startDate),
+      });
     }
-  }, [appointment])
+  }, [appointment]);
 
   moment.locale("es-mx");
- 
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setCurrentAppointment({...currentAppointment, startDate: currentDate});
-  };
-
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-      setHour(selectedTime);
-      // setCurrentAppointment({...currentAppointment, startDate: postDate})
-    }
-  };
-
-  const onChangeAndroid = (event, selectedDate) => {
-    setOpen(false);
-    if (selectedDate !== undefined) {
-      setCurrentAppointment({...currentAppointment, startDate: selectedDate});
-    }
+    setCurrentAppointment({ ...currentAppointment, startDate: currentDate });
   };
 
   let paddingTop = 0;
 
-  if(Platform.OS === 'android'){
+  if (Platform.OS === "android") {
     paddingTop = 30;
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
-      <HeaderTitle title="Detalle de la Cita" /> 
+      <HeaderTitle title="Detalle de la Cita" />
 
       <ScrollView>
         <Layout style={{ marginBottom: 20 }}>
@@ -359,10 +384,7 @@ const AppointmentDetail = ({ route, navigation }) => {
           </Layout>
           <Divider />
         </Layout>
-        <Text
-          category="s1"
-          style={{ textAlign: "center", marginBottom: 20 }}
-        >
+        <Text category="s1" style={{ textAlign: "center", marginBottom: 20 }}>
           Información de Cita
         </Text>
         <Layout>
@@ -377,7 +399,13 @@ const AppointmentDetail = ({ route, navigation }) => {
               Título
             </Text>
 
-            <Input style={{ minWidth: 300 }} onChangeText={(string) => setCurrentAppointment({...currentAppointment, title: string})} value={currentAppointment.title} />
+            <Input
+              style={{ minWidth: 300 }}
+              onChangeText={(string) =>
+                setCurrentAppointment({ ...currentAppointment, title: string })
+              }
+              value={currentAppointment.title}
+            />
           </Layout>
         </Layout>
         <Layout>
@@ -392,41 +420,45 @@ const AppointmentDetail = ({ route, navigation }) => {
               Información
             </Text>
 
-            <Input style={{ minWidth: 300 }} onChangeText={(string) => setCurrentAppointment({...currentAppointment, description: string})} value={currentAppointment.description} />
+            <Input
+              style={{ minWidth: 300 }}
+              onChangeText={(string) =>
+                setCurrentAppointment({
+                  ...currentAppointment,
+                  description: string,
+                })
+              }
+              value={currentAppointment.description}
+            />
+            <Input
+              disabled
+              style={{ minWidth: 300, marginTop: 5 }}
+              value={`Fecha de Inicio: ${
+                finalDate && moment(finalDate).format("DD, MMMM YYYY - hh:mm a")
+              }`}
+            />
           </Layout>
           <Layout>
+            <Text style={{ ...styles.text, marginTop: 20 }} category="s1">
+              Reagendar Fecha
+            </Text>
             <Layout
+              level="1"
               style={{
                 paddingHorizontal: 20,
-                paddingVertical: 10,
+                paddingVertical: 2,
+                minHeight: 256,
               }}
-              level="1"
             >
-              <Text category="s1" style={{ marginBottom: 10 }}>
-                {
-                  Platform.OS === 'android' ? 
-                  `Fecha de Inicio: ${finalDate && moment(finalDate).format('DD, MMMM YYYY - hh:mm a')}` :
-                  `Fecha de Inicio`
-                }
-                
-              </Text>
-              {
-                Platform.OS === 'ios' &&
-                <DateTimePicker
-                  value={currentAppointment.startDate}
-                  mode="datetime"
-                  onChange={onChange}
-                  display="spinner"
-                />
-              }
-              {
-                Platform.OS === 'android' &&
-                <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={()=>setOpen(true)}>Seleccionar Fecha</Button>
-              }
-              {
-                Platform.OS === 'android' && renderAndroidPicker(open)
-              }
-              
+              <DatePicker
+                minimumDate={moment().add(1, "day").format("YYYY-MM-DD")}
+                onTimeChange={(time) => {
+                  setHour(time);
+                }}
+                onDateChange={(date) => {
+                  setDate(date);
+                }}
+              />
             </Layout>
           </Layout>
           <Layout>
@@ -440,13 +472,23 @@ const AppointmentDetail = ({ route, navigation }) => {
               <Text category="s1" style={{ marginBottom: 10 }}>
                 Duración
               </Text>
-              <Select size="large" style={{ marginBottom: 10 }} onSelect={(index) => setTime(index)} value={displayValueTime}>
+              <Select
+                size="large"
+                style={{ marginBottom: 10 }}
+                onSelect={(index) => setTime(index)}
+                value={displayValueTime}
+              >
                 {times.map((action, i) => (
-                  <SelectItem title={action} key={i}  />
+                  <SelectItem title={action} key={i} />
                 ))}
               </Select>
               {/* <Input style={{ minWidth: 300 }} value={"1 Hora"} /> */}
-              <Button style={{ marginBottom: 20, marginTop: 20 }} onPress={handleSaveAppointment}>Guardar</Button>
+              <Button
+                style={{ marginBottom: 20, marginTop: 20 }}
+                onPress={handleSaveAppointment}
+              >
+                Guardar
+              </Button>
             </Layout>
           </Layout>
 
@@ -469,71 +511,93 @@ const AppointmentDetail = ({ route, navigation }) => {
             <Select
               size="large"
               style={{ marginBottom: 10 }}
-              onSelect={(index) => setSubstatusAppointmentIndex(index)} 
-              selectedIndex={substatusAppointmentIndex}  
-              value={displaySubstatusAppointment && translateSubstatus(displaySubstatusAppointment.name)}
-            >
-              {
-                substatusAppointment.map(item => 
-                  <SelectItem title={translateSubstatus(item.name)} key={item.name}/>
-                )
+              onSelect={(index) => setSubstatusAppointmentIndex(index)}
+              selectedIndex={substatusAppointmentIndex}
+              value={
+                displaySubstatusAppointment &&
+                translateSubstatus(displaySubstatusAppointment.name)
               }
-             
+            >
+              {substatusAppointment.map((item) => (
+                <SelectItem
+                  title={translateSubstatus(item.name)}
+                  key={item.name}
+                />
+              ))}
             </Select>
 
-            <Button style={{ marginBottom: 20, marginTop: 20 }}onPress={handleSaveSubstatusAppointment}>
+            <Button
+              style={{ marginBottom: 20, marginTop: 20 }}
+              onPress={handleSaveSubstatusAppointment}
+            >
               Actualizar Estatus
             </Button>
           </Layout>
-          {
-            currentAppointment && currentAppointment.substatus && (currentAppointment.substatus._id === "605bd6c4bed49524ae40f886" || currentAppointment.substatus._id === "605bce8ba04514212f1fac67") &&
-          <>
-          <Divider />
-          <Layout
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-            }}
-            level="1"
-          >
-            <Text
-              category="s1"
-              style={{ textAlign: "center", marginBottom: 20 }}
-            >
-              Elige el Estatus de la Visita
-            </Text>
+          {currentAppointment &&
+            currentAppointment.substatus &&
+            (currentAppointment.substatus._id === "605bd6c4bed49524ae40f886" ||
+              currentAppointment.substatus._id ===
+                "605bce8ba04514212f1fac67") && (
+              <>
+                <Divider />
+                <Layout
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 10,
+                  }}
+                  level="1"
+                >
+                  <Text
+                    category="s1"
+                    style={{ textAlign: "center", marginBottom: 20 }}
+                  >
+                    Elige el Estatus de la Visita
+                  </Text>
 
-            <Input
-              style={{ minWidth: 300, marginBottom: 10 }}
-              value={textVisit}
-              onChangeText={(string)=>setTextVisit(string)}
-            />
+                  <Input
+                    style={{ minWidth: 300, marginBottom: 10 }}
+                    value={textVisit}
+                    onChangeText={(string) => setTextVisit(string)}
+                  />
 
-            <Select
-              size="large"
-              style={{ marginBottom: 10 }}
-              onSelect={(index) => setSubstatusVisitIndex(index)} 
-              selectedIndex={substatusVisitIndex}  
-              value={displaySubstatusVisit && displaySubstatusVisit.name}
-            >
-               {
-                substatusVisit.map(item => 
-                  <SelectItem title={translateSubstatus(item.name)} key={item.name}/>
-                )
-              }
-            </Select>
-          </Layout>
-          <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-            <Button onPress={handleSaveVisit}>Crear Visita</Button>
-          </Layout>
-          </>
-          }
-
+                  <Select
+                    size="large"
+                    style={{ marginBottom: 10 }}
+                    onSelect={(index) => setSubstatusVisitIndex(index)}
+                    selectedIndex={substatusVisitIndex}
+                    value={displaySubstatusVisit && displaySubstatusVisit.name}
+                  >
+                    {substatusVisit.map((item) => (
+                      <SelectItem
+                        title={translateSubstatus(item.name)}
+                        key={item.name}
+                      />
+                    ))}
+                  </Select>
+                </Layout>
+                <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                  <Button onPress={handleSaveVisit}>Crear Visita</Button>
+                </Layout>
+              </>
+            )}
         </Layout>
-        
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  text: {
+    margin: 2,
+    textAlign: "center",
+  },
+  button: {
+    marginTop: 20,
+  },
+});
 
 export default AppointmentDetail;

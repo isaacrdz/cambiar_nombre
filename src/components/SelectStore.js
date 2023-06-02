@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import {
   IndexPath,
-  Select,
-  SelectItem,
   TopNavigationAction,
   OverflowMenu,
   MenuItem,
 } from "@ui-kitten/components";
-import moment from "moment";
 import useAuth from "../hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -57,13 +54,20 @@ const SelectStore = ({ setSelectedStores, setSearch, search }) => {
   }, [user]);
 
   useEffect(() => {
-    if (stores && stores.length >= 1) setSelectedStores(getMultiStoresIds(stores));
+    if (stores && stores.length >= 1)
+      setSelectedStores(getMultiStoresIds(stores));
   }, [stores]);
 
   const getStoresDPX = (role, groupId) => {
-    if (isAdmin(role) || isUser(role) || isMarketing(role) || isSalesManager(role) || isGeneralManager(role)) {
+    if (
+      isAdmin(role) ||
+      isUser(role) ||
+      isMarketing(role) ||
+      isSalesManager(role) ||
+      isGeneralManager(role)
+    ) {
       getStoresByUser(user._id);
-    } else if (isSuper(role) || isDigitalMkt(role) ) {
+    } else if (isSuper(role) || isDigitalMkt(role)) {
       getStoresByGroup(user.group._id);
     } else if (isRockstar(role)) {
       getStores(true);
@@ -76,49 +80,42 @@ const SelectStore = ({ setSelectedStores, setSearch, search }) => {
     <Ionicons style={{ color: "#5764b8" }} name="business-outline" size={25} />
   );
 
-
   useEffect(() => {
     if (stores && stores.length <= 0) return;
     if (selectedIndex.row == 0) setSelectedStores(getMultiStoresIds(stores));
-    else  {
-      let name = CapitalizeNames(`${stores[selectedIndex.row - 1].make.name} ${stores[selectedIndex.row - 1].name}`)
-      setSearch({ ...search, store: name })
+    else {
+      let name = CapitalizeNames(
+        `${stores[selectedIndex.row - 1].make.name} ${
+          stores[selectedIndex.row - 1].name
+        }`
+      );
+      setSearch({ ...search, store: name });
       setSelectedStores(stores[selectedIndex.row - 1]._id);
     }
   }, [selectedIndex]);
 
   return (
     <>
-      {
-        stores &&
-        stores.length >= 1 &&
-        (
-          <OverflowMenu
-            anchor={renderMenuAction}
-            visible={menuVisible}
-            onBackdropPress={toggleMenu}
-            onSelect={onItemSelect}
-          >
-            <MenuItem title={`Todas las Agencias`} value={"all"} />
+      {stores && stores.length >= 1 && (
+        <OverflowMenu
+          anchor={renderMenuAction}
+          visible={menuVisible}
+          onBackdropPress={toggleMenu}
+          onSelect={onItemSelect}
+        >
+          <MenuItem title={`Todas las Agencias`} value={"all"} />
 
-            {stores.map((store, i) => (
-              <MenuItem
-                key={i}
-                title={`${store.make.slug + " " + CapitalizeNames(store.name)}`}
-                value={store._id}
-              />
-            ))}
-          </OverflowMenu>
-        )}
+          {stores.map((store, i) => (
+            <MenuItem
+              key={i}
+              title={`${store.make.slug + " " + CapitalizeNames(store.name)}`}
+              value={store._id}
+            />
+          ))}
+        </OverflowMenu>
+      )}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  select: {
-    flex: 1,
-    margin: 2,
-  },
-});
 
 export default SelectStore;

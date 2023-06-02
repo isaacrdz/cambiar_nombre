@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 import {
   IndexPath,
   TopNavigationAction,
@@ -21,7 +20,6 @@ const data = ["Todos", "Nuevos", "Seminuevos"];
 
 const SelectCarType = ({ setCarType, setSearch, search }) => {
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-  const displayValue = data[selectedIndex.row];
   const { user } = useAuth();
 
   const [menuVisible, setMenuVisible] = React.useState(false);
@@ -116,12 +114,5 @@ const SelectCarType = ({ setCarType, setSearch, search }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  select: {
-    flex: 1,
-    margin: 2,
-  },
-});
 
 export default SelectCarType;

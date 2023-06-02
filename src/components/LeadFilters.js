@@ -4,7 +4,6 @@ import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
 
 import { List, ListItem, Layout, Text } from "@ui-kitten/components";
-import { getMultiStoresIds } from "../utils/storesUser";
 import {
   isAdmin,
   isGeneralManager,
@@ -176,8 +175,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "#5764b8",
-    // marginRight: 10,
-    // marginLeft: 10,
     padding: 5,
     minWidth: 100,
     alignItems: "center",

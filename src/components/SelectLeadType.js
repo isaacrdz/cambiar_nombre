@@ -118,11 +118,4 @@ const SelectLeadType = ({ setLeadType, setSearch, search }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  select: {
-    flex: 1,
-    margin: 2,
-  },
-});
-
 export default SelectLeadType;

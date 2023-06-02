@@ -25,8 +25,8 @@ const ChartState = (props) => {
     totalSolds: null,
     error: null,
     loadingCharts: false,
-    leadsMonthlyChart: false,
-    pieStatus: false,
+    leadsMonthlyChart: {},
+    pieStatus: {},
     substatusAgentChart: false,
     closureTopStores: false,
     closureTopUsers: false,
@@ -34,6 +34,57 @@ const ChartState = (props) => {
 
   const [state, dispatch] = useReducer(ChartReducer, initialState);
   //Get Pie Status Chart
+
+  const getAllHomeCharts = async (query) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    };
+    setLoading();
+
+    try {
+      const resPieStatus = await api.get(
+        `/charts/pieStatusChart?${query}`,
+        config
+      );
+
+      const resLeadsMonthly = await api.get(
+        `/charts/leadsMonthlyChart?${query}&filter=MMM`,
+        config
+      );
+
+      const resTotalDashboard = await api.get(
+        `/charts/getTotalsDashboard?${query}`,
+        config
+      );
+
+      const resClosureTop = await api.get(
+        `/charts/closureTopUsers?${query}`,
+        config
+      );
+
+      dispatch({
+        type: GET_CLOSURE_TOP_USERS,
+        payload: resClosureTop.data.data,
+      });
+
+      dispatch({
+        type: GET_TOTALS_DASHBOARD,
+        payload: resTotalDashboard.data.data,
+      });
+
+      dispatch({
+        type: GET_LEADS_MONTHLY_CHART,
+        payload: resLeadsMonthly.data.data,
+      });
+
+      dispatch({ type: GET_PIE_STATUS_CHART, payload: resPieStatus.data.data });
+    } catch (err) {
+      dispatch({ type: SET_ERROR, payload: err.response.data.error });
+    }
+  };
 
   const getPieStatusChart = async (query) => {
     const config = {
@@ -77,7 +128,6 @@ const ChartState = (props) => {
     setLoading();
     try {
       const res = await api.get(`/charts/leadsMonthlyChart?${query}`, config);
-
       dispatch({ type: GET_LEADS_MONTHLY_CHART, payload: res.data.data });
     } catch (err) {
       dispatch({ type: SET_ERROR, payload: err.response.data.error });
@@ -166,6 +216,8 @@ const ChartState = (props) => {
 
         getPieStatusChart,
         pieStatus: state.pieStatus,
+
+        getAllHomeCharts,
 
         clearCharts,
         setLoading,

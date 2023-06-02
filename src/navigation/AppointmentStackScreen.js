@@ -7,19 +7,18 @@ import AppointmentDetail from "../screens/Appointment/AppointmentDetail";
 const AppointmentMainStack = createStackNavigator();
 const AppointmentStack = createStackNavigator();
 
-const AppointmentMainStackScreen = ({ navigation }) => {
+const AppointmentMainStackScreen = () => {
   return (
     <AppointmentMainStack.Navigator>
-      <AppointmentMainStack.Screen
-        name="Citas"
-        component={Appointment}
-      />
+      <AppointmentMainStack.Screen name="Citas" component={Appointment} />
     </AppointmentMainStack.Navigator>
   );
 };
 
 const AppointmentStackScreen = () => (
-  <AppointmentStack.Navigator mode="modal" headerMode="none">
+  <AppointmentStack.Navigator
+    screenOptions={{ presentation: "modal", headerShown: false }}
+  >
     <AppointmentStack.Screen
       name="AppointmentMain"
       component={AppointmentMainStackScreen}
