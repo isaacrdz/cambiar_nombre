@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import ActivityContext from  "../contexts/activity/activityContext";
+import { useContext } from "react";
+import ActivityContext from "../contexts/activity/activityContext";
 
 const useActivity = () => useContext(ActivityContext);
 

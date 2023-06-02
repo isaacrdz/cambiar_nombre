@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import moment from "moment";
 import useChart from "../../hooks/useChart";
 import useAuth from "../../hooks/useAuth";
 import { CapitalizeNames } from "../../utils/Capitalize";
@@ -14,7 +13,7 @@ import numeral from "numeral";
 
 import Filters from "../Filters";
 
-const HomeAdmin = ({ navigation }) => {
+const HomeAdmin = () => {
   const { user } = useAuth();
   const {
     getTotalsDashboard,
@@ -138,7 +137,6 @@ const HomeAdmin = ({ navigation }) => {
               Citas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="calendar-outline" size={25} color={"#33acee"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -158,7 +156,6 @@ const HomeAdmin = ({ navigation }) => {
               Visitas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="home-outline" size={25} color={"#d81b60"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -176,7 +173,6 @@ const HomeAdmin = ({ navigation }) => {
               Ventas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="cash-outline" size={25} color={"#43a047"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />

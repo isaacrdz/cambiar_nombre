@@ -2,24 +2,33 @@
   "expo": {
     "name": "DPX",
     "slug": "dpx",
-    "version": "2.3",
-    "notification": {
-      "icon": "./assets/logo.png"
-    },
+    "version": "2.4.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.ellyonsoft.dpx",
-      "buildNumber": "2.3"
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.ellyonsoft.dpx",
-      "versionCode": 23
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.ellyonsoft.dpx"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "680a8e90-aa3b-4515-90d6-03b1e0b095f2"
+      }
     }
   }
 }

@@ -1,55 +1,34 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { Layout, Text, Input, Button, Select, IndexPath, SelectItem } from "@ui-kitten/components";
-import Toast from 'react-native-toast-message';
-// import useStore from '../../hooks/useStore';
+import { StyleSheet } from "react-native";
+import { Layout, Text, Input, Button } from "@ui-kitten/components";
+import Toast from "react-native-toast-message";
 import useAuth from "../../hooks/useAuth";
-// import { CapitalizeNames } from "../../utils/Capitalize";
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  // const [storesNames, setStoresNames] = React.useState([]);
-  const [store, setStore] = React.useState(new IndexPath(0));
-  // const { stores, getStores } = useStore();
   const { register, error, clearError } = useAuth();
-  // const displayValue = storesNames[store.row];
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     getStores()
-  //   }, [])
-  // );
-
-  // useEffect(()=>{
-  //   if(stores){
-  //     let aux = []
-  //     stores.map(item => aux.push(CapitalizeNames(item.make.name + ' ' + item.name)));
-  //     setStoresNames(aux)
-  //   }
-  // },[stores])
-
-  useEffect(()=>{
-    if(error){
+  useEffect(() => {
+    if (error) {
       Toast.show({
         text1: error,
         type: "error",
-        position: "bottom"
+        position: "bottom",
       });
 
       setTimeout(() => clearError(), 2000);
-
     }
-  },[error])
-  
+  }, [error]);
+
   const onHandleSubmit = () => {
-    if(password !== confirmPassword){
-      return  Toast.show({
+    if (password !== confirmPassword) {
+      return Toast.show({
         text1: "Las contraseñas son diferentes",
         type: "error",
-        position: "bottom"
+        position: "bottom",
       });
     }
     const data = {
@@ -58,7 +37,7 @@ const Register = ({navigation}) => {
       stores: ["60f5890cf852df12c8d10591"],
       store: "60f5890cf852df12c8d10591",
       role: "user",
-      name
+      name,
     };
 
     register(data);
@@ -110,22 +89,6 @@ const Register = ({navigation}) => {
           autoCapitalize="none"
         />
       </Layout>
-      {/* <Layout style={{ paddingHorizontal: 30, margin: 2 }}>
-        <Select
-          size="large"
-          style={{ marginBottom: 10 }}
-          onSelect={(index) => setStore(index)} 
-          selectedIndex={store}  
-          value={displayValue}
-        >
-          {
-            stores.map(item => 
-              <SelectItem title={CapitalizeNames(item.make.name + ' ' + item.name)} key={item.name}/>
-            )
-          }
-          
-        </Select>
-      </Layout> */}
 
       <Layout style={{ paddingHorizontal: 30, margin: 2 }}>
         <Button
@@ -137,19 +100,22 @@ const Register = ({navigation}) => {
         </Button>
       </Layout>
       <Layout style={{ paddingHorizontal: 30, margin: 2, marginTop: 40 }}>
-        <Text category="p1" style={styles.select} onPress={()=>navigation.navigate("Signin")}>
+        <Text
+          category="p1"
+          style={styles.select}
+          onPress={() => navigation.navigate("Signin")}
+        >
           Ya tengo cuenta
         </Text>
       </Layout>
-     
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-    select: {
-        textAlign: 'center',
-      },
+  select: {
+    textAlign: "center",
+  },
 });
 
 export default Register;

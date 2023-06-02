@@ -78,69 +78,61 @@ const LeadCard = ({ item }) => {
     <ListItem
       onPress={() => navigation.navigate("LeadTabs", { item: item })}
       title={(evaProps) => (
-        <Layout {...evaProps} style={{ position: "relative", marginLeft: 5 }}>
-          <Text appearance="hint" style={styles.ItemText}>
-            {translateStatus(item.status.name)}
-          </Text>
-
-          <Text style={styles.ItemTextName}>{item.name} </Text>
-          <Text appearance="hint" style={styles.ItemText}>{item.carType}</Text>
-          <Text appearance="hint" style={styles.ItemText}>
-            {moment(item.arrivalDate).format("MMMM D, YYYY")}
-          </Text>
-        </Layout>
-      )}
-      accessoryLeft={() =>
-        checkBox ? (
-          <CheckBox
-            style={{
-              marginRight: 10,
-              marginLeft: 10,
-              display:
-                user && user.tier && !isUser(user.tier._id) ? "flex" : "none",
-            }}
-            checked={selected.includes(item._id.toString())}
-            onChange={(nextChecked) => {
-              handleSelectedLeads(
-                item._id,
-                nextChecked,
-                `${item._id}/${item.store._id}`,
-                `${item._id}/${item.carType}`
-              );
-            }}
-          />
-        ) : (
-          <></>
-        )
-      }
-      accessoryRight={() => (
-        <>
-          {user && user.tier && (user.stores && user.stores.length > 1) || (isRockstar(user.tier._id) || isSuper(user.tier._id)) && 
-            <>
-              <Text appearance="hint" style={{ position: "absolute", right: 10, top: 5 }}>
-                {CapitalizeNames(item.store.name)}
-              </Text>
-            </>
-          }
-
+        <Layout {...evaProps} style={styles.itemContainer}>
+          {checkBox && user && user.tier && !isUser(user.tier._id) && (
+            <CheckBox
+              style={styles.checkBox}
+              checked={selected.includes(item._id.toString())}
+              onChange={(nextChecked) => {
+                handleSelectedLeads(
+                  item._id,
+                  nextChecked,
+                  `${item._id}/${item.store._id}`,
+                  `${item._id}/${item.carType}`
+                );
+              }}
+            />
+          )}
+          <Layout style={styles.textContainer}>
+            <Text appearance="hint" style={styles.ItemText}>
+              {translateStatus(item.status.name)}
+            </Text>
+            <Text style={styles.ItemTextName}>{item.name}</Text>
+            <Text appearance="hint" style={styles.ItemText}>
+              {item.carType}
+            </Text>
+            <Text appearance="hint" style={styles.ItemText}>
+              {moment(item.arrivalDate).format("MMMM D, YYYY")}
+            </Text>
+          </Layout>
+          {(user && user.tier && user.stores && user.stores.length > 1) ||
+          isRockstar(user.tier._id) ||
+          isSuper(user.tier._id) ? (
+            <Text appearance="hint" style={styles.storeText}>
+              {CapitalizeNames(item.store.name)}
+            </Text>
+          ) : null}
           <Layout
-            style={{
-              ...styles.controlContainer,
-              borderColor: setSubstatusColor(item.substatus.name),
-            }}
+            style={[
+              styles.controlContainer,
+              { borderColor: setSubstatusColor(item.substatus.name) },
+            ]}
           >
-            <Text style={{...styles.ItemText, color: setSubstatusColor(item.substatus.name)}}>
+            <Text
+              style={[
+                styles.ItemText,
+                { color: setSubstatusColor(item.substatus.name) },
+              ]}
+            >
               {translateSubstatus(item.substatus.name)}
             </Text>
           </Layout>
-        </>
+        </Layout>
       )}
     />
   );
 };
 const styles = StyleSheet.create({
-
-
   itemText: {
     fontSize: 16,
     padding: 5,
@@ -180,6 +172,25 @@ const styles = StyleSheet.create({
     padding: 5,
     minWidth: 100,
     alignItems: "center",
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  checkBox: {
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+    marginLeft: 5,
+  },
+  storeText: {
+    position: "absolute",
+    right: 10,
+    top: 5,
   },
 });
 export default LeadCard;

@@ -9,7 +9,9 @@ const RootStack = createStackNavigator();
 
 const ProfileStackScreen = () => {
   return (
-    <ProfileStack.Navigator mode="modal" headerMode="none">
+    <ProfileStack.Navigator
+      screenOptions={{ presentation: "modal", headerShown: false }}
+    >
       <RootStack.Screen name="Profile" component={Profile} />
     </ProfileStack.Navigator>
   );

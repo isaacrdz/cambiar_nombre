@@ -14,7 +14,7 @@ import {
   SELECTED_CARTYPES,
   SET_TAB,
   SET_CHECKBOX,
-  SET_REJECTED
+  SET_REJECTED,
 } from "../types";
 import _ from "lodash";
 
@@ -23,17 +23,18 @@ export default (state, action) => {
     case SET_TAB:
       return {
         ...state,
-        tab: action.payload
+        tab: action.payload,
       };
-      case SET_CHECKBOX:
+    case SET_CHECKBOX:
       return {
         ...state,
-        checkBox: action.payload
-      }
+        checkBox: action.payload,
+      };
     case SELECTED_LEADS:
       let x = 0;
-      if(action && action.payload && action.payload.length) x = action.payload.length
-      return{
+      if (action && action.payload && action.payload.length)
+        x = action.payload.length;
+      return {
         ...state,
         selectedLeads: action.payload,
         x: x,
@@ -42,7 +43,7 @@ export default (state, action) => {
       };
 
     case SELECTED_STORES:
-      return{
+      return {
         ...state,
         selectedStores: action.payload,
         loading: false,
@@ -50,14 +51,14 @@ export default (state, action) => {
       };
 
     case SELECTED_CARTYPES:
-      return{
+      return {
         ...state,
         selectedCarTypes: action.payload,
         loading: false,
         error: null,
-        };
+      };
     case CLEAR_CURRENT_LEAD:
-      return{
+      return {
         ...state,
         lead: {},
         loading: false,
@@ -71,9 +72,9 @@ export default (state, action) => {
         error: null,
       };
     case GET_LEADS:
-
       let leadsSize = 0;
-      if(action && action.payload &&  action.payload.length) leadsSize = action.payload.length;
+      if (action && action.payload && action.payload.length)
+        leadsSize = action.payload.length;
       return {
         ...state,
         leadsSize: leadsSize,
@@ -84,8 +85,8 @@ export default (state, action) => {
     case SET_REJECTED:
       return {
         ...state,
-        isRejected: action.payload
-      }
+        isRejected: action.payload,
+      };
     case UPDATE_LEAD:
       return {
         ...state,
@@ -140,36 +141,37 @@ export default (state, action) => {
         loading: true,
       };
 
-    case ASSIGN_AGENTS: 
-    state.leads.map( ( lead, index ) => {
-      if(action.payload.leads.includes(lead._id)){
-        state.leads[index].agent = action.payload.user;
-        state.leads[index].assignedDate = action.payload.assignedDate;
-      }
-      return false;
-    })
+    case ASSIGN_AGENTS:
+      state.leads.map((lead, index) => {
+        if (action.payload.leads.includes(lead._id)) {
+          state.leads[index].agent = action.payload.user;
+          state.leads[index].assignedDate = action.payload.assignedDate;
+        }
+        return false;
+      });
 
-    if(action.tab !== 'all'){
-      let type = action.tab.split('.')[0];
-      switch(type){
-        case 'assigned':
-          state.leads = state.leads.filter( item => item.agent === undefined || item.agent === null)
-          break;
-        default:
-          break;
+      if (action.tab !== "all") {
+        let type = action.tab.split(".")[0];
+        switch (type) {
+          case "assigned":
+            state.leads = state.leads.filter(
+              (item) => item.agent === undefined || item.agent === null
+            );
+            break;
+          default:
+            break;
+        }
       }
-    }
 
-
-    return {
-      ...state,
-      loading: false,
-      error: false,
-      }
+      return {
+        ...state,
+        loading: false,
+        error: false,
+      };
 
     default:
       return {
-        ...state
+        ...state,
       };
   }
 };

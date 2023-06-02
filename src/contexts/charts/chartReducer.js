@@ -1,71 +1,73 @@
-import { 
-  SET_ERROR, 
+import {
+  SET_ERROR,
   CLEAR_STATE,
   SET_LOADING,
   GET_TOTALS_DASHBOARD,
   GET_LEADS_MONTHLY_CHART,
   GET_CLOSURE_TOP_STORES,
   GET_CLOSURE_TOP_USERS,
-GET_SUBSTATUS_AGENT_CHART,
-GET_PIE_STATUS_CHART
+  GET_SUBSTATUS_AGENT_CHART,
+  GET_PIE_STATUS_CHART,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
     case GET_LEADS_MONTHLY_CHART:
       let cate = [];
-      let bar = []
-      if(action && action.payload && action.payload.categories) cate = action.payload.categories;
-      if(action && action.payload && action.payload.bar) bar =  action.payload.bar.series[0].data
+      let bar = [];
+      if (action && action.payload && action.payload.categories)
+        cate = action.payload.categories;
+      if (action && action.payload && action.payload.bar)
+        bar = action.payload.bar.series[0].data;
       return {
         ...state,
         leadsMonthlyChart: {
           categories: cate,
-          serie: bar
+          serie: bar,
         },
         loadingCharts: false,
-        error: null
-      }
-      case GET_SUBSTATUS_AGENT_CHART:
-        return {
-          ...state,
-          substatusAgentChart: action.payload,
-          loadingCharts: false,
-          error: null
-        }
-        case GET_PIE_STATUS_CHART:
+        error: null,
+      };
+    case GET_SUBSTATUS_AGENT_CHART:
+      return {
+        ...state,
+        substatusAgentChart: action.payload,
+        loadingCharts: false,
+        error: null,
+      };
+    case GET_PIE_STATUS_CHART:
       return {
         ...state,
         pieStatus: action.payload,
         loadingCharts: false,
-        error: null
-      }
+        error: null,
+      };
     case GET_TOTALS_DASHBOARD:
       return {
         ...state,
         ...action.payload,
         loadingCharts: false,
-        error: null
-      }
+        error: null,
+      };
     case GET_CLOSURE_TOP_STORES:
       return {
         ...state,
         closureTopStores: action.payload,
         loadingCharts: false,
-        error: null
-      }
+        error: null,
+      };
     case GET_CLOSURE_TOP_USERS:
       return {
         ...state,
         closureTopUsers: action.payload,
         loadingCharts: false,
-        error: null
-      }
+        error: null,
+      };
     case SET_ERROR:
       return {
         ...state,
         error: action.payload,
-        loadingCharts: false
+        loadingCharts: false,
       };
     case CLEAR_STATE:
       return {
@@ -89,15 +91,15 @@ export default (state, action) => {
         totalSolds: null,
         loadingCharts: false,
         error: null,
-        closureTopUsers:false,
-        closureTopStores:false,
-        // leadsMonthlyChart:false,
-        pieStatus:false
+        closureTopUsers: false,
+        closureTopStores: false,
+        leadsMonthlyChart: {},
+        pieStatus: {},
       };
     case SET_LOADING:
       return {
         ...state,
-        loadingCharts: true
+        loadingCharts: true,
       };
     default:
       return state;

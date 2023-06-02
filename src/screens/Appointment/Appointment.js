@@ -16,7 +16,6 @@ import { CapitalizeNames } from "../../utils/Capitalize";
 import useUser from "../../hooks/useUser";
 
 const Appointment = () => {
-  const [items, setItems] = React.useState({});
   const [itemsByDate, setItemsByDate] = React.useState({});
   const [marked, setMarked] = React.useState({});
   const { agents, getAgents } = useUser();
@@ -72,14 +71,6 @@ const Appointment = () => {
         };
       });
 
-      const reduced = mappedData.reduce((acc, currentItem) => {
-        const { date, ...app } = currentItem;
-
-        acc[date] = [app];
-
-        return acc;
-      }, {});
-
       const reducedByDate = {};
       mappedData.forEach((appointment) => {
         const { date, ...app } = appointment;
@@ -98,7 +89,6 @@ const Appointment = () => {
         return acc;
       }, {});
 
-      setItems(reduced);
       setItemsByDate(reducedByDate);
       setMarked(reducedMarked);
     }
@@ -123,7 +113,17 @@ const Appointment = () => {
   useFocusEffect(
     React.useCallback(() => {
       if (user && user.tier && isUser(user.tier._id)) {
-        getAppointmentsByUser(user._id);
+        let queryStores = user.stores
+          ? `&store[in]=${getMultiStoresIds(user.stores)}`
+          : "";
+        getAppointmentsByUser(
+          (id = user._id),
+          `&startDate[gte]=${moment(new Date()).format(
+            "l"
+          )}&startDate[lt]=${moment(new Date()).add(15, "days").format("l")}${
+            queryStores !== "" ? `${queryStores}` : ""
+          }`
+        );
         getStoresByUser(user._id);
       } else if (user && user.tier && isAdmin(user.tier._id) && user.stores) {
         getStoresByUser(user._id);
@@ -177,7 +177,17 @@ const Appointment = () => {
 
   const handleRefresh = () => {
     if (user && user.tier && isUser(user.tier._id)) {
-      getAppointmentsByUser(user._id);
+      let queryStores = user.stores
+        ? `&store[in]=${getMultiStoresIds(user.stores)}`
+        : "";
+      getAppointmentsByUser(
+        (id = user._id),
+        `&startDate[gte]=${moment(new Date()).format(
+          "l"
+        )}&startDate[lt]=${moment(new Date()).add(15, "days").format("l")}${
+          queryStores !== "" ? `${queryStores}` : ""
+        }`
+      );
     } else if (user && user.tier && isAdmin(user.tier._id) && user.stores) {
       getAppointmentsByStore(`&store[in]=${getMultiStoresIds(user.stores)}`);
     }
@@ -193,10 +203,10 @@ const Appointment = () => {
             user.stores &&
             user.stores.length > 1)) && (
           <Layout
-            style={{ paddingHorizontal: 15, paddingVertical: 5 }}
+            style={{ paddingHorizontal: 15, paddingVertical: 1 }}
             level="1"
           >
-            <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
+            <Text style={{ ...styles.text, marginBottom: 2 }} category="s1">
               Agencia
             </Text>
             <Select
@@ -240,14 +250,14 @@ const Appointment = () => {
           </Layout>
         )}
       {user && user.tier && !isUser(user.tier._id) && (
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 5 }} level="1">
-          <Text style={{ ...styles.text, marginBottom: 10 }} category="s1">
+        <Layout style={{ paddingHorizontal: 15, paddingVertical: 1 }} level="1">
+          <Text style={{ ...styles.text, marginBottom: 2 }} category="s1">
             Agente
           </Text>
           <Select
             size="large"
             onSelect={(index) => setAgenteSelect(index)}
-            placeholder="Selecciona una agente"
+            placeholder="Selecciona un agente"
             value={displayAgente}
           >
             {agentes.map((item) => (

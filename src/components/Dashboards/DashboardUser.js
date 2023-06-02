@@ -105,7 +105,6 @@ const HomeUser = ({ navigation }) => {
               Leads
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="person-outline" size={25} color={"#673ab7"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -123,7 +122,6 @@ const HomeUser = ({ navigation }) => {
               Citas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="calendar-outline" size={25} color={"#33acee"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -143,7 +141,6 @@ const HomeUser = ({ navigation }) => {
               Visitas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="home-outline" size={25} color={"#d81b60"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -161,7 +158,6 @@ const HomeUser = ({ navigation }) => {
               Ventas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="cash-outline" size={25} color={"#43a047"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />

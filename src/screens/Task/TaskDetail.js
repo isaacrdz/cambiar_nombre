@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import HeaderTitle from "../../components/header/HeaderTitle";
 import Toast from "react-native-toast-message";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import useAppointment from "../../hooks/useAppointment";
-import useVisit from "../../hooks/useVisit";
 import useLead from "../../hooks/useLead";
 import useAuth from "../../hooks/useAuth";
 import useSubstatus from "../../hooks/useSubstatus";
@@ -24,11 +21,9 @@ import {
 import moment from "moment/min/moment-with-locales";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import {
-  translateStatus,
-  translateSubstatus,
-} from "../../utils/tranlsateSubstatus";
+import { translateSubstatus } from "../../utils/tranlsateSubstatus";
 import { isAdmin, isRockstar, isSuper, isUser } from "../../utils/Authroles";
+import DatePicker from "react-native-modern-datepicker";
 
 const contactedStatus = [
   "605cbaafd5fc4809e161c526", // 'rejected',
@@ -62,10 +57,8 @@ const TaskDetail = ({ route, navigation }) => {
   ////////
 
   const [selectedSubstatus, setSelectedSubstatus] = useState(new IndexPath(0));
-  const [hour, setHour] = useState(new Date());
-  const [finalDate, setFinalDate] = useState("");
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = React.useState(new Date());
+  const [hour, setHour] = useState("");
+  const [date, setDate] = React.useState("");
   const { substatuses, getSubstatuses } = useSubstatus();
   const { lead, updateLead, getLead } = useLead();
   const [substatusArray, setSubstatusArray] = useState([]);
@@ -74,9 +67,6 @@ const TaskDetail = ({ route, navigation }) => {
   const displayValue = substatusArray[selectedSubstatus.row];
   const currentId = substatusArrayIds[selectedSubstatus.row];
   const [text, setText] = useState("");
-
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
   moment.locale("es-mx");
 
   const actions = [
@@ -88,48 +78,28 @@ const TaskDetail = ({ route, navigation }) => {
     },
   ];
 
-  const onChangeAndroidHour = (event, selectedTime) => {
-    if (selectedTime !== undefined) {
-      setHour(selectedTime);
-    }
-  };
-
-  const onChangeAndroid = (event, selectedDate) => {
-    setOpen(false);
-    if (selectedDate !== undefined) {
-      setDate(selectedDate);
-    }
-  };
-
-  const renderAndroidPicker = (state) => {
-    if (state === true) {
-      return (
-        <>
-          <DateTimePicker
-            value={hour}
-            mode="time"
-            display="spinner"
-            onChange={onChangeAndroidHour}
-          />
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="spinner"
-            onChange={onChangeAndroid}
-          />
-        </>
-      );
-    }
-  };
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
-    setDate(currentDate);
-  };
-
   const handleSubmit = async () => {
     setStatusButton(true);
+
+    if (date === "") {
+      setStatusButton(false);
+
+      return Toast.show({
+        text1: "Elige una fecha",
+        type: "error",
+        position: "bottom",
+      });
+    }
+
+    if (hour === "") {
+      setStatusButton(false);
+
+      return Toast.show({
+        text1: "Elige una hora",
+        type: "error",
+        position: "bottom",
+      });
+    }
     if (text === "") {
       setStatusButton(false);
 
@@ -185,11 +155,7 @@ const TaskDetail = ({ route, navigation }) => {
         action: selectedActions,
       };
 
-      if (Platform.OS === "ios") {
-        BodyComment.reschedule = moment(date).format();
-      } else {
-        BodyComment.reschedule = moment(finalDate).format();
-      }
+      BodyComment.reschedule = moment(`${date} ${hour}`).format();
 
       if (author !== "") {
         BodyComment.assignedBy = author;
@@ -220,7 +186,6 @@ const TaskDetail = ({ route, navigation }) => {
         await createComment(BodyComment, lead._id);
         await updateLead(bodyLead, lead._id);
         await getLead(lead._id);
-        setStatusButton(false);
 
         navigation.navigate("TaskMain");
       }
@@ -315,16 +280,6 @@ const TaskDetail = ({ route, navigation }) => {
       }
     }, [substatuses, currentComment])
   );
-
-  useEffect(() => {
-    if (hour && date) {
-      let finalDate = date.toString().split(" ");
-      let finalHour = hour.toString().split(" ");
-
-      let postDate = `${finalDate[0]} ${finalDate[1]} ${finalDate[2]} ${finalDate[3]} ${finalHour[4]} ${finalDate[5]} ${finalDate[6]}`;
-      setFinalDate(postDate);
-    }
-  }, [hour, date]);
 
   useEffect(() => {
     if (comment && comment._id) {
@@ -557,51 +512,17 @@ const TaskDetail = ({ route, navigation }) => {
                     minHeight: 256,
                   }}
                 >
-                  <Text
-                    style={{ ...styles.text, marginBottom: 20 }}
-                    category="s1"
-                  >
-                    {Platform.OS === "android"
-                      ? `Fecha: ${
-                          finalDate !== "" && finalDate !== undefined
-                            ? moment(finalDate).format("DD MMMM YYYY - hh:mm a")
-                            : ""
-                        }`
-                      : `Fecha`}
-                  </Text>
-                  {Platform.OS === "ios" && (
-                    <DateTimePicker
-                      value={date}
-                      mode="datetime"
-                      onChange={onChange}
-                      display="spinner"
-                    />
-                  )}
-                  {Platform.OS === "android" && (
-                    <Button
-                      style={{ marginBottom: 20, marginTop: 20 }}
-                      onPress={() => setOpen(true)}
-                    >
-                      Seleccionar Fecha
-                    </Button>
-                  )}
-                  {Platform.OS === "android" &&
-                    open &&
-                    renderAndroidPicker(open)}
-
-                  {/* <DateTimePicker
-                value={date}
-                mode={Platform.OS === "ios" ? "datetime" : "date"}
-                display="default"
-                onChange={onChange}
-                display="spinner"
-              /> */}
+                  <DatePicker
+                    minimumDate={moment().add(1, "day").format("YYYY-MM-DD")}
+                    onTimeChange={(time) => {
+                      setHour(time);
+                    }}
+                    onDateChange={(date) => {
+                      setDate(date);
+                    }}
+                  />
                   <Layout>
-                    <Button
-                      style={styles.button}
-                      disabled={statusButton}
-                      onPress={handleSubmit}
-                    >
+                    <Button style={styles.button} onPress={handleSubmit}>
                       Crear Tarea
                     </Button>
                   </Layout>

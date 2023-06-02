@@ -246,7 +246,7 @@ const Task = () => {
           <Select
             size="large"
             onSelect={(index) => setAgenteSelect(index)}
-            placeholder="Selecciona una agente"
+            placeholder="Selecciona un agente"
             value={displayAgente}
           >
             {agentes.map((item) => (

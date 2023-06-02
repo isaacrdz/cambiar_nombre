@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 
 import moment from "moment";
 
 import {
-  Button,
   Icon,
   List,
   ListItem,
@@ -19,8 +12,6 @@ import {
   Divider,
   Text,
 } from "@ui-kitten/components";
-
-import useAuth from "../../hooks/useAuth";
 
 const Leads = ({ user }) => {
   const [data, setData] = useState([]);
@@ -65,13 +56,8 @@ const Leads = ({ user }) => {
         )}
         accessoryLeft={StarIcon}
         accessoryRight={() => (
-          <Layout
-            style={{ alignItems: "flex-end" }}
-            style={styles.controlContainer}
-          >
-            <Text style={styles.ItemText} style={{ color: "#5764b8" }}>
-              {item.substatus.name}
-            </Text>
+          <Layout style={styles.controlContainer}>
+            <Text style={styles.ItemText}>{item.substatus.name}</Text>
           </Layout>
         )}
       />
@@ -104,9 +90,7 @@ const Leads = ({ user }) => {
           data={filters}
           renderItem={({ item }) => (
             <Layout style={styles.controlContainerFilters}>
-              <Text style={styles.ItemText} style={{ color: "#5764b8" }}>
-                {item}
-              </Text>
+              <Text style={styles.ItemText}>{item}</Text>
             </Layout>
           )}
         />
@@ -132,21 +116,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#f5fcff",
   },
-  itemContainer: {},
-  itemRow: {
-    borderBottomColor: "#ccc",
-    marginBottom: 10,
-    borderBottomWidth: 1,
-  },
-  itemImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-  },
-  itemText: {
-    fontSize: 16,
-    padding: 5,
-  },
   loader: {
     marginTop: 10,
     alignItems: "center",
@@ -158,10 +127,6 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     marginTop: 5,
     marginBottom: 5,
-  },
-  itemLayout: {
-    paddingLeft: 20,
-    paddingVertical: 10,
   },
   controlContainer: {
     borderRadius: 4,

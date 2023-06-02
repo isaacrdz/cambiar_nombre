@@ -1,27 +1,11 @@
 import React from "react";
-import { StyleSheet, Dimensions, ScrollView } from "react-native";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { Dimensions, ScrollView } from "react-native";
+import { LineChart, PieChart } from "react-native-chart-kit";
 
-import {
-  Layout,
-  Text,
-  Divider,
-  Button,
-  Icon,
-  List,
-  ListItem,
-} from "@ui-kitten/components";
+import { Layout, Text } from "@ui-kitten/components";
 
 const ChartsAdmin = () => {
   const width = Dimensions.get("window").width - 40;
-  // const screen = Dimensions.get("screen").width;
 
   const data = [
     {

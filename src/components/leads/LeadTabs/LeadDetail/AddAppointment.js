@@ -17,9 +17,9 @@ import {
   Button,
   Calendar,
   Input,
-  Spinner
+  Spinner,
 } from "@ui-kitten/components";
-import DatePicker from 'react-native-modern-datepicker';
+import DatePicker from "react-native-modern-datepicker";
 import useLead from "../../../../hooks/useLead";
 import { translateActions } from "../../../../utils/tranlsateSubstatus";
 import { isAdmin, isRockstar, isSuper } from "../../../../utils/Authroles";
@@ -33,24 +33,23 @@ const AddAppointment = ({ navigation }) => {
   const [selectedAction, setSelectedAction] = useState(new IndexPath(0));
   const actions = ["information", "documentation", "driving test"];
   const times = ["1 Hora", "2 Horas"];
-  const [time, setTime] = useState(({ row: 0 }));
+  const [time, setTime] = useState({ row: 0 });
   const displayValue = actions[selectedAction.row];
   const displayValueTime = times[time.row];
-  const [statusButton, setStatusButton] = useState(false)
+  const [statusButton, setStatusButton] = useState(false);
   const [values, setValues] = useState({
     title: "",
     description: "",
   });
 
-  const [date, setDate] = useState('');
-  const [hour, setHour] = useState('');
+  const [date, setDate] = useState("");
+  const [hour, setHour] = useState("");
 
   moment.locale("es-mx");
   const handleSubmit = async () => {
-
-    setStatusButton(true)
+    setStatusButton(true);
     if (values.description === "" || values.title === "") {
-      setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Completa todos los campos",
@@ -60,7 +59,7 @@ const AddAppointment = ({ navigation }) => {
     }
 
     if (!lead.agent) {
-      setStatusButton(false)
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Primero asigna un agente",
@@ -69,8 +68,8 @@ const AddAppointment = ({ navigation }) => {
       });
     }
 
-    if(date === '') {
-      setStatusButton(false)
+    if (date === "") {
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Elige una fecha",
@@ -79,8 +78,8 @@ const AddAppointment = ({ navigation }) => {
       });
     }
 
-    if(hour === '') {
-      setStatusButton(false)
+    if (hour === "") {
+      setStatusButton(false);
 
       return Toast.show({
         text1: "Elige una hora",
@@ -97,14 +96,18 @@ const AddAppointment = ({ navigation }) => {
       action: ["appointment"],
       store: lead.store._id,
       user: lead.agent._id,
-      reschedule: startDate
+      reschedule: startDate,
     };
 
-    if(user && user.tier && (isAdmin(user.tier._id) || isSuper(user.tier._id) || isRockstar(user.tier._id))){
-      BodyComment.assignedBy = user._id
+    if (
+      user &&
+      user.tier &&
+      (isAdmin(user.tier._id) ||
+        isSuper(user.tier._id) ||
+        isRockstar(user.tier._id))
+    ) {
+      BodyComment.assignedBy = user._id;
     }
-
-
 
     await createComment(BodyComment, lead._id);
 
@@ -123,7 +126,7 @@ const AddAppointment = ({ navigation }) => {
       lead: lead._id,
       email: lead.email,
       customer: lead.name,
-    }
+    };
 
     await createAppointment(BodyApp);
 
@@ -138,7 +141,7 @@ const AddAppointment = ({ navigation }) => {
     }
 
     await updateLead(updateLeadBody, lead._id);
-    setStatusButton(false)
+    setStatusButton(false);
 
     Toast.show({
       text1: "Cita Creada",
@@ -146,7 +149,7 @@ const AddAppointment = ({ navigation }) => {
       position: "bottom",
     });
 
-    navigation.navigate("LeadTabs", {item: lead});
+    navigation.navigate("LeadTabs", { item: lead });
   };
 
   React.useEffect(() => {
@@ -158,7 +161,6 @@ const AddAppointment = ({ navigation }) => {
     }
   }, [hour]);
 
-
   let paddingTop = 0;
 
   if (Platform.OS === "android") {
@@ -168,153 +170,152 @@ const AddAppointment = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", paddingTop }}>
       <HeaderTitle title="Agregar Cita" />
       <ScrollView>
-      {
-        loading ? (
-            <Layout style={{ paddingHorizontal: 15, paddingVertical: "50%" }}>
+        {loading ? (
+          <Layout style={{ paddingHorizontal: 15, paddingVertical: "50%" }}>
+            <Layout
+              style={{
+                paddingHorizontal: 30,
+                marginBottom: 50,
+                alignSelf: "center",
+              }}
+            >
+              <Spinner size="giant" />
+            </Layout>
+            <Layout style={{ marginBottom: 30, alignSelf: "center" }} level="1">
+              <Text style={styles.text} category="h3">
+                Creando cita...
+              </Text>
+            </Layout>
+          </Layout>
+        ) : (
+          <>
+            <Layout
+              style={{
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                marginBottom: 10,
+              }}
+              level="1"
+            >
+              <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
+                1. Deja un comentario
+              </Text>
               <Layout
                 style={{
-                  paddingHorizontal: 30,
-                  marginBottom: 50,
-                  alignSelf: "center",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
                 }}
-              >
-                <Spinner size="giant" />
-              </Layout>
-              <Layout
-                style={{ marginBottom: 30, alignSelf: "center" }}
                 level="1"
               >
-                <Text style={styles.text} category="h3">
-                  Creando cita...
-                </Text>
+                <Input
+                  placeholder="Comentario"
+                  style={{ minWidth: "100%" }}
+                  value={values.title}
+                  onChangeText={(string) => {
+                    setValues({ ...values, title: string });
+                  }}
+                />
               </Layout>
             </Layout>
-          ) : (
-      <>
-        <Layout
-          style={{
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            marginBottom: 10,
-          }}
-          level="1"
-        >
-          <Text style={{...styles.text, marginBottom: 20}} category="s1">
-            1. Deja un comentario
-          </Text>
-          <Layout
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-            level="1"
-          >
-            <Input
-              placeholder="Comentario"
-              style={{ minWidth: '100%' }}
-              value={values.title}
-              onChangeText={(string) => {
-                setValues({ ...values, title: string });
+
+            <Layout
+              style={{
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                marginBottom: 20,
               }}
-            />
-          </Layout>
-        </Layout>
+              level="1"
+            >
+              <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
+                2. Deja una descripción
+              </Text>
+              <Layout
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+                level="1"
+              >
+                <Input
+                  multiline={true}
+                  placeholder="Descripción"
+                  style={{ minWidth: "100%" }}
+                  value={values.description}
+                  onChangeText={(string) => {
+                    setValues({ ...values, description: string });
+                  }}
+                />
+              </Layout>
+            </Layout>
 
-        <Layout
-          style={{
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            marginBottom: 20,
-          }}
-          level="1"
-        >
-          <Text style={{...styles.text, marginBottom: 20}} category="s1">
-            2. Deja una descripción
-          </Text>
-          <Layout
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-            level="1"
-          >
-            <Input
-              multiline={true}
-              placeholder="Descripción"
-              style={{ minWidth: '100%' }}
-              value={values.description}
-              onChangeText={(string) => {
-                setValues({ ...values, description: string });
-              }}
-            />
-          </Layout>
-        </Layout>
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
+                3. Elige una acción
+              </Text>
+              <Select
+                size="large"
+                style={{ marginBottom: 10 }}
+                selectedIndex={selectedAction}
+                value={translateActions(displayValue)}
+                onSelect={(index) => setSelectedAction(index)}
+              >
+                {actions.map((action, i) => (
+                  <SelectItem title={translateActions(action)} key={i} />
+                ))}
+              </Select>
+            </Layout>
 
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={{...styles.text, marginBottom: 20}} category="s1">
-            3. Elige una acción
-          </Text>
-          <Select
-            size="large"
-            style={{ marginBottom: 10 }}
-            selectedIndex={selectedAction}
-            value={translateActions(displayValue)}
-            onSelect={(index) => setSelectedAction(index)}
-          >
-            {actions.map((action, i) => (
-              <SelectItem title={translateActions(action)} key={i} />
-            ))}
-          </Select>
-        </Layout>
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
+                4. Elige una Fecha
+              </Text>
+              <DatePicker
+                minimumDate={moment().add(1, "day").format("YYYY-MM-DD")}
+                onTimeChange={(time) => {
+                  let h = time.split(":")[0];
+                  if (parseInt(h) < 8 || parseInt(h) > 21) {
+                    Toast.show({
+                      text1: "Elige un horario laboral (8:00am - 9:00pm)",
+                      type: "error",
+                      position: "bottom",
+                    });
+                  } else {
+                    setHour(time);
+                  }
+                }}
+                onDateChange={(date) => {
+                  setDate(date);
+                }}
+              />
+            </Layout>
 
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={{...styles.text, marginBottom: 20}} category="s1">
-            4. Elige una Fecha
-          </Text>
-          <DatePicker 
-            minimumDate={moment().add(1, 'day').format('YYYY-MM-DD')}
-            onTimeChange={time => {
-              let h = time.split(':')[0];
-              if(parseInt(h) < 8 || parseInt(h) > 21) {
-                Toast.show({
-                  text1: "Elige un horario laboral (8:00am - 9:00pm)",
-                  type: "error",
-                  position: "bottom",
-                });
-              }else{  
-                setHour(time)
-              }
-            }}
-            onDateChange={date => {
-              setDate(date)
-            }}
-            />
-        </Layout>
-
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Text style={{...styles.text, marginBottom: 20}} category="s1">
-            5. Elige el tiempo de la cita
-          </Text>
-          <Select
-            size="large"
-            style={{ marginBottom: 10 }}
-            onSelect={(index) => setTime(index)}
-            value={displayValueTime}
-          >
-            {times.map((action, i) => (
-              <SelectItem title={action} key={i} />
-            ))}
-          </Select>
-        </Layout>
-        <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-          <Button style={styles.button} disabled={statusButton} onPress={handleSubmit}>
-            Crear Cita
-          </Button>
-        </Layout>
-        </>
-      )
-    }
-    </ScrollView>
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              <Text style={{ ...styles.text, marginBottom: 20 }} category="s1">
+                5. Elige el tiempo de la cita
+              </Text>
+              <Select
+                size="large"
+                style={{ marginBottom: 10 }}
+                onSelect={(index) => setTime(index)}
+                value={displayValueTime}
+              >
+                {times.map((action, i) => (
+                  <SelectItem title={action} key={i} />
+                ))}
+              </Select>
+            </Layout>
+            <Layout style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              <Button
+                style={styles.button}
+                disabled={statusButton}
+                onPress={handleSubmit}
+              >
+                Crear Cita
+              </Button>
+            </Layout>
+          </>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };

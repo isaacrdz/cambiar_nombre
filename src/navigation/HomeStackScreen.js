@@ -1,13 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/Home/Home";
-import { Icon } from "@ui-kitten/components";
-import { TouchableOpacity } from "react-native";
 import Settings from "../screens/Home/Settings";
 
 const HomeStack = createStackNavigator();
 
-const HomeStackScreen = ({ navigation }) => (
+const HomeStackScreen = () => (
   <HomeStack.Navigator>
     <HomeStack.Screen
       name="DPX"

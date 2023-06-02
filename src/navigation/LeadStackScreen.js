@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
 
 import Lead from "../screens/Lead/Lead";
 import LeadsDetail from "../components/leads/LeadTabs/LeadDetail/LeadsDetailInfo";
 import LeadTabs from "../components/leads/LeadTabs/LeadTabs";
-import { Icon, Layout ,Text, TopNavigationAction, OverflowMenu, MenuItem} from "@ui-kitten/components";
+import {
+  Layout,
+  Text,
+  TopNavigationAction,
+  OverflowMenu,
+  MenuItem,
+} from "@ui-kitten/components";
 import Toast from "react-native-toast-message";
 import AddTask from "../components/leads/LeadTabs/LeadDetail/AddTask";
 import AddAppointment from "../components/leads/LeadTabs/LeadDetail/AddAppointment";
@@ -16,34 +22,51 @@ import Calling from "../components/leads/Calling";
 import { Ionicons } from "@expo/vector-icons";
 import useLead from "../hooks/useLead";
 import useAuth from "../hooks/useAuth";
-import { isAdmin, isGeneralManager, isRockstar, isSalesManager, isSuper } from "../utils/Authroles";
-import _ from 'lodash';
+import {
+  isAdmin,
+  isGeneralManager,
+  isRockstar,
+  isSalesManager,
+  isSuper,
+} from "../utils/Authroles";
+import _ from "lodash";
 
 const LeadStack = createStackNavigator();
 const LeadMainStack = createStackNavigator();
 
 const LeadMainStackScreen = ({ navigation }) => {
-  const { selectedLeads, selectedStores, selectedCarTypes, setCheckBox, checkBox, isRejected } = useLead();
+  const {
+    selectedLeads,
+    selectedStores,
+    selectedCarTypes,
+    setCheckBox,
+    checkBox,
+    isRejected,
+  } = useLead();
   const { user } = useAuth();
   const [menuVisible, setMenuVisible] = React.useState(false);
-  const MenuIcon = (props) => <Ionicons style={{
-    width: 25,
-    height: 25,
-    marginRight: 10,
-    color: "#5764b8",
-  }} name="ellipsis-vertical" size={25} />;
+  const MenuIcon = (props) => (
+    <Ionicons
+      style={{
+        width: 25,
+        height: 25,
+        marginRight: 10,
+        color: "#5764b8",
+      }}
+      name="ellipsis-vertical"
+      size={25}
+    />
+  );
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
   const renderMenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
   );
-  const data = [
-    'Crear Lead'
-   ];
+  const data = ["Crear Lead"];
 
   const onItemSelect = (index) => {
-    navigation.navigate("AddLead")
+    navigation.navigate("AddLead");
     toggleMenu();
   };
   return (
@@ -79,50 +102,64 @@ const LeadMainStackScreen = ({ navigation }) => {
                   navigation.navigate("AssignLead");
                 }
               }}
-              disabled={(selectedLeads.length === 0) || (!checkBox)}
+              disabled={selectedLeads.length === 0 || !checkBox}
             >
               <Ionicons
                 name="person-add-outline"
                 size={25}
                 style={{
                   display:
-                    user && user.tier && (isRockstar(user.tier._id)  || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id))
+                    user &&
+                    user.tier &&
+                    (isRockstar(user.tier._id) ||
+                      isSalesManager(user.tier._id) ||
+                      isGeneralManager(user.tier._id) ||
+                      isAdmin(user.tier._id) ||
+                      isSuper(user.tier._id))
                       ? "flex"
                       : "none",
                   width: 25,
                   height: 25,
                   marginLeft: 20,
-                  color: (selectedLeads.length === 0) || (!checkBox) ? "#bbb" : "#5764b8",
+                  color:
+                    selectedLeads.length === 0 || !checkBox
+                      ? "#bbb"
+                      : "#5764b8",
                 }}
               />
             </TouchableOpacity>
           ),
           headerRight: () => (
             <Layout style={{ display: "flex", flexDirection: "row" }}>
-             {user && user.tier && 
-             (isRockstar(user.tier._id)  || isSalesManager(user.tier._id) || isGeneralManager(user.tier._id) || isAdmin(user.tier._id) || isSuper(user.tier._id))
-              &&
-              <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
-              {!checkBox ? (
-                <Ionicons
-                  name="create-outline"
-                  size={25}
-                  style={{
-                    width: 25,
-                    height: 25,
-                    marginRight: 10,
-                    color: "#5764b8",
-                  }}
-                />
-              ) : (
-                <Text
-                  appearance="hint"
-                  style={{ paddingRight: 10, marginTop: 3 }}
-                >
-                  Cancelar
-                </Text>
-              )}
-            </TouchableOpacity>}
+              {user &&
+                user.tier &&
+                (isRockstar(user.tier._id) ||
+                  isSalesManager(user.tier._id) ||
+                  isGeneralManager(user.tier._id) ||
+                  isAdmin(user.tier._id) ||
+                  isSuper(user.tier._id)) && (
+                  <TouchableOpacity onPress={() => setCheckBox(!checkBox)}>
+                    {!checkBox ? (
+                      <Ionicons
+                        name="create-outline"
+                        size={25}
+                        style={{
+                          width: 25,
+                          height: 25,
+                          marginRight: 10,
+                          color: "#5764b8",
+                        }}
+                      />
+                    ) : (
+                      <Text
+                        appearance="hint"
+                        style={{ paddingRight: 10, marginTop: 3 }}
+                      >
+                        Cancelar
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                )}
               <OverflowMenu
                 anchor={renderMenuAction}
                 visible={menuVisible}
@@ -143,27 +180,34 @@ const LeadMainStackScreen = ({ navigation }) => {
         name="LeadTabs"
         component={LeadTabs}
         options={{
-          headerRight: () => isRejected ? null : (
-            <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
-              <Ionicons
-                name="add-circle-outline"
-                size={25}
-                style={{
-                  width: 25,
-                  height: 25,
-                  marginRight: 20,
-                  color: "#5764b8",
-                }}
-              />
-            </TouchableOpacity>
-          ),
+          headerRight: () =>
+            isRejected ? null : (
+              <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+                <Ionicons
+                  name="add-circle-outline"
+                  size={25}
+                  style={{
+                    width: 25,
+                    height: 25,
+                    marginRight: 20,
+                    color: "#5764b8",
+                  }}
+                />
+              </TouchableOpacity>
+            ),
         }}
       />
     </LeadMainStack.Navigator>
   );
 };
+
 const LeadStackScreen = () => (
-  <LeadStack.Navigator mode="modal" headerMode="none">
+  <LeadStack.Navigator
+    screenOptions={{
+      presentation: "modal",
+      headerShown: false,
+    }}
+  >
     <LeadStack.Screen name="LeadMain" component={LeadMainStackScreen} />
     <LeadStack.Screen name="AddTask" component={AddTask} />
     <LeadStack.Screen name="AddAppointment" component={AddAppointment} />

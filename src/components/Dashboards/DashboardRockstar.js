@@ -12,9 +12,10 @@ import ChartsUser from "../Charts/ChartsUser";
 import numeral from "numeral";
 import Filters from "../Filters";
 
-const HomeAdmin = ({ navigation }) => {
+const HomeAdmin = () => {
   const { user } = useAuth();
   const {
+    getAllHomeCharts,
     getTotalsDashboard,
     total,
     totalLeads,
@@ -25,12 +26,12 @@ const HomeAdmin = ({ navigation }) => {
     clearCharts,
     getClosureTopUsers,
     closureTopUsers,
-    getClosureTopStores,
     getLeadsMonthlyChart,
     leadsMonthlyChart,
     getPieStatusChart,
     pieStatus,
   } = useChart();
+
   const [query, setQuery] = useState(false);
   const today = new Date();
   const curHr = today.getHours();
@@ -55,12 +56,7 @@ const HomeAdmin = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       if (user && user._id && query) {
-        getTotalsDashboard(`${query}`);
-        getClosureTopUsers(`${query}`);
-        getClosureTopStores(`${query}`);
-        getPieStatusChart(`${query}`);
-        let customFilter = "MMM";
-        getLeadsMonthlyChart(`${query}&filter=${customFilter}`);
+        getAllHomeCharts(`${query}`);
       }
     }, [query, user])
   );
@@ -160,7 +156,6 @@ const HomeAdmin = ({ navigation }) => {
               Visitas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="home-outline" size={25} color={"#d81b60"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -178,7 +173,6 @@ const HomeAdmin = ({ navigation }) => {
               Ventas
             </Text>
             <Layout style={styles.data}>
-              {/* <Ionicons name="cash-outline" size={25} color={"#43a047"} /> */}
               {loadingCharts ? (
                 <Layout style={{ paddingLeft: 10 }}>
                   <Spinner size="large" />
@@ -193,7 +187,7 @@ const HomeAdmin = ({ navigation }) => {
         </Layout>
 
         <Layout style={styles.subContainerDivider}>
-          {!leadsMonthlyChart || !pieStatus ? (
+          {loadingCharts || !leadsMonthlyChart || !pieStatus ? (
             <Layout style={styles.center}>
               <Spinner size="giant" />
             </Layout>
@@ -207,8 +201,6 @@ const HomeAdmin = ({ navigation }) => {
       </Layout>
 
       <TopList data={closureTopUsers} title="Top 10 Ventas" />
-
-      {/* <TopList data={(closureTopStores)?closureTopStores:data} title="Top 10 Ventas por agencia" /> */}
     </ScrollView>
   );
 };

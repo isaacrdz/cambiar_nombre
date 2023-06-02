@@ -1,66 +1,74 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import {
-  List,
-  ListItem,
-  Layout,
-  Text,
-} from "@ui-kitten/components";
+import { List, ListItem, Layout, Text } from "@ui-kitten/components";
 import useDocument from "../../../hooks/useDocument";
 import { CapitalizeNames } from "../../../utils/Capitalize";
 
 const DocumentsTabs = ({ setCurrents, currents }) => {
+  const { documents } = useDocument();
 
-    const { documents } = useDocument();
-
-    const handleAddDocument = (item) => {
-        let aux = [...currents];
-        if(currents.includes(item)){
-            aux = aux.filter(i => i._id !== item._id)
-        }else{  
-            aux.push(item)
-        }
-        setCurrents(aux)
+  const handleAddDocument = (item) => {
+    let aux = [...currents];
+    if (currents.includes(item)) {
+      aux = aux.filter((i) => i._id !== item._id);
+    } else {
+      aux.push(item);
     }
+    setCurrents(aux);
+  };
 
-    const TITLES_DOCUMENTS = {
-      "Quote": "Cotización",
-      "TechnicalSheet": "Ficha Técnica",
-      "CreditsRequirements": "Requisitos de Crédito",
-      "MaintenanceCosts": "Costo de Mantenimiento",
-      "Location": "Ubicación",
-      "Catalogue": "Catálogo",
-      "GalleryVersions": "Versiones",
-      "CreditRequest": "Petición de Crédito"
-    }
-  
+  const TITLES_DOCUMENTS = {
+    Quote: "Cotización",
+    TechnicalSheet: "Ficha Técnica",
+    CreditsRequirements: "Requisitos de Crédito",
+    MaintenanceCosts: "Costo de Mantenimiento",
+    Location: "Ubicación",
+    Catalogue: "Catálogo",
+    GalleryVersions: "Versiones",
+    CreditRequest: "Petición de Crédito",
+  };
 
-    return (
-        <Layout style={{ marginTop: 20 }} level="4">
-        <List
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            keyExtractor={(item) => item._id}
-            data={documents}
-            renderItem={({ item }) => (
-            <ListItem
-                title={ evaProps => 
-                <Layout style={currents.includes(item) ? styles.controlContainerFiltersActive : styles.controlContainerFilters}>
-                    <Text style={{ ...styles.ItemText, color: currents.includes(item) ? 'white' : "#5764b8" }}>
-                    {TITLES_DOCUMENTS[item.title] ? TITLES_DOCUMENTS[item.title] : CapitalizeNames(item.title) }{' '}{item.vehicle ? `(${CapitalizeNames(item.vehicle.model)})` : ''}
-                    </Text>
-                </Layout>
+  return (
+    <Layout style={{ marginTop: 20 }} level="4">
+      <List
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        keyExtractor={(item) => item._id}
+        data={documents}
+        renderItem={({ item }) => (
+          <ListItem
+            title={(evaProps) => (
+              <Layout
+                style={
+                  currents.includes(item)
+                    ? styles.controlContainerFiltersActive
+                    : styles.controlContainerFilters
                 }
-                onPress={()=>handleAddDocument(item)}
-            />
+              >
+                <Text
+                  style={{
+                    ...styles.ItemText,
+                    color: currents.includes(item) ? "white" : "#5764b8",
+                  }}
+                >
+                  {TITLES_DOCUMENTS[item.title]
+                    ? TITLES_DOCUMENTS[item.title]
+                    : CapitalizeNames(item.title)}{" "}
+                  {item.vehicle
+                    ? `(${CapitalizeNames(item.vehicle.model)})`
+                    : ""}
+                </Text>
+              </Layout>
             )}
-        />
-        </Layout>
-    );
+            onPress={() => handleAddDocument(item)}
+          />
+        )}
+      />
+    </Layout>
+  );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -113,7 +121,6 @@ const styles = StyleSheet.create({
     borderColor: "#5764b8",
     width: 100,
     alignItems: "center",
-    
   },
   controlContainerFilters: {
     borderRadius: 4,
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "#5764b8",
-    backgroundColor: '#5764b8',
+    backgroundColor: "#5764b8",
     padding: 5,
     minWidth: 100,
     alignItems: "center",
