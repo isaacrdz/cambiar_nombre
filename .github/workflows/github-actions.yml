@@ -1,0 +1,12 @@
+name: Github Actions
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  build:
+    name: Github Actions for Carone Cloud APP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: yarn
+      - run: yarn lint
+      - run: yarn test
